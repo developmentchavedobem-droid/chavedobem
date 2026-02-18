@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
+import PublicHeader from "@/src/components/PublicHeader";
 
 export const metadata: Metadata = {
   title: "Chave do Bem",
@@ -44,11 +45,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+      <PublicHeader />
+        <main className="pt-10">
+          {children}
+        </main>
       </body>
     </html>
   );

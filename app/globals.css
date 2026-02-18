@@ -25,3 +25,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.btn-theme {
+  background: white;
+  border: 2px solid #026D9B;
+  color: #026D9B;
+  /* padding: 0px 5px; */
+  border-radius: 20px;
+}
