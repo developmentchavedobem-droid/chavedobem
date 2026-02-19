@@ -5,12 +5,12 @@ import Link from "next/link";
 export default function Donations() {
 
     const images = [
-    "/camp-1.png",
-    "/camp-2.png",
-    "/camp-3.png",
-    "/camp-4.png",
-    "/camp-5.png",
-  ];
+        "/camp-1.png",
+        "/camp-2.png",
+        "/camp-3.png",
+        "/camp-4.png",
+        "/camp-5.png",
+    ];
 
     return (
         <div className="flex flex-col gap-5 w-full h-[96vh] sm:h-[94vh] items-center justify-center bg-linear-to-b from-[#036E9B] to-[#1D8C6D]">
