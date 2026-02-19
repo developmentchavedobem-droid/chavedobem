@@ -6,6 +6,8 @@
   --foreground: #171717;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,4 +34,17 @@ body {
   color: #026D9B;
   /* padding: 0px 5px; */
   border-radius: 20px;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll-left linear infinite;
 }
