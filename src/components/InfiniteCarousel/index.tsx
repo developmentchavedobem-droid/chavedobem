@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   images: string[];
@@ -19,15 +20,16 @@ export default function InfiniteCarousel({ images, speed = 20 }: Props) {
         }}
       >
         {duplicated.map((src, index) => (
-          <Image
-            key={index}
-            priority
-            src={src}
-            alt={`carousel-${index}`}
-            width={200}
-            height={120}
-            className="mx-4"
-          />
+          <Link href="/participe" key={index} className="cursor-pointer">
+            <Image
+              priority
+              src={src}
+              alt={`carousel-${index}`}
+              width={200}
+              height={120}
+              className="mx-4"
+            />
+          </Link>
         ))}
       </div>
     </div>

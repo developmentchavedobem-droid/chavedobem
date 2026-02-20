@@ -1,5 +1,6 @@
 import InfiniteCarousel from "@/src/components/InfiniteCarousel";
 import Image from "next/image";
+import Campaigns from "./sorteios/page";
 
 export default function Home() {
 
@@ -41,9 +42,11 @@ export default function Home() {
       </section>
       
       <div className="w-full h-[50vh] flex flex-col items-center justify-center gap-10">
-        <h3 className="font-semibold text-black text-2xl">Doações disponíveis</h3>
+        <h3 className="font-semibold text-[#053B80] text-2xl">Doações disponíveis</h3>
         <InfiniteCarousel images={images} speed={25} />
       </div>
+
+      <Campaigns />
     </div>
   );
 }
