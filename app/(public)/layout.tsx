@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import PublicHeader from "@/src/components/PublicHeader";
+import Footer from "@/src/components/Footer";
 
 export const metadata: Metadata = {
   title: "Chave do Bem",
@@ -49,10 +50,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <PublicHeader />
+        <PublicHeader />
         <main className="pt-10">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
