@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/src/lib/prisma'
 import bcrypt from 'bcryptjs'
-import { UserType } from '@prisma/client'
+import { UserType } from '@/app/generated/prisma/client'
 
 /**
  * @swagger

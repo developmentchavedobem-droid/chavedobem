@@ -1,5 +1,5 @@
 import prisma from '@/src/lib/prisma'
-import { UserType } from '@prisma/client'
+import { UserType } from '@/app/generated/prisma/client'
 import bcrypt from 'bcryptjs'
 
 export async function createUser(data: {
