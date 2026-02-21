@@ -39,7 +39,7 @@ export default function PublicHeader() {
   }
 
   return (
-    <div className="drawer ">
+    <div className="drawer drawer-end">
       <input id="mobile-drawer" type="checkbox" className="drawer-toggle" />
 
       <div className="drawer-content">

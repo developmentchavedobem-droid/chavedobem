@@ -14,12 +14,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen pt-10 bg-zinc-100 font-sans">
-      <section className="w-full h-[70vh] flex flex-col-reverse sm:flex-row gap-5 sm:items-center bg-[url(/person.jpg)] bg-no-repeat bg-cover">
+      <section className="w-full h-screen sm:h-[70vh] flex flex-col-reverse sm:flex-row gap-5 sm:items-center bg-[url(/person.jpg)] bg-no-repeat bg-cover bg-center sm:bg-top">
         <article className="flex flex-col justify-center gap-3 px-20 w-full sm:w-fit h-full bg-linear-to-t sm:bg-linear-to-r from-sky-700">
           <h3 className="font-bold text-4xl">
-            Sua ponte direta para<br/>transformar vidas.
+            Sua ponte direta para <br className="hidden sm:flex"/>transformar vidas.
           </h3>
-          <p className="font-semibold">O link do bem conecta quem quer ajudar com quem mais<br/>precisa. Simples, transparente e totalmente gratuito.</p>
+          <p className="font-semibold">O link do bem conecta quem quer ajudar com quem mais <br className="hidden sm:flex"/>precisa. Simples, transparente e totalmente gratuito.</p>
           <div className="w-full flex items-center gap-2">
             <button className="btn btn-outline btn-theme">
               Quero participar
