@@ -3,26 +3,16 @@
 import Image from "next/image"
 import Link from "next/link"
 import { FaAlignJustify } from "react-icons/fa"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import "./style.css"
 
 export default function PublicHeader() {
 
   const [dark, setDark] = useState(false)
+  const drawerRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    // const darkLocalStorage = localStorage.getItem("darkMode")
-
-    // if (darkLocalStorage !== null) {
-    //   const darkValue = darkLocalStorage === "true"
-    //   async() => setDark(darkValue)
-
-    //   if (darkValue) {
-    //     document.documentElement.classList.add("dark")
-    //   } else {
-    //     document.documentElement.classList.remove("dark")
-    //   }
-    // }
+    // lógica de dark mode (se quiser reativar depois)
   }, [])
 
   function handleDarkMode() {
@@ -38,20 +28,32 @@ export default function PublicHeader() {
     }
   }
 
+  function closeDrawer() {
+    if (drawerRef.current) {
+      drawerRef.current.checked = false
+    }
+  }
+
   return (
     <div className="drawer drawer-end">
-      <input id="mobile-drawer" type="checkbox" className="drawer-toggle" />
+      <input
+        ref={drawerRef}
+        id="mobile-drawer"
+        type="checkbox"
+        className="drawer-toggle"
+      />
 
       <div className="drawer-content">
         <header className="w-full h-20 flex items-center justify-between bg-white dark:bg-neutral-900 px-6 sm:px-10 fixed z-10 shadow">
-          
-          <Image
-            src="/logo.svg"
-            alt="ChaveDoBem logo"
-            width={80}
-            height={20}
-            priority
-          />
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              alt="ChaveDoBem logo"
+              width={80}
+              height={20}
+              priority
+            />
+          </Link>
 
           {/* Menu Desktop */}
           <ul className="hidden sm:flex list-none gap-6 text-color-header">
@@ -63,16 +65,6 @@ export default function PublicHeader() {
           </ul>
 
           <div className="flex gap-4 items-center">
-            
-            {/* Botão Dark Mode (opcional) */}
-            {/* 
-            <button
-              onClick={handleDarkMode}
-              className="btn btn-neutral btn-outline"
-            >
-              {dark ? "Modo Claro" : "Modo Escuro"}
-            </button> 
-            */}
 
             {/* Botão Login Desktop */}
             <Link
@@ -90,7 +82,6 @@ export default function PublicHeader() {
               <FaAlignJustify />
             </label>
           </div>
-
         </header>
       </div>
 
@@ -103,13 +94,17 @@ export default function PublicHeader() {
         ></label>
 
         <ul className="menu bg-white dark:bg-neutral-900 min-h-full w-72 p-6 space-y-2 text-lg text-color-header">
-          <li><Link href="/">Início</Link></li>
-          <li><Link href="/doacoes">Doações realizadas</Link></li>
-          <li><Link href="/cadastre-se">Cadastre-se</Link></li>
-          <li><Link href="/quem-somos">Quem somos</Link></li>
-          <li><Link href="/fale-conosco">Fale conosco</Link></li>
+          <li><Link href="/" onClick={closeDrawer}>Início</Link></li>
+          <li><Link href="/doacoes" onClick={closeDrawer}>Doações realizadas</Link></li>
+          <li><Link href="/cadastre-se" onClick={closeDrawer}>Cadastre-se</Link></li>
+          <li><Link href="/quem-somos" onClick={closeDrawer}>Quem somos</Link></li>
+          <li><Link href="/fale-conosco" onClick={closeDrawer}>Fale conosco</Link></li>
           <li className="pt-4">
-            <Link href="/login" className="btn btn-neutral w-full btn-theme">
+            <Link
+              href="/login"
+              onClick={closeDrawer}
+              className="btn btn-neutral w-full btn-theme"
+            >
               Entrar
             </Link>
           </li>

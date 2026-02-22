@@ -60,7 +60,7 @@ export default function WhoWeAre() {
 
                     <div className="border-l-4 border-white/80 pl-6 py-2">
                         <p className="text-xl italic">
-                        A Chave do Bem é aposta.  
+                        A Chave do Bem não é aposta.  
                         É acesso.
                         </p>
                     </div>

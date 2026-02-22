@@ -9,7 +9,7 @@ import { FaLocationDot } from "react-icons/fa6";
 
 export default function Footer() {
     return(
-        <footer className="w-full sm:h-50 bg-linear-to-r from-[#1d8c6d] to-[#026e93] flex flex-inline flex-wrap gap-5 sm:gap-0 sm:flex-row items-start justify-between px-5 sm:px-15 py-5">
+        <footer className="w-full sm:h-50 bg-linear-to-r from-[#1d8c6d] to-[#026e93] flex flex-inline flex-wrap gap-5 sm:gap-0 sm:flex-row items-start justify-between px-5 sm:px-15 py-10 sm:py-5">
             <Image
                 className="w-20 sm:w-72 md:w-40 h-auto "
                 src="/logo.svg"
