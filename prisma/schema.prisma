@@ -13,11 +13,22 @@ enum UserType {
   CUSTOMER
 }
 
+enum CampaignStatus {
+  ACTIVE
+  READY_TO_DRAW
+  FINISHED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
   type      UserType
+
+  // Indicação (para afiliados)
+  referredById Int?
+  referredBy   User?  @relation("UserReferrals", fields: [referredById], references: [id])
+  referrals    User[] @relation("UserReferrals")
 
   links     ReferralLink[]
   tickets   Ticket[]
@@ -32,7 +43,7 @@ model User {
 model ReferralLink {
   id        Int      @id @default(autoincrement())
   code      String   @unique
-  platform  String
+  platform  String   // instagram, tiktok, youtube, etc
 
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -43,29 +54,42 @@ model ReferralLink {
 }
 
 model Visit {
-  id         Int           @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
 
-  referralId Int
-  referral   ReferralLink  @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  referralId  Int
+  referral    ReferralLink @relation(fields: [referralId], references: [id], onDelete: Cascade)
 
-  ip         String?
-  userAgent  String?
+  campaignId  Int
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime      @default(now())
+  ip          String?
+  userAgent   String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([referralId])
+  @@index([campaignId])
 }
 
 model Campaign {
   id          Int      @id @default(autoincrement())
   name        String
+  slug        String   @unique
   description String?
+
   goal        Int
+  currentAmount Float   @default(0)
+
+  status      CampaignStatus @default(ACTIVE)
 
   createdById Int
   createdBy   User     @relation("CampaignCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
 
   tickets     Ticket[]
+  visits      Visit[]
 
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Ticket {
@@ -79,7 +103,8 @@ model Ticket {
 
   createdAt    DateTime @default(now())
 
-  @@unique([campaignId, createdById]) // impede múltiplos tickets por usuário na mesma campanha
+  @@index([campaignId])
+  @@index([createdById])
 }
 
 model Role {
