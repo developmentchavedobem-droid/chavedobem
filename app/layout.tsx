@@ -3,10 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://chavedobem.com"),
   title: "Chave do Bem",
   description: "Participe e ganhe prêmios!",
   openGraph: {
-    title: 'Chave do Bem',
+    title: "Chave do Bem",
     description: "Participe e ganhe prêmios!",
     images: [
       {
@@ -23,10 +24,11 @@ export const metadata: Metadata = {
     nocache: true,
     googleBot: {
       index: true,
-      follow: true,
+      follow: true
     }
   }
-}
+};
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -14,7 +14,6 @@ import { UserType } from '@/app/generated/prisma/client'
  *         description: Lista de usuários
  */
 export async function GET() {
-  console.log("ENV NO NEXT:", process.env.DATABASE_URL)
   try {
     const users = await prisma.user.findMany({
       include: {
