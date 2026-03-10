@@ -48,3 +48,14 @@ body {
 .animate-scroll {
   animation: scroll-left linear infinite;
 }
+
+.btn-theme-primary {
+  border: 0;
+  background: #026D9B;
+  color: white;
+  border-radius: 24px;
+}
+
+.btn-theme-primary:hover {
+  opacity: 0.9;
+}
