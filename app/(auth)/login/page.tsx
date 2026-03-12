@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/src/stores/auth.store";
 
 export default function AuthLogin() {
   const router = useRouter();
+  const refreshUser = useAuthStore((state) => state.refreshUser);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +27,7 @@ export default function AuthLogin() {
         headers: {
           "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({
           email,
           password
@@ -38,6 +41,7 @@ export default function AuthLogin() {
         return;
       }
 
+      await refreshUser();
       router.push("/home");
       router.refresh();
     } catch {

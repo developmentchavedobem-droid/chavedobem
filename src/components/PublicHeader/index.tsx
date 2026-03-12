@@ -5,9 +5,10 @@ import Link from "next/link"
 import { FaAlignJustify } from "react-icons/fa"
 import { useEffect, useState, useRef } from "react"
 import "./style.css"
+import { useAuthStore } from "@/src/stores/auth.store";
 
 export default function PublicHeader() {
-
+  const user = useAuthStore((state) => state.user);
   const [dark, setDark] = useState(false)
   const drawerRef = useRef<HTMLInputElement>(null)
 
@@ -65,13 +66,11 @@ export default function PublicHeader() {
           </ul>
 
           <div className="flex gap-4 items-center">
-
-            {/* Botão Login Desktop */}
             <Link
-              href="/login"
+              href={user ? "/home" : "/login"}
               className="hidden sm:flex btn btn-neutral btn-outline btn-theme"
             >
-              Entrar
+              {user ? 'Minha conta' : 'Entrar'}
             </Link>
 
             {/* Botão Hamburguer Mobile */}

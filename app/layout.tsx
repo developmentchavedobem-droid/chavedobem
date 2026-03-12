@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import AuthBootstrap from "@/src/components/AuthBootstrap";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://chavedobem.com"),
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <AuthBootstrap />
         <main>
           {children}
         </main>
