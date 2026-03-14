@@ -17,7 +17,7 @@ export default function AppTopbar({
   onToggleCollapse
 }: Props) {
   return (
-    <header className="h-15 sm:h-25 bg-white flex items-center justify-between px-4">
+    <header className="h-15 sm:h-5 bg-white flex items-center justify-between px-4">
       <div className="flex items-center gap-3">
         <button
           className="lg:hidden text-[#053B80]"
@@ -26,16 +26,9 @@ export default function AppTopbar({
         >
           <FaBars />
         </button>
-
-        <button
-          className="hidden lg:inline-flex btn btn-sm"
-          onClick={onToggleCollapse}
-        >
-          Menu
-        </button>
       </div>
 
-      <div className="hidden lg:flex text-sm text-zinc-700 w-[80%] h-[80%] items-center gap-2">
+      {/* <div className="hidden lg:flex text-sm text-zinc-700 w-[80%] h-[80%] items-center gap-2">
         <div className="w-[70%] h-full bg-gray-50 rounded-2xl p-4 flex items-center justify-between text-[#026D9B] font-semibold">
           <span className="text-lg">
             {userName ? `Olá, ${userName}` : ""}
@@ -50,7 +43,7 @@ export default function AppTopbar({
             <FaArrowRotateRight />
           </button>
         </div>
-      </div>
+      </div> */}
     </header>
   );
 }
