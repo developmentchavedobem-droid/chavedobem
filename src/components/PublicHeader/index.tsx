@@ -3,31 +3,13 @@
 import Image from "next/image"
 import Link from "next/link"
 import { FaAlignJustify } from "react-icons/fa"
-import { useEffect, useState, useRef } from "react"
+import { useRef } from "react"
 import "./style.css"
 import { useAuthStore } from "@/src/stores/auth.store";
 
 export default function PublicHeader() {
   const user = useAuthStore((state) => state.user);
-  const [dark, setDark] = useState(false)
   const drawerRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    // lógica de dark mode (se quiser reativar depois)
-  }, [])
-
-  function handleDarkMode() {
-    const newValue = !dark
-
-    setDark(newValue)
-    localStorage.setItem("darkMode", String(newValue))
-
-    if (newValue) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }
 
   function closeDrawer() {
     if (drawerRef.current) {

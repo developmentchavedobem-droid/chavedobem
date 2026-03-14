@@ -32,6 +32,7 @@ export default function PrivateLayout({
       >
         <AppTopbar
           userName={user?.profile?.name}
+          userEmail={user?.email}
           onToggleSidebar={() => setMobileOpen(true)}
           onToggleCollapse={() => setCollapsed((prev) => !prev)}
         />

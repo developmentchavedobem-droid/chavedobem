@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaTimes } from "react-icons/fa";
 import { PRIVATE_MODULES } from "@/src/constants/private-modules";
+import Image from "next/image";
 
 type Props = {
   userType?: "ADMIN" | "USER" | "CUSTOMER";
@@ -36,17 +37,24 @@ export default function AppSidebar({
 
       <aside
         className={`
-          fixed top-0 left-0 z-50 h-screen bg-white border-r transition-all duration-300
-          ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
+          fixed top-0 left-0 z-50 h-screen bg-gray-50 transition-all duration-300
+          ${mobileOpen ? "translate-x-0" : "-translate-x-full rounded-2xl m-2"}
           lg:translate-x-0
           ${collapsed ? "lg:w-20" : "lg:w-70"}
-          w-70
+          w-70 
         `}
       >
-        <div className="flex items-center justify-between h-20 px-4 border-b">
-          <span className={`font-bold text-[#053B80] ${collapsed ? "lg:hidden" : "block"}`}>
-            Chave do Bem
-          </span>
+        <div className={`flex items-center justify-between ${mobileOpen? 'h-20' : 'h-40'} px-4`}>
+          <div className={`font-bold text-[#053B80] ${collapsed ? "lg:hidden" : "block mx-auto"}`}>
+            <Image
+                className="w-20 sm:w-72 md:w-40 h-auto"
+                src="/logo.svg"
+                alt="ChaveDoBem logo"
+                width={300}
+                height={300}
+                priority
+            />
+          </div>
 
           <button
             className="lg:hidden text-[#053B80]"
