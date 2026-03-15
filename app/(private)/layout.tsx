@@ -26,7 +26,7 @@ export default function PrivateLayout({
 
       <div
         className={`
-          flex-1 flex flex-col min-h-screen transition-all duration-300
+          flex-1 flex flex-col w-full min-h-screen transition-all duration-300
           lg:${collapsed ? "ml-20" : "ml-70"}
         `}
       >

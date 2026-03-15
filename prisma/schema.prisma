@@ -76,6 +76,7 @@ model Campaign {
   name        String
   slug        String   @unique
   description String?
+  imageUrl    String?
 
   goal        Int
   currentAmount Float   @default(0)

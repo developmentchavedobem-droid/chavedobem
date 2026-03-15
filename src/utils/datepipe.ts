@@ -14,5 +14,5 @@ export function datePipe(date: string | Date): string {
 
 export function monthPipe(month: number): string {
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-  return months[month - 1];
+  return months[month];
 }

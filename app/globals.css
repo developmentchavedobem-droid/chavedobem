@@ -59,3 +59,7 @@ body {
 .btn-theme-primary:hover {
   opacity: 0.9;
 }
+
+.table-zebra tbody tr:where(:nth-child(2n)) {
+    background-color: #F3F7FA;
+}
