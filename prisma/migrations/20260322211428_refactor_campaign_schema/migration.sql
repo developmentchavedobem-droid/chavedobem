@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Campaign" ADD COLUMN     "currentTickets" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "ticketGoal" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "ticketValue" DECIMAL(10,4) NOT NULL DEFAULT 0;

@@ -1,9 +1,12 @@
 import { create } from "zustand";
 
+// Definimos um tipo para as Roles para evitar erros de digitação
+export type UserRole = "ADMIN" | "USER" | "CUSTOMER";
+
 type AuthUser = {
   id: number;
   email: string;
-  type: string;
+  role: UserRole; // Alterado de 'type' para 'role'
   profile?: {
     id: number;
     name: string;
@@ -11,7 +14,11 @@ type AuthUser = {
     phone_number: string | null;
     birthdate: string | null;
     userId: number;
-    roleId: number;
+    // Removi roleId daqui pois a Role agora está no User (conforme seu novo schema)
+    wallet?: {
+      balance: number;
+      pending: number;
+    } | null;
     createdAt: string;
     updatedAt: string;
   } | null;
@@ -35,14 +42,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
   setUser: (user) =>
     set({
       user,
-      isAuthenticated: !!user
+      isAuthenticated: !!user,
+      loading: false // Ao setar o usuário, paramos o loading
     }),
 
   setLoading: (loading) => set({ loading }),
 
   refreshUser: async () => {
-    set({ loading: true });
-
+    // Não setamos loading: true aqui se o usuário já existir para evitar "flicker" na UI
     try {
       const response = await fetch("/api/auth/me", {
         method: "GET",
@@ -50,27 +57,19 @@ export const useAuthStore = create<AuthStore>((set) => ({
       });
 
       if (!response.ok) {
-        set({
-          user: null,
-          isAuthenticated: false,
-          loading: false
-        });
+        set({ user: null, isAuthenticated: false, loading: false });
         return;
       }
 
       const data = await response.json();
 
       set({
-        user: data,
+        user: data, // Certifique-se que a API /api/auth/me retorna o campo 'role'
         isAuthenticated: true,
         loading: false
       });
     } catch {
-      set({
-        user: null,
-        isAuthenticated: false,
-        loading: false
-      });
+      set({ user: null, isAuthenticated: false, loading: false });
     }
   },
 
@@ -81,11 +80,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
         credentials: "include"
       });
     } finally {
-      set({
-        user: null,
-        isAuthenticated: false,
-        loading: false
-      });
+      // Limpa tudo e redireciona (o redirecionamento pode ser feito no componente)
+      set({ user: null, isAuthenticated: false, loading: false });
+      window.location.href = "/login"; // Força um reload para limpar caches do Next.js
     }
   }
 }));

@@ -7,7 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserType {
+enum Role {
   ADMIN
   USER
   CUSTOMER
@@ -19,123 +19,160 @@ enum CampaignStatus {
   FINISHED
 }
 
+enum WithdrawalStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+// --- AUTENTICAÇÃO ---
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
-  type      UserType
-
-  // Indicação (para afiliados)
-  referredById Int?
-  referredBy   User?  @relation("UserReferrals", fields: [referredById], references: [id])
-  referrals    User[] @relation("UserReferrals")
-
-  links     ReferralLink[]
-  tickets   Ticket[]
-  campaigns Campaign[]     @relation("CampaignCreatedBy")
-
+  role      Role     @default(CUSTOMER)
+  
   profile   Profile?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+// --- DADOS DO USUÁRIO ---
+model Profile {
+  id              Int       @id @default(autoincrement())
+  name            String
+  register_number String?   // CPF/CNPJ
+  phone_number    String?
+  birthdate       DateTime?
+
+  userId          Int       @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Um Divulgador (USER) tem links, uma carteira e histórico de indicações
+  links           ReferralLink[]
+  wallet          Wallet?
+
+  // Campanhas que este perfil criou (caso ADMIN)
+  campaigns       Campaign[] @relation("CampaignCreatedBy")
+  
+  // Tickets que este perfil coletou (caso CUSTOMER)
+  tickets         Ticket[]
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+// --- FLUXO DE DIVULGAÇÃO ---
 model ReferralLink {
   id        Int      @id @default(autoincrement())
   code      String   @unique
-  platform  String   // instagram, tiktok, youtube, etc
+  platform  String   // instagram, tiktok, etc
 
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   visits    Visit[]
+  tickets   Ticket[] // Tickets gerados através deste link específico
 
   createdAt DateTime @default(now())
 }
 
 model Visit {
-  id          Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
+  
+  referralId    Int
+  referral      ReferralLink @relation(fields: [referralId], references: [id], onDelete: Cascade)
 
-  referralId  Int
-  referral    ReferralLink @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  campaignId    Int
+  campaign      Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
-  campaignId  Int
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-
-  ip          String?
-  userAgent   String?
-
-  createdAt   DateTime @default(now())
+  ip            String?
+  userAgent     String?
+  
+  createdAt     DateTime     @default(now())
 
   @@index([referralId])
   @@index([campaignId])
 }
 
+// --- CAMPANHAS E TICKETS ---
 model Campaign {
-  id          Int      @id @default(autoincrement())
-  name        String
-  slug        String   @unique
-  description String?
-  imageUrl    String?
+  id            Int            @id @default(autoincrement())
+  name          String
+  slug          String         @unique
+  description   String?
+  imageUrl      String?
+  
+  goal          Int
+  currentAmount Float          @default(0)
 
-  goal        Int
-  currentAmount Float   @default(0)
+  // Lógica de Tickets
+  ticketGoal     Int            @default(0) // Quantos tickets faltam para o sorteio
+  ticketValue    Decimal        @default(0) @db.Decimal(10, 4) // Valor estimado por ticket
+  currentTickets Int            @default(0) // Quantidade de tickets já coletados
 
-  status      CampaignStatus @default(ACTIVE)
+  status        CampaignStatus @default(ACTIVE)
 
-  createdById Int
-  createdBy   User     @relation("CampaignCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  createdById   Int
+  createdBy     Profile        @relation("CampaignCreatedBy", fields: [createdById], references: [id])
 
-  tickets     Ticket[]
-  visits      Visit[]
+  tickets       Ticket[]
+  visits        Visit[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model Ticket {
-  id           Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
+  
+  campaignId    Int
+  campaign      Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
 
-  campaignId   Int
-  campaign     Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  profileId     Int
+  profile       Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  createdById  Int
-  createdBy    User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  // Rastreabilidade: Qual link trouxe este ticket?
+  referralLinkId Int?
+  referralLink   ReferralLink? @relation(fields: [referralLinkId], references: [id])
 
-  createdAt    DateTime @default(now())
+  createdAt     DateTime     @default(now())
 
   @@index([campaignId])
-  @@index([createdById])
+  @@index([profileId])
 }
 
-model Role {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  profiles Profile[]
+// --- FINANCEIRO (DASHBOARD DO DIVULGADOR) ---
+model Wallet {
+  id          Int      @id @default(autoincrement())
+  balance     Float    @default(0) // Saldo disponível para saque
+  pending     Float    @default(0) // Saldo do mês atual (ainda não liberado)
+  totalEarned Float    @default(0) // Histórico total
+
+  profileId   Int      @unique
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  withdrawals Withdrawal[]
 }
 
-model Profile {
-  id              Int      @id @default(autoincrement())
-  name            String
-  register_number String?
-  phone_number    String?
-  birthdate       DateTime?
+model Withdrawal {
+  id          Int              @id @default(autoincrement())
+  amount      Float
+  status      WithdrawalStatus @default(PENDING)
+  
+  walletId    Int
+  wallet      Wallet           @relation(fields: [walletId], references: [id])
 
-  userId          Int      @unique
-  roleId          Int
-
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role            Role     @relation(fields: [roleId], references: [id])
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt   DateTime         @default(now())
+  paidAt      DateTime?
 }
 
 model AdRevenue {
   id        Int      @id @default(autoincrement())
   month     Int
   year      Int
-  amount    Float
+  amount    Float    // Faturamento total do Google AdSense no mês
 
   createdAt DateTime @default(now())
 

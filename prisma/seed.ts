@@ -2,63 +2,43 @@ import prisma from '@/src/lib/prisma'
 import bcrypt from 'bcryptjs'
 
 async function main() {
+  console.log('Iniciando seed...')
 
-  // Criar roles
-  await prisma.role.createMany({
-    data: [
-      { name: 'admin' },
-      { name: 'user' },
-      { name: 'customer' }
-    ],
-    skipDuplicates: true
-  })
-
-  // Buscar role admin
-  const adminRole = await prisma.role.findUnique({
-    where: { name: 'admin' }
-  })
-
-  if (!adminRole) {
-    throw new Error('Role admin não encontrada')
-  }
-
-  // Verificar se admin já existe
+  // 1. Verificar se o admin já existe
   const existingAdmin = await prisma.user.findUnique({
     where: { email: 'admin@admin.com' }
   })
 
   if (!existingAdmin) {
-
     const hashedPassword = await bcrypt.hash('administrador', 10)
 
-    const adminUser = await prisma.user.create({
+    // 2. Criar o Usuário e o Profile (com a Wallet dentro dele)
+    await prisma.user.create({
       data: {
         email: 'admin@admin.com',
         password: hashedPassword,
-        type: 'ADMIN'
+        role: 'ADMIN', 
+        profile: {
+          create: {
+            name: 'Administrador',
+            // A Wallet pertence ao Profile, então criamos aqui:
+            wallet: { 
+              create: {} 
+            }
+          }
+        }
       }
     })
 
-    await prisma.profile.create({
-      data: {
-        name: 'Administrador',
-        userId: adminUser.id,
-        roleId: adminRole.id
-      }
-    })
-
-    console.log('Admin criado com sucesso')
+    console.log('✅ Usuário Admin, Profile e Wallet criados com sucesso')
   } else {
-    console.log('Admin já existe')
+    console.log('ℹ️ Admin já existe no banco de dados')
   }
 }
 
 main()
-  .then(() => {
-    console.log('Seed executado com sucesso')
-  })
   .catch((e) => {
-    console.error(e)
+    console.error('❌ Erro ao executar o seed:', e)
     process.exit(1)
   })
   .finally(async () => {

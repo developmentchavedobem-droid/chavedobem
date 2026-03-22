@@ -1,47 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { jwtVerify } from "jose";
 
-export function proxy(req: NextRequest) {
+const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+// O Next.js 16 espera que a função se chame 'proxy'
+export async function proxy(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const { pathname } = req.nextUrl;
 
-  const isPrivateRoute =
-    pathname.startsWith("/home") ||
-    pathname.startsWith("/perfil") ||
-    pathname.startsWith("/campanhas") ||
-    pathname.startsWith("/bilhetes");
-
-  const isAuthRoute =
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/cadastro") ||
-    pathname.startsWith("/recuperar-senha");
+  const isAuthRoute = ["/login", "/cadastro", "/recuperar-senha"].some(path => pathname.startsWith(path));
+  const isPrivateRoute = ["/home", "/perfil", "/campanhas", "/faturamento", "/admin"].some(path => pathname.startsWith(path));
 
   if (isPrivateRoute) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-
+    if (!token) return NextResponse.redirect(new URL("/login", req.url));
     try {
-      jwt.verify(token, process.env.JWT_SECRET as string);
+      const { payload } = await jwtVerify(token, secret);
+      const userRole = payload.role as string;
+
+      if (userRole === "CUSTOMER" && ["/faturamento", "/campanhas"].some(path => pathname.startsWith(path))) {
+        return NextResponse.redirect(new URL("/home", req.url));
+      }
       return NextResponse.next();
-    } catch {
+    } catch (err) {
       const response = NextResponse.redirect(new URL("/login", req.url));
-
-      response.cookies.set("token", "", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 0
-      });
-
+      response.cookies.delete("token");
       return response;
     }
   }
 
   if (isAuthRoute && token) {
     try {
-      jwt.verify(token, process.env.JWT_SECRET as string);
+      await jwtVerify(token, secret);
       return NextResponse.redirect(new URL("/home", req.url));
     } catch {
       return NextResponse.next();
@@ -56,9 +45,10 @@ export const config = {
     "/home/:path*",
     "/perfil/:path*",
     "/campanhas/:path*",
-    "/bilhetes/:path*",
+    "/faturamento/:path*",
+    "/admin/:path*",
     "/login",
     "/cadastro",
-    "/recuperar-senha"
+    "/recuperar-senha",
   ]
 };

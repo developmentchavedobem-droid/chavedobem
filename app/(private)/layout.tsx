@@ -18,7 +18,7 @@ export default function PrivateLayout({
   return (
     <div className="flex min-h-screen bg-white">
       <AppSidebar
-        userType={user?.type as "ADMIN" | "USER" | "CUSTOMER" | undefined}
+        userType={user?.role as "ADMIN" | "USER" | "CUSTOMER" | undefined}
         collapsed={collapsed}
         mobileOpen={mobileOpen}
         onCloseMobile={() => setMobileOpen(false)}

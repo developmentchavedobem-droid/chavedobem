@@ -1,49 +1,28 @@
-import { FaHome, FaBullhorn, FaGift, FaUsers, FaUserShield, FaChartBar } from "react-icons/fa";
+import { FaHome, FaChartBar, FaBullhorn, FaUsers } from "react-icons/fa";
 
-export type UserRole = "ADMIN" | "USER" | "CUSTOMER";
-
-export type PrivateModuleItem = {
-  label: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-  roles: UserRole[];
-};
-
-export const PRIVATE_MODULES: PrivateModuleItem[] = [
+export const PRIVATE_MODULES = [
   {
     label: "Home",
     href: "/home",
     icon: FaHome,
-    roles: ["ADMIN", "USER", "CUSTOMER"]
+    roles: ["ADMIN", "USER", "CUSTOMER"], // Todos veem
   },
   {
-    label: "Campanhas",
+    label: "Minhas Campanhas",
     href: "/campanhas",
-    icon: FaGift,
-    roles: ["ADMIN", "USER", "CUSTOMER"]
+    icon: FaBullhorn,
+    roles: ["ADMIN", "USER"], // Customer não vê
   },
   {
-    label: "Meus Links",
-    href: "/divulgador",
-    icon: FaBullhorn,
-    roles: ["USER"]
+    label: "Faturamento",
+    href: "/faturamento",
+    icon: FaChartBar,
+    roles: ["ADMIN", "USER"], // Apenas divulgadores e admin
   },
   {
     label: "Usuários",
-    href: "/usuarios",
+    href: "/admin/usuarios",
     icon: FaUsers,
-    roles: ["ADMIN"]
+    roles: ["ADMIN"], // Apenas o "god mode"
   },
-  {
-    label: "Administração",
-    href: "/admin",
-    icon: FaUserShield,
-    roles: ["ADMIN"]
-  },
-  {
-    label: "Relatórios",
-    href: "/relatorios",
-    icon: FaChartBar,
-    roles: ["ADMIN", "USER"]
-  }
 ];

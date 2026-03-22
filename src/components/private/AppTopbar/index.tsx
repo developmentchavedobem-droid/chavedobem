@@ -11,10 +11,7 @@ type Props = {
 };
 
 export default function AppTopbar({
-  userName,
-  userEmail,
   onToggleSidebar,
-  onToggleCollapse
 }: Props) {
   return (
     <header className="h-15 sm:h-5 bg-white flex items-center justify-between px-4">
