@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/src/lib/prisma'
 import bcrypt from 'bcryptjs'
-import { UserType } from '@/app/generated/prisma/client'
 
 /**
  * @swagger
@@ -39,9 +38,9 @@ export async function GET() {
  */
 export async function POST(req: NextRequest) {
   try {
-    const { email, password, type } = await req.json()
+    const { email, password } = await req.json()
 
-    if (!email || !password || !type) {
+    if (!email || !password) {
       return NextResponse.json(
         { error: 'Campos obrigatórios faltando' },
         { status: 400 }
@@ -53,8 +52,7 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.create({
       data: {
         email,
-        password: hashedPassword,
-        type: type as UserType
+        password: hashedPassword
       }
     })
 

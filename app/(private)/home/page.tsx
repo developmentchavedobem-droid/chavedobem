@@ -101,7 +101,7 @@ export default function PrivateHome() {
           <div className="flex w-full max-w-full flex-col gap-6 rounded-2xl bg-white p-4 lg:h-[60%]">
             <div className="flex gap-3 items-end justify-between">
               <span className="text-lg font-bold text-gray-600">Receita por link</span>
-              {user?.type === "ADMIN" && (
+              {user?.role === "ADMIN" && (
                 <button className="btn btn-theme-primary">
                   Meus links
                 </button>
