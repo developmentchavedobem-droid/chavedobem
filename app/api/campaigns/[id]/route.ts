@@ -1,0 +1,130 @@
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/src/lib/prisma";
+import jwt from "jsonwebtoken";
+
+/**
+ * @swagger
+ * /api/campaigns/{id}:
+ *   put:
+ *     summary: Edita uma campanha existente
+ *     description: Atualiza os dados editáveis de uma campanha pelo ID
+ *     tags: [Campaigns]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID da campanha
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Campanha Pix 5 Mil
+ *               goal:
+ *                 type: number
+ *                 example: 5000
+ *               description:
+ *                 type: string
+ *                 example: Nova descrição da campanha
+ *               imageUrl:
+ *                 type: string
+ *                 example: https://meusite.com/imagens/nova-campanha.jpg
+ *               ticketValue:
+ *                 type: number
+ *                 example: 2
+ *               ticketGoal:
+ *                 type: number
+ *                 example: 2500
+ *     responses:
+ *       200:
+ *         description: Campanha atualizada com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       500:
+ *         description: Erro ao editar campanha
+ *   delete:
+ *     summary: Deleta uma campanha
+ *     description: Remove uma campanha existente pelo ID
+ *     tags: [Campaigns]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID da campanha
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Campanha deletada com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       500:
+ *         description: Erro ao deletar campanha
+ */
+
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const token = req.cookies.get("token")?.value;
+    if (!token) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+
+    // CORREÇÃO CRÍTICA: Aguardar o params
+    const resolvedParams = await params;
+    const id = Number(resolvedParams.id);
+    
+    const body = await req.json();
+
+    // Removemos campos que não devem ser editados manualmente
+    const { id: _, slug: __, createdAt: ___, ...updateData } = body;
+
+    const updatedCampaign = await prisma.campaign.update({
+      where: { id },
+      data: {
+        ...updateData,
+        // Garante conversão numérica para o banco
+        goal: updateData.goal ? Number(updateData.goal) : undefined,
+        ticketValue: updateData.ticketValue ? Number(updateData.ticketValue) : undefined,
+        ticketGoal: updateData.ticketGoal ? Number(updateData.ticketGoal) : undefined,
+      },
+    });
+
+    return NextResponse.json(updatedCampaign);
+  } catch (error) {
+    console.error("Erro no PUT /api/campaigns/[id]:", error);
+    return NextResponse.json({ error: "Erro ao editar campanha" }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const token = req.cookies.get("token")?.value;
+    if (!token) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+
+    // CORREÇÃO CRÍTICA: Aguardar o params
+    const resolvedParams = await params;
+    const id = Number(resolvedParams.id);
+
+    await prisma.campaign.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: "Campanha deletada com sucesso" });
+  } catch (error) {
+    console.error("Erro no DELETE /api/campaigns/[id]:", error);
+    return NextResponse.json({ error: "Erro ao deletar campanha" }, { status: 500 });
+  }
+}

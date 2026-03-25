@@ -25,7 +25,7 @@ export default function Home() {
               Quero participar
             </button>
             <button className="btn btn-outline btn-theme bg-transparent">
-              Sorteios disponíveis
+              Campanhas disponíveis
             </button>
           </div>
         </article>

@@ -5,10 +5,12 @@ import 'swagger-ui-react/swagger-ui.css'
 
 export default function ApiDocs() {
   return (
-    <SwaggerUI
-      url="/api/docs"
-      docExpansion="list"
-      defaultModelsExpandDepth={-1}
-    />
+    <div data-theme="light">
+      <SwaggerUI
+        url="/api/docs"
+        docExpansion="list"
+        defaultModelsExpandDepth={-1}
+      />
+    </div>
   )
 }

@@ -3,10 +3,7 @@ import prisma from "@/src/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-const currencyFormatter = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
+const numberFormatter = new Intl.NumberFormat("pt-BR");
 
 function getProgressPercentage(current: number, goal: number) {
   if (!goal) return 0;
@@ -27,7 +24,7 @@ export default async function CampaignsPage() {
           <div className="space-y-1">
             <h1 className="text-2xl font-bold text-[#026D9B]">Campanhas</h1>
             <p className="text-sm text-gray-600">
-              Gerencie as campanhas ativas e acompanhe o avanço de cada meta.
+              Gerencie as campanhas ativas e acompanhe o progresso dos tickets.
             </p>
           </div>
 
@@ -40,7 +37,7 @@ export default async function CampaignsPage() {
           <div className="flex min-h-120 flex-col items-center justify-center rounded-2xl border border-dashed border-[#026D9B]/30 bg-white px-6 py-10 text-center">
             <h2 className="text-xl font-bold text-[#026D9B]">Nenhuma campanha cadastrada</h2>
             <p className="mt-2 max-w-md text-sm text-gray-600">
-              Crie sua primeira campanha para começar a acompanhar metas, arrecadação e divulgação.
+              Crie sua primeira campanha para começar a coletar tickets.
             </p>
             <Link href="/campanhas/create" className="btn btn-theme-primary mt-6">
               Criar campanha
@@ -49,7 +46,8 @@ export default async function CampaignsPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {campaigns.map((campaign) => {
-              const progress = getProgressPercentage(campaign.currentAmount, campaign.goal);
+              // Alterado para calcular progresso baseado em tickets
+              const progress = getProgressPercentage(campaign.currentTickets, campaign.ticketGoal);
 
               return (
                 <Link
@@ -76,13 +74,13 @@ export default async function CampaignsPage() {
                         </div>
                         <h2 className="line-clamp-2 text-2xl font-bold">{campaign.name}</h2>
                         <p className="line-clamp-2 text-sm text-white/90">
-                          {campaign.description || "Campanha pronta para receber divulgação e arrecadação."}
+                          {campaign.description || "Campanha pronta para coletar tickets."}
                         </p>
                       </div>
 
                       <div className="rounded-2xl bg-white/16 p-4 backdrop-blur-[2px]">
                         <div className="mb-2 flex items-center justify-between gap-3">
-                          <span className="text-sm font-semibold">Meta da campanha</span>
+                          <span className="text-sm font-semibold">Progresso dos Tickets</span>
                           <span className="text-sm font-bold">{progress.toFixed(0)}%</span>
                         </div>
                         <progress
@@ -92,15 +90,15 @@ export default async function CampaignsPage() {
                         />
                         <div className="mt-3 flex items-end justify-between gap-3">
                           <div>
-                            <p className="text-xs uppercase tracking-wide text-white/75">Arrecadado</p>
+                            <p className="text-xs uppercase tracking-wide text-white/75">Coletados</p>
                             <p className="text-lg font-bold">
-                              {currencyFormatter.format(campaign.currentAmount)}
+                              {numberFormatter.format(campaign.currentTickets)}
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs uppercase tracking-wide text-white/75">Meta</p>
+                            <p className="text-xs uppercase tracking-wide text-white/75">Meta de Tickets</p>
                             <p className="text-lg font-bold">
-                              {currencyFormatter.format(campaign.goal)}
+                              {numberFormatter.format(campaign.ticketGoal)}
                             </p>
                           </div>
                         </div>
