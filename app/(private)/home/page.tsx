@@ -1,30 +1,31 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { useAuthStore } from "@/src/stores/auth.store";
 import { FaArrowRotateRight } from "react-icons/fa6";
-import { datePipe, monthPipe } from "@/src/utils/datepipe";
-import AppDatePicker from "@/src/components/AppDatePicker";
+import { monthPipe } from "@/src/utils/datepipe";
+import dynamic from "next/dynamic";
+
+const AppDatePicker = dynamic(() => import("@/src/components/AppDatePicker"), {
+  ssr: false,
+  loading: () => <div className="h-10 w-24 animate-pulse bg-gray-200 rounded-lg" />
+});
 
 export default function PrivateHome() {
   const user = useAuthStore((state) => state.user);
 
   const [dateSelected, setDateSelected] = useState<Date>(new Date());
   const [monthSelected, setMonthSelected] = useState<Date>(new Date());
-  const [periodSelected, setPeriodSelected] = useState({
-    start: null as Date | null,
-    end: null as Date | null,
-  });
 
-  const calendarRef = useRef<HTMLElement | null>(null);
+  const formattedMonth = useMemo(() => monthPipe(monthSelected.getMonth()), [monthSelected]);
 
   return (
     <div className="flex lg:w-full flex-col items-end gap-2 overflow-x-hidden px-3 pb-4 sm:px-4">
       <div className="flex w-full max-w-full flex-col items-stretch gap-2 text-sm text-zinc-700 lg:h-[80%] lg:w-[80%] lg:flex-row lg:items-center">
         <div className="flex w-full min-w-0 flex-col gap-1 rounded-2xl bg-gray-100 p-4 text-[#026D9B] font-semibold sm:h-20 sm:flex-row sm:items-center sm:justify-between lg:w-[70%]">
-          <span className="text-lg">{user ? `Olá, ${user.profile?.name}` : ""}</span>
+          <span className="text-lg">{user?.profile?.name ? `Olá, ${user.profile.name}` : "Bem-vindo"}</span>
           <span className="min-w-0 break-all text-xs sm:text-sm">
-            {user ? user.email : ""}
+            {user?.email || ""}
           </span>
         </div>
 
@@ -32,10 +33,13 @@ export default function PrivateHome() {
           <span className="font-semibold text-gray-400">
             Última atualização:
             <br />
-            12:02
+            {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
           </span>
 
-          <button className="btn btn-circle btn-theme">
+          <button 
+            className="btn btn-circle btn-theme"
+            onClick={() => window.location.reload()}
+          >
             <FaArrowRotateRight />
           </button>
         </div>
@@ -79,7 +83,7 @@ export default function PrivateHome() {
               <div className="flex flex-col gap-6 pt-3 sm:pt-0 lg:flex-row lg:gap-14">
                 <div className="flex flex-col gap-2">
                   <span className="text-sm text-gray-600">
-                    Total receita de {monthPipe(monthSelected.getMonth())}
+                    Total receita de {formattedMonth}
                   </span>
                   <span className="wrap-break-word text-3xl font-bold text-[#026D9B] sm:text-4xl">
                     R$ 400,58
@@ -88,7 +92,7 @@ export default function PrivateHome() {
 
                 <div className="flex flex-col gap-2">
                   <span className="text-sm text-gray-600">
-                    Receita líquida de {monthPipe(monthSelected.getMonth())}
+                    Receita líquida de {formattedMonth}
                   </span>
                   <span className="wrap-break-word text-3xl font-bold text-[#026D9B] sm:text-4xl">
                     R$ 400,58
@@ -120,9 +124,9 @@ export default function PrivateHome() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[1, 2, 3, 4, 5, 6, 7].map((item, index) => (
+                  {Array.from({ length: 7 }).map((_, index) => (
                     <tr key={index} className="rounded-2xl font-semibold text-gray-600">
-                      <th>{item}</th>
+                      <th>{index + 1}</th>
                       <td>lkaas_ads</td>
                       <td>514</td>
                       <td>R$ 254,00</td>

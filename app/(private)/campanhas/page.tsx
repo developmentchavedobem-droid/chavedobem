@@ -1,6 +1,8 @@
 import Link from "next/link";
 import prisma from "@/src/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const currencyFormatter = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
