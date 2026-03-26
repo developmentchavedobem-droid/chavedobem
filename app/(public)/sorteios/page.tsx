@@ -1,21 +1,29 @@
 import HorizontalCard from "@/src/components/HorizontalCard";
+import { Campaign } from "@/app/generated/prisma/client";
 
-export default function Campaigns() {
-  const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+interface Props {
+  campaigns: Campaign[];
+}
 
+export default function Campaigns({ campaigns }: Props) {
   return (
-    <div className="min-h-75 w-full pt-10 bg-zinc-100 font-sans">
-        <div className="w-full sm:max-w-4xl h-full mx-auto flex flex-col items-center py-10 px-5">
-            <h3 className="text-[#053B80] text-2xl font-semibold">Participe conosco!</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
-                {
-                  list.map((item, index) => (
-                    <HorizontalCard key={index}/>
-                  ))
-                }
-            </div>
-
-        </div>
+    <div className="min-h-75 w-full bg-zinc-100 font-sans pb-20">
+      <div className="w-full sm:max-w-5xl h-full mx-auto flex flex-col items-center px-5">
+        <h3 className="text-[#053B80] text-2xl font-bold mb-8">Participe conosco!</h3>
+        
+        {campaigns.length === 0 ? (
+          <p className="text-gray-500">Nenhuma campanha disponível no momento.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            {campaigns.map((campaign) => (
+              <HorizontalCard 
+                key={campaign.id} 
+                campaign={campaign} 
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
