@@ -11,7 +11,7 @@ export const PRIVATE_MODULES = [
     label: "Minhas Campanhas",
     href: "/campanhas",
     icon: FaBullhorn,
-    roles: ["ADMIN", "USER"], // Customer não vê
+    roles: ["ADMIN"], // Customer não vê
   },
   {
     label: "Faturamento",
@@ -21,7 +21,7 @@ export const PRIVATE_MODULES = [
   },
   {
     label: "Usuários",
-    href: "/admin/usuarios",
+    href: "/usuarios",
     icon: FaUsers,
     roles: ["ADMIN"], // Apenas o "god mode"
   },

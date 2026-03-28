@@ -41,7 +41,7 @@ export default function PublicHeader() {
           {/* Menu Desktop */}
           <ul className="hidden sm:flex list-none gap-6 text-color-header">
             <li><Link href="/" className="font-bold">Início</Link></li>
-            <li><Link href="/doacoes" className="font-bold">Doações realizadas</Link></li>
+            {/* <li><Link href="/doacoes" className="font-bold">Doações realizadas</Link></li> */}
             <li><Link href="/cadastre-se" className="font-bold">Cadastre-se</Link></li>
             <li><Link href="/quem-somos" className="font-bold">Quem somos</Link></li>
             <li><Link href="/fale-conosco" className="font-bold">Fale conosco</Link></li>
@@ -76,7 +76,7 @@ export default function PublicHeader() {
 
         <ul className="menu bg-white dark:bg-neutral-900 min-h-full w-72 p-6 space-y-2 text-lg text-color-header">
           <li><Link href="/" onClick={closeDrawer}>Início</Link></li>
-          <li><Link href="/doacoes" onClick={closeDrawer}>Doações realizadas</Link></li>
+          {/* <li><Link href="/doacoes" onClick={closeDrawer}>Doações realizadas</Link></li> */}
           <li><Link href="/cadastre-se" onClick={closeDrawer}>Cadastre-se</Link></li>
           <li><Link href="/quem-somos" onClick={closeDrawer}>Quem somos</Link></li>
           <li><Link href="/fale-conosco" onClick={closeDrawer}>Fale conosco</Link></li>

@@ -1,10 +1,20 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import prisma from "@/src/lib/prisma";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 import DeleteCampaignButton from "@/src/components/campaign/DeleteCampaignButton";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken"
 
 export default async function CampaignDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  const decoded = token ? (jwt.decode(token) as any) : null;
+
+  if (!decoded || decoded.role !== "ADMIN") {
+    redirect("/dashboard");
+  }
+
   const { id } = await params;
   const campaign = await prisma.campaign.findUnique({ where: { id: Number(id) } });
 

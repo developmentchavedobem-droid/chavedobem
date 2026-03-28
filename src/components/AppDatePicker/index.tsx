@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import "cally";
 
-type PickerMode = "day" | "month" | "range";
-
 type RangeValue = {
   start: Date | null;
   end: Date | null;
@@ -42,6 +40,7 @@ type AppDatePickerProps =
       placeholder?: string;
     };
 
+// --- Funções Auxiliares ---
 function formatDateToInput(date: Date) {
   const year = date.getFullYear();
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
@@ -86,16 +85,17 @@ function formatLabelRange(value: RangeValue) {
 export default function AppDatePicker(props: AppDatePickerProps) {
   const pickerRef = useRef<HTMLElement | null>(null);
   const anchorName = `--${props.id}`;
+  
+  // Cor de destaque do sistema
+  const brandColor = "#026D9B";
 
   const buttonLabel = useMemo(() => {
     if (props.mode === "day") {
       return props.value ? formatLabelDate(props.value) : props.placeholder || "Selecione a data";
     }
-
     if (props.mode === "month") {
       return props.value ? formatLabelMonth(props.value) : props.placeholder || "Selecione o mês";
     }
-
     return formatLabelRange(props.value);
   }, [props]);
 
@@ -106,8 +106,6 @@ export default function AppDatePicker(props: AppDatePickerProps) {
     const handleChange = (event: Event) => {
       const target = event.currentTarget as HTMLElement & {
         value?: string;
-        valueStart?: string;
-        valueEnd?: string;
       };
 
       if (props.mode === "day") {
@@ -132,10 +130,7 @@ export default function AppDatePicker(props: AppDatePickerProps) {
     };
 
     picker.addEventListener("change", handleChange);
-
-    return () => {
-      picker.removeEventListener("change", handleChange);
-    };
+    return () => picker.removeEventListener("change", handleChange);
   }, [props]);
 
   const pickerValue =
@@ -155,13 +150,22 @@ export default function AppDatePicker(props: AppDatePickerProps) {
       ? formatDateToInput(props.value.end)
       : undefined;
 
+  // Estilos injetados no Shadow DOM do Cally para aplicar a cor de destaque
+  const callyStyle = {
+    "--color-accent": brandColor,           // Cor do dia selecionado e hover
+    "--color-text-default": brandColor,    // Cor dos números dos dias
+    "--color-text-header": brandColor,     // Cor do Mês/Ano no topo
+    "--color-bg-hover": `${brandColor}15`, // Fundo suave no hover (15% opacidade)
+    color: brandColor,                     // Cor base do componente
+  } as React.CSSProperties;
+
   return (
     <div className={props.className}>
       <button
         popoverTarget={`${props.id}-popover`}
         className={
           props.buttonClassName ||
-          "input input-border h-8 w-full max-w-full rounded-2xl border-2 border-[#026D9B] bg-white text-[#026D9B] font-bold lg:w-auto"
+          "input input-border h-8 w-full max-w-full rounded-2xl border-2 border-[#026D9B] bg-white text-[#026D9B] font-bold lg:w-auto px-4 flex items-center justify-center text-xs"
         }
         id={props.id}
         style={{ anchorName } as React.CSSProperties}
@@ -175,45 +179,16 @@ export default function AppDatePicker(props: AppDatePickerProps) {
         id={`${props.id}-popover`}
         className={
           props.popoverClassName ||
-          "dropdown max-w-[calc(100vw-2rem)] rounded-box bg-base-100 shadow-lg"
+          "dropdown max-w-[calc(100vw-2rem)] rounded-box bg-base-100 shadow-lg p-1"
         }
         style={{ positionAnchor: anchorName } as React.CSSProperties}
       >
-        {props.mode === "day" && (
+        {(props.mode === "day" || props.mode === "month") && (
           <calendar-date
             ref={pickerRef}
-            className="cally max-w-full rounded-box border border-base-300 bg-base-100 shadow-lg"
+            className="cally max-w-full rounded-box bg-base-100"
             value={pickerValue}
-          >
-            <svg
-              aria-label="Previous"
-              className="fill-current size-4"
-              slot="previous"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <path fill="currentColor" d="M15.75 19.5 8.25 12l7.5-7.5" />
-            </svg>
-
-            <svg
-              aria-label="Next"
-              className="fill-current size-4"
-              slot="next"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <path fill="currentColor" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-
-            <calendar-month />
-          </calendar-date>
-        )}
-
-        {props.mode === "month" && (
-          <calendar-date
-            ref={pickerRef}
-            className="cally max-w-full rounded-box border border-base-300 bg-base-100 shadow-lg"
-            value={pickerValue}
+            style={callyStyle}
           >
             <svg
               aria-label="Previous"
@@ -242,9 +217,10 @@ export default function AppDatePicker(props: AppDatePickerProps) {
         {props.mode === "range" && (
           <calendar-range
             ref={pickerRef}
-            className="cally max-w-full rounded-box border border-base-300 bg-base-100 shadow-lg"
+            className="cally max-w-full rounded-box bg-base-100"
             value-start={rangeStart}
             value-end={rangeEnd}
+            style={callyStyle}
           >
             <svg
               aria-label="Previous"

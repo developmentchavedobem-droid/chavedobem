@@ -1,5 +1,8 @@
 import Link from "next/link";
 import prisma from "@/src/lib/prisma";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +14,14 @@ function getProgressPercentage(current: number, goal: number) {
 }
 
 export default async function CampaignsPage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  const decoded = token ? (jwt.decode(token) as any) : null;
+
+  if (!decoded || decoded.role !== "ADMIN") {
+    redirect("/dashboard");
+  }
+
   const campaigns = await prisma.campaign.findMany({
     orderBy: {
       createdAt: "desc",

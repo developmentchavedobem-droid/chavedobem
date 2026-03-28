@@ -11,7 +11,7 @@ export default function AdOverlay({ isOpen, onClose }: AdOverlayProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-300 w-screen h-screen">
       {/* Fundo Desfocado */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
 

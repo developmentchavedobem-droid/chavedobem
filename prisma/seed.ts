@@ -13,18 +13,16 @@ async function main() {
     const hashedPassword = await bcrypt.hash('administrador', 10)
 
     // 2. Criar o Usuário e o Profile (com a Wallet dentro dele)
+    // prisma/seed.ts
     await prisma.user.create({
       data: {
         email: 'admin@admin.com',
-        password: hashedPassword,
-        role: 'ADMIN', 
+        password: await bcrypt.hash('administrador', 10),
+        role: 'ADMIN',
         profile: {
           create: {
-            name: 'Administrador',
-            // A Wallet pertence ao Profile, então criamos aqui:
-            wallet: { 
-              create: {} 
-            }
+            name: 'Administrador Principal',
+            wallet: { create: {} }
           }
         }
       }

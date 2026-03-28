@@ -1,12 +1,11 @@
 import { create } from "zustand";
 
-// Definimos um tipo para as Roles para evitar erros de digitação
 export type UserRole = "ADMIN" | "USER" | "CUSTOMER";
 
 type AuthUser = {
   id: number;
   email: string;
-  role: UserRole; // Alterado de 'type' para 'role'
+  role: UserRole;
   profile?: {
     id: number;
     name: string;
@@ -14,7 +13,6 @@ type AuthUser = {
     phone_number: string | null;
     birthdate: string | null;
     userId: number;
-    // Removi roleId daqui pois a Role agora está no User (conforme seu novo schema)
     wallet?: {
       balance: number;
       pending: number;
@@ -43,13 +41,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set({
       user,
       isAuthenticated: !!user,
-      loading: false // Ao setar o usuário, paramos o loading
+      loading: false
     }),
 
   setLoading: (loading) => set({ loading }),
 
   refreshUser: async () => {
-    // Não setamos loading: true aqui se o usuário já existir para evitar "flicker" na UI
     try {
       const response = await fetch("/api/auth/me", {
         method: "GET",
@@ -62,9 +59,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
 
       const data = await response.json();
-
       set({
-        user: data, // Certifique-se que a API /api/auth/me retorna o campo 'role'
+        user: data,
         isAuthenticated: true,
         loading: false
       });
@@ -80,9 +76,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
         credentials: "include"
       });
     } finally {
-      // Limpa tudo e redireciona (o redirecionamento pode ser feito no componente)
       set({ user: null, isAuthenticated: false, loading: false });
-      window.location.href = "/login"; // Força um reload para limpar caches do Next.js
+      window.location.href = "/"; 
     }
   }
 }));

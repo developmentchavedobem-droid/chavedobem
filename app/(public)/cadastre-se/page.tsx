@@ -1,7 +1,7 @@
 import prisma from "@/src/lib/prisma";
 import Card from "@/src/components/Card";
 
-export default async function Donates() {
+export default async function AvailableCampaigns() {
   const campaigns = await prisma.campaign.findMany({
     where: { status: "ACTIVE" },
     orderBy: { createdAt: "desc" },
@@ -32,11 +32,11 @@ export default async function Donates() {
         )}
       </div>
 
-      <div className="flex items-center justify-center mt-12">
+      {/* <div className="flex items-center justify-center mt-12">
         <button className="text-[#053B80] font-black uppercase tracking-widest text-xs hover:underline">
           Ver campanhas encerradas
         </button>
-      </div>
+      </div> */}
     </section>
   );
 }

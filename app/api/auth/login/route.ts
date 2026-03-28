@@ -62,28 +62,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Busca o usuário usando a nova estrutura (role) e inclui o Profile
+    // 1. Busca o usuário
     const user = await prisma.user.findUnique({
       where: { email },
       include: {
         profile: {
           include: {
-            wallet: true // Útil para Divulgadores (USER) já carregarem o saldo
+            wallet: true 
           }
         }
       }
     });
 
     if (!user) {
+      return NextResponse.json({ error: "Email ou senha inválidos" }, { status: 401 });
+    }
+
+    // --- NOVA TRAVA DE SEGURANÇA ---
+    if (user.role === "CUSTOMER") {
       return NextResponse.json(
-        { error: "Email ou senha inválidos" },
-        { status: 401 }
+        { error: "Acesso negado. Clientes não possuem acesso ao painel administrativo." },
+        { status: 403 } // Forbidden
       );
     }
+    // -------------------------------
 
     // 2. Validação da senha com Bcrypt
     const passwordMatch = await bcrypt.compare(password, user.password);
-
+    
     if (!passwordMatch) {
       return NextResponse.json(
         { error: "Email ou senha inválidos" },

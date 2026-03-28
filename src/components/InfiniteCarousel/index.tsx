@@ -33,9 +33,9 @@ export default function InfiniteCarousel({ items, speed = 25 }: Props) {
             <Image
               src={item.imageUrl || "/placeholder.png"}
               alt="Campanha"
-              width={220}
-              height={130}
-              className="rounded-xl shadow-md object-cover h-[120px] w-[220px]"
+              width={240}
+              height={160}
+              className="rounded-xl shadow-md object-cover object-center h-[120px] w-[220px]"
             />
           </Link>
         ))}
