@@ -5,7 +5,7 @@ export const PRIVATE_MODULES = [
     label: "Home",
     href: "/home",
     icon: FaHome,
-    roles: ["ADMIN", "USER", "CUSTOMER"], // Todos veem
+    roles: ["ADMIN", "USER"], // Todos veem
   },
   {
     label: "Minhas Campanhas",

@@ -44,7 +44,7 @@ export default function PrivateHome() {
 
   const formatBRL = (val: number) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const formatUSD = (val: number) => {
-    const rate = stats?.dollarRate || 5.17;
+    const rate = stats?.dollarRate;
     return (val / rate).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   };
 

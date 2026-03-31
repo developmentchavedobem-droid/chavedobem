@@ -15,19 +15,11 @@ export async function registerAction(formData: FormData) {
   const birthdate = formData.get("birthdate") as string;
 
   try {
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) return { error: "E-mail já cadastrado no sistema." };
-
     const hashedPassword = await bcrypt.hash(password, 10);
     const cookieStore = await cookies();
-    const refCode = cookieStore.get("chave_ref")?.value; // Pegamos o código (ex: tk-cp3544)
-
-    // 1. Precisamos encontrar o ID do ReferralLink se ele existir
-    let referralLinkId = null;
-    if (refCode) {
-      const link = await prisma.referralLink.findUnique({ where: { code: refCode } });
-      if (link) referralLinkId = link.id;
-    }
+    
+    // Capturamos os cookies que foram setados quando o usuário clicou no link de indicação
+    const refCode = cookieStore.get("chave_ref")?.value; 
 
     const newUser = await prisma.user.create({
       data: {
@@ -37,20 +29,12 @@ export async function registerAction(formData: FormData) {
         profile: {
           create: {
             name,
-            register_number, // Agora bate com o schema.prisma
-            phone_number,    // Agora bate com o schema.prisma
+            register_number,
+            phone_number,
             birthdate: birthdate ? new Date(birthdate) : null,
-            
-            // Nota: O seu schema Profile NÃO tem referredBy/originSource como Strings.
-            // Se você quiser salvar isso, precisa adicionar no schema.prisma.
-            // Por enquanto, criamos a carteira:
-            wallet: {
-              create: {
-                balance: 0,
-                pending: 0,
-                totalEarned: 0
-              }
-            }
+            // Opcional: Se quiser salvar de quem ele é "filho" permanentemente no perfil
+            // referredBy: refCode || "direto", 
+            wallet: { create: { balance: 0, pending: 0 } }
           }
         }
       }

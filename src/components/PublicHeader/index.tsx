@@ -47,22 +47,24 @@ export default function PublicHeader() {
             <li><Link href="/fale-conosco" className="font-bold">Fale conosco</Link></li>
           </ul>
 
-          <div className="flex gap-4 items-center">
-            <Link
-              href={user ? "/home" : "/login"}
-              className="hidden sm:flex btn btn-neutral btn-outline btn-theme"
-            >
-              {user ? 'Minha conta' : 'Entrar'}
-            </Link>
+          {user && (
+            <div className="flex gap-4 items-center">
+              <Link
+                href="/perfil"
+                className="hidden sm:flex btn btn-neutral btn-outline btn-theme"
+              >
+                Minha conta
+              </Link>
 
-            {/* Botão Hamburguer Mobile */}
-            <label
-              htmlFor="mobile-drawer"
-              className="btn btn-neutral btn-outline sm:hidden btn-theme"
-            >
-              <FaAlignJustify />
-            </label>
-          </div>
+              {/* Botão Hamburguer Mobile */}
+              <label
+                htmlFor="mobile-drawer"
+                className="btn btn-neutral btn-outline sm:hidden btn-theme"
+              >
+                <FaAlignJustify />
+              </label>
+            </div>
+          )}
         </header>
       </div>
 

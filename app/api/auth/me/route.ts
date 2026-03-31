@@ -1,83 +1,64 @@
-import { NextRequest, NextResponse } from 'next/server'
-import prisma from '@/src/lib/prisma'
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import prisma from "@/src/lib/prisma";
 
-// 1. Tipagem alinhada com o novo Schema (usando role em vez de type)
-type TokenPayload = JwtPayload & {
-  sub: string
-  email: string
-  role: string 
-}
-
-/**
- * @swagger
- * /api/auth/me:
- * get:
- * summary: Retorna os dados completos do usuário autenticado
- * description: Lê o cookie "token", valida o JWT e busca os dados do User, Profile e Wallet no banco.
- * tags: [Auth]
- * responses:
- * 200:
- * description: Usuário retornado com sucesso
- * 401:
- * description: Token inválido ou ausente
- * 404:
- * description: Usuário não encontrado no banco
- */
-
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const token = req.cookies.get('token')?.value
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
 
     if (!token) {
-      return NextResponse.json(
-        { error: 'Não autenticado' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
-    // 2. Verificação do JWT
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string
-    )
+    // 1. Decodificar o token
+    // O erro 'payload is never used' acontecia porque você não extraía os dados dele
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as any;
+    
+    // 2. Extrair o ID do usuário (Geralmente salvo no campo 'sub' do JWT)
+    // O erro 'Cannot find name userId' resolvemos definindo a variável aqui
+    const userId = Number(payload.sub);
 
-    const payload = decoded as TokenPayload
+    if (!userId) {
+      return NextResponse.json({ error: "Token inválido" }, { status: 401 });
+    }
 
-    // 3. Busca no banco incluindo as novas relações
+    // 3. Buscar usuário com Profile e Tickets incluídos
     const user = await prisma.user.findUnique({
-      where: { id: Number(payload.sub) },
+      where: { id: userId },
       select: {
         id: true,
         email: true,
-        role: true, // Alterado de 'type'
+        role: true,
         profile: {
           include: {
-            wallet: true // Fundamental para o Dashboard do Divulgador (USER)
+            tickets: {
+              include: {
+                campaign: {
+                  select: {
+                    id: true,
+                    name: true,
+                    status: true
+                  }
+                }
+              }
+            }
           }
         }
       }
-    })
+    });
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'Usuário não encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 });
     }
 
-    // 4. Retorno formatado para a sua AuthStore do Zustand
-    return NextResponse.json({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      profile: user.profile
-    })
+    // Retornamos os dados limpos
+    return NextResponse.json(user);
 
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Token inválido ou expirado' },
-      { status: 401 }
-    )
+  } catch (err) {
+    // O erro 'error is defined but never used' resolvemos logando ou removendo o nome da var
+    console.error("Erro na rota /me:", err);
+    return NextResponse.json({ error: "Erro interno no servidor" }, { status: 500 });
   }
 }
