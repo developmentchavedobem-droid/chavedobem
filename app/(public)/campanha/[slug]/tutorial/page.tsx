@@ -40,6 +40,15 @@ export default async function TutorialPage({
 
       <main className="max-w-4xl mx-auto px-4 -mt-12">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-zinc-200">
+
+          <div className="w-full bg-gray-50 border-b py-6 flex flex-col items-center">
+            <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
+              Publicidade
+            </span>
+            <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
+              Anúncio Responsivo (Google AdSense)
+            </div>
+          </div>
           
           <div className="p-6 md:p-12 space-y-32">
             
@@ -52,6 +61,11 @@ export default async function TutorialPage({
                 <div className="space-y-4">
                   <h2 className="text-2xl font-black text-[#053B80] uppercase">1. Preenchimento do Cadastro</h2>
                   <p className="text-gray-600">Informe seus dados reais. O CPF/CNPJ e data de nascimento são essenciais para a auditoria de ganhadores.</p>
+                  
+                  {/* TEXTO ADICIONADO */}
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    É fundamental que os dados inseridos sejam idênticos aos seus documentos oficiais. Nosso sistema utiliza uma camada de proteção que valida a autenticidade das informações para garantir que cada participante seja uma pessoa real. Dados incorretos ou incompletos podem impossibilitar a entrega de futuras premiações, por isso, revise cada campo antes de prosseguir.
+                  </p>
                 </div>
               </div>
 
@@ -70,6 +84,15 @@ export default async function TutorialPage({
               </div>
             </section>
 
+            <div className="w-full py-6 flex flex-col items-center">
+              <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
+                Publicidade
+              </span>
+              <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
+                Anúncio Responsivo (Google AdSense)
+              </div>
+            </div>
+
             {/* ETAPA 2: SEGURANÇA (EMAIL) */}
             <section className="space-y-12">
               <div className="flex flex-col md:flex-row gap-6 items-start">
@@ -79,6 +102,11 @@ export default async function TutorialPage({
                 <div className="space-y-2">
                   <h2 className="text-2xl font-black text-[#053B80] uppercase">2. Validação de Segurança</h2>
                   <p className="text-gray-600">Verifique seu e-mail para ativar sua conta. Sem esta etapa, o resgate não é liberado.</p>
+                  
+                  {/* TEXTO ADICIONADO */}
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    A verificação de e-mail é uma etapa obrigatória de segurança. Ela serve para confirmar que você tem acesso ao meio de contato informado e para evitar a criação de contas automatizadas (bots). Caso não encontre a mensagem em sua caixa de entrada principal em alguns instantes, verifique as pastas de Spam ou Lixo Eletrônico.
+                  </p>
                 </div>
               </div>
 
@@ -129,6 +157,11 @@ export default async function TutorialPage({
                 <div className="space-y-2">
                   <h2 className="text-2xl font-black text-[#053B80] uppercase">3. Acesso e Resgate Final</h2>
                   <p className="text-gray-600">Faça o login e resgate seu cupom na página da campanha desejada.</p>
+                  
+                  {/* TEXTO ADICIONADO */}
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    Com seu e-mail validado, você terá acesso total à plataforma. Basta realizar o login para ser direcionado novamente à página da campanha. Lá, você encontrará o botão de resgate liberado. Ao clicar, o sistema gerará instantaneamente o seu número da sorte, que ficará salvo em seu perfil para consulta a qualquer momento.
+                  </p>
                 </div>
               </div>
 
@@ -158,7 +191,7 @@ export default async function TutorialPage({
                     <div className="p-4 text-center space-y-3">
                        <h5 className="text-[11px] font-black text-[#053B80] leading-tight uppercase">{campaign.name}</h5>
                        <button className="btn btn-sm btn-block bg-emerald-500 hover:bg-emerald-600 text-white border-none font-black text-[10px] animate-bounce">
-                          RESGATAR MEU CUPOM
+                         RESGATAR MEU CUPOM
                        </button>
                        <p className="text-[9px] text-gray-400 italic">Sua chance começa agora!</p>
                     </div>
@@ -166,6 +199,15 @@ export default async function TutorialPage({
                 </div>
               </div>
             </section>
+
+            <div className="w-full py-2 flex flex-col items-center">
+              <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
+                Publicidade
+              </span>
+              <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
+                Anúncio Responsivo (Google AdSense)
+              </div>
+            </div>
 
             {/* CTA FINAL */}
             <div className="pt-10 border-t border-zinc-100 text-center space-y-8">
