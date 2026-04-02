@@ -108,7 +108,7 @@ export default async function InstructionsPage({
               </div>
             </section>
 
-            <div className="w-full bg-gray-50 border-b flex flex-col items-center">
+            <div className="w-full my-8 flex flex-col items-center">
               <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
                 Publicidade
               </span>
@@ -158,7 +158,7 @@ export default async function InstructionsPage({
               </div>
 
               {/* CARD DE VERIFICAÇÃO FINAL ANTES DO FAQ */}
-              <div className="bg-zinc-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
+              <div className="bg-zinc-900 text-white p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group mb-6">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
                 <div className="relative z-10 space-y-4">
                   <h4 className="text-xl font-black uppercase tracking-tight text-emerald-400">
@@ -245,13 +245,13 @@ export default async function InstructionsPage({
                   diretrizes.
                 </p>
               </div>
-
-              <NextStepButton
-                nextStepUrl={nextStepUrl}
-                label="CADASTRE-SE AGORA!"
-                showIcon={true}
-                className="w-full flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white text-center rounded-2xl font-black text-2xl shadow-2xl transition-all active:scale-95"
-              />
+              <div className="flex flex-col items-center py-4">
+                <NextStepButton
+                  nextStepUrl={nextStepUrl}
+                  label="CADASTRE-SE AGORA!"
+                  className="w-full md:w-auto md:px-20 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-5 rounded-2xl font-black text-xl shadow-lg transition-all hover:scale-105 active:scale-95"
+                />
+              </div>
             </div>
           </div>
         </div>

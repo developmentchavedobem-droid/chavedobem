@@ -2,6 +2,7 @@ import InfiniteCarousel from "@/src/components/InfiniteCarousel";
 import Image from "next/image";
 import Campaigns from "./sorteios/page";
 import prisma from "@/src/lib/prisma";
+import Link from "next/link";
 
 export default async function Home() {
   // Buscamos apenas campanhas ativas
@@ -26,14 +27,18 @@ export default async function Home() {
           <h3 className="font-bold text-4xl">
             Sua ponte direta para <br className="hidden sm:flex"/>transformar vidas.
           </h3>
-          <p className="font-semibold">O chave do bem conecta quem quer ajudar com quem mais <br className="hidden sm:flex"/>precisa. Simples, transparente e totalmente gratuito.</p>
+          <p className="font-semibold">O Chave do Bem é a maior central de doações do Brasil.<br className="hidden sm:flex"/>Simples, transparente e totalmente gratuito.</p>
           <div className="w-full flex items-center gap-2">
-            <button className="btn btn-outline btn-theme">
-              Quero participar
-            </button>
-            <button className="btn btn-outline btn-theme bg-transparent">
-              Campanhas disponíveis
-            </button>
+            <Link href="/cadastre-se" >
+              <button className="btn btn-outline btn-theme">
+                Quero participar
+              </button>
+            </Link>
+            <Link href="/cadastre-se">
+              <button className="btn btn-outline btn-theme bg-transparent">
+                Campanhas disponíveis
+              </button>
+            </Link>
           </div>
         </article>
 

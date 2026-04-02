@@ -18,7 +18,7 @@ export default function PublicHeader() {
   }
 
   return (
-    <div className="drawer drawer-end">
+    <div className="drawer drawer-end z-50">
       <input
         ref={drawerRef}
         id="mobile-drawer"
@@ -50,7 +50,7 @@ export default function PublicHeader() {
           {user && (
             <div className="flex gap-4 items-center">
               <Link
-                href="/perfil"
+                href={user.role === 'CUSTOMER' ? "/perfil" : "/home"}
                 className="hidden sm:flex btn btn-neutral btn-outline btn-theme"
               >
                 Minha conta
