@@ -31,7 +31,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(CUSTOMER)
-  
+  emailVerified DateTime?
   profile   Profile?
 
   createdAt DateTime @default(now())
@@ -177,4 +177,21 @@ model AdRevenue {
   createdAt DateTime @default(now())
 
   @@unique([month, year])
+}
+
+model VerificationToken {
+  id          Int       @id @default(autoincrement())
+  identifier  String    // E-mail do usuário
+  token       String?   @unique // Para links (UUID longo)
+  code        String?   // Para recuperação de senha (6 dígitos)
+  type        TokenType
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([identifier, token, code])
+}
+
+enum TokenType {
+  EMAIL_VERIFICATION // Via Link
+  PASSWORD_RESET     // Via Código OTP
 }

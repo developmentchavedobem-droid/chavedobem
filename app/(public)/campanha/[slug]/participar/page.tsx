@@ -206,7 +206,7 @@ export default function ParticiparPage({ params }: PageProps) {
 
         <footer className="mt-auto p-10 text-center border-t border-zinc-50">
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-            © Chave do Bem 2024 - 2026 | Todos os direitos reservados
+            © Chave do Bem 2026 | Todos os direitos reservados
           </p>
         </footer>
       </main>

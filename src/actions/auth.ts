@@ -4,6 +4,10 @@ import prisma from "@/src/lib/prisma";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { ResendService } from "../services/resend.service";
+import { confirmEmailTemplate, forgotPasswordTemplate } from "../constants/sample-email";
+
+const mailService = new ResendService();
 
 // --- ACTION DE CADASTRO (Já existente, mantendo sua regra de role) ---
 export async function registerAction(formData: FormData) {
@@ -40,11 +44,52 @@ export async function registerAction(formData: FormData) {
       }
     });
 
+    const token = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await prisma.verificationToken.create({
+       data: {
+         identifier: email,
+         token,
+         type: 'EMAIL_VERIFICATION',
+         expiresAt
+       }
+     });
+
+    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${token}`;
+    console.log("Link de verificação gerado:", verificationUrl);
+
+    await mailService.sendEmail(
+       email, 
+       "Ative sua conta - Chave do Bem", 
+       confirmEmailTemplate(verificationUrl)
+     );
+
     return { success: true, userId: newUser.id };
   } catch (error) {
     console.error("Erro no cadastro:", error);
     return { error: "Falha ao processar cadastro." };
   }
+}
+
+export async function forgotPasswordAction(formData: FormData) {
+  const email = formData.get("email") as string;
+  const user = await prisma.user.findUnique({ where: { email } });
+  
+  if (!user) return { success: true }; // Por segurança, não confirmamos se e-mail existe
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  await prisma.verificationToken.deleteMany({ where: { identifier: email, type: 'PASSWORD_RESET' } });
+  await prisma.verificationToken.create({
+    data: {
+      identifier: email,
+      code,
+      type: 'PASSWORD_RESET',
+      expiresAt: new Date(Date.now() + 15 * 60 * 1000) // 15 min
+    }
+  });
+
+  await mailService.sendEmail(email, "Seu código de recuperação", forgotPasswordTemplate(code));
+  return { success: true };
 }
 
 // --- NOVA ACTION: LOGIN EXCLUSIVO PARA CUSTOMER ---
@@ -68,6 +113,12 @@ export async function customerLoginAction(formData: FormData) {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return { error: "E-mail ou senha incorretos." };
+    }
+
+    if (user.role === "CUSTOMER" && !user.emailVerified) {
+      return { 
+        error: "Seu e-mail ainda não foi confirmado. Verifique sua caixa de entrada para liberar seu acesso." 
+      };
     }
 
     // 4. Gera o Token JWT (Igual ao que sua API faz)
@@ -95,5 +146,72 @@ export async function customerLoginAction(formData: FormData) {
   } catch (error) {
     console.error("Erro no login do cliente:", error);
     return { error: "Erro interno ao realizar login." };
+  }
+}
+
+export async function resendVerificationEmailAction(email: string) {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return { error: "Usuário não encontrado." };
+    if (user.emailVerified) return { error: "Este e-mail já está verificado." };
+
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: email, type: 'EMAIL_VERIFICATION' }
+    });
+
+    const token = crypto.randomUUID();
+    await prisma.verificationToken.create({
+      data: {
+        identifier: email,
+        token,
+        type: 'EMAIL_VERIFICATION',
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+      }
+    });
+
+    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${token}`;
+
+    // CHAMADA REAL PARA O RESEND
+    await mailService.sendEmail(
+      email, 
+      "Novo Link de Ativação - Chave do Bem", 
+      confirmEmailTemplate(verificationUrl)
+    );
+
+    return { success: true };
+  } catch (error) {
+    return { error: "Falha ao processar reenvio." };
+  }
+}
+
+export async function resetPasswordAction(formData: FormData) {
+  const email = formData.get("email") as string;
+  const code = formData.get("code") as string;
+  const newPassword = formData.get("password") as string;
+
+  try {
+    // Busca o token/código no banco
+    const vToken = await prisma.verificationToken.findFirst({
+      where: { identifier: email, code, type: 'PASSWORD_RESET' }
+    });
+
+    if (!vToken || vToken.expiresAt < new Date()) {
+      return { error: "Código inválido ou expirado." };
+    }
+
+    // Criptografa a nova senha
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Atualiza o usuário e limpa o token
+    await prisma.user.update({
+      where: { email },
+      data: { password: hashedPassword }
+    });
+
+    await prisma.verificationToken.delete({ where: { id: vToken.id } });
+
+    return { success: true };
+  } catch (error) {
+    return { error: "Erro ao redefinir senha." };
   }
 }
