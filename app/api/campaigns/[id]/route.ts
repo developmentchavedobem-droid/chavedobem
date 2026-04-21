@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/src/lib/prisma";
-import jwt from "jsonwebtoken";
 
 /**
  * @swagger
@@ -86,7 +85,13 @@ export async function PUT(
     const body = await req.json();
 
     // Removemos campos que não devem ser editados manualmente
-    const { id: _, slug: __, createdAt: ___, ...updateData } = body;
+    const updateData = { ...body };
+    delete updateData.id;
+    delete updateData.slug;
+    delete updateData.createdAt;
+    delete updateData.ticketValue;
+    delete updateData.currentAmount;
+    delete updateData.currentTickets;
 
     const updatedCampaign = await prisma.campaign.update({
       where: { id },
@@ -94,7 +99,6 @@ export async function PUT(
         ...updateData,
         // Garante conversão numérica para o banco
         goal: updateData.goal ? Number(updateData.goal) : undefined,
-        ticketValue: updateData.ticketValue ? Number(updateData.ticketValue) : undefined,
         ticketGoal: updateData.ticketGoal ? Number(updateData.ticketGoal) : undefined,
       },
     });

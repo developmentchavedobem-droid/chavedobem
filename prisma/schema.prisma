@@ -25,6 +25,19 @@ enum WithdrawalStatus {
   CANCELLED
 }
 
+enum MonetizationStatus {
+  ESTIMATED
+  CONFIRMED
+  ADJUSTED
+  PAID
+}
+
+enum CronSyncStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
 // --- AUTENTICAÇÃO ---
 model User {
   id        Int      @id @default(autoincrement())
@@ -58,6 +71,8 @@ model Profile {
   
   // Tickets que este perfil coletou (caso CUSTOMER)
   tickets         Ticket[]
+  dailyEarnings   PromoterDailyEarning[]
+  drawWinners     CampaignWinner[]
 
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
@@ -89,11 +104,13 @@ model Visit {
 
   ip            String?
   userAgent     String?
+  page          String       @default("campaign")
   
   createdAt     DateTime     @default(now())
 
   @@index([referralId])
   @@index([campaignId])
+  @@index([referralId, campaignId, page, ip, createdAt])
 }
 
 // --- CAMPANHAS E TICKETS ---
@@ -119,6 +136,9 @@ model Campaign {
 
   tickets       Ticket[]
   visits        Visit[]
+  dailyEarnings PromoterDailyEarning[]
+  draws         CampaignDraw[]
+  drawWinners   CampaignWinner[]
 
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -136,9 +156,44 @@ model Ticket {
   // Rastreabilidade: Qual link trouxe este ticket?
   referralLinkId Int?
   referralLink   ReferralLink? @relation(fields: [referralLinkId], references: [id])
+  drawWinners    CampaignWinner[]
 
   createdAt     DateTime     @default(now())
 
+  @@index([campaignId])
+  @@index([profileId])
+}
+
+model CampaignDraw {
+  id              Int      @id @default(autoincrement())
+  campaignId      Int
+  campaign        Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  requestedWinners Int
+  totalParticipants Int
+  seed            String
+  createdByUserId Int?
+  createdAt       DateTime @default(now())
+
+  winners         CampaignWinner[]
+
+  @@index([campaignId, createdAt])
+}
+
+model CampaignWinner {
+  id          Int          @id @default(autoincrement())
+  drawId      Int
+  draw        CampaignDraw @relation(fields: [drawId], references: [id], onDelete: Cascade)
+  campaignId  Int
+  campaign    Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  profileId   Int
+  profile     Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  ticketId    Int
+  ticket      Ticket       @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  position    Int
+  createdAt   DateTime     @default(now())
+
+  @@unique([drawId, profileId])
+  @@unique([drawId, ticketId])
   @@index([campaignId])
   @@index([profileId])
 }
@@ -186,6 +241,72 @@ model AdRevenue {
   createdAt DateTime @default(now())
 
   @@unique([month, year])
+}
+
+model AdSenseDailyReport {
+  id                Int      @id @default(autoincrement())
+  date              DateTime @unique @db.Date
+  estimatedEarnings Decimal  @default(0) @db.Decimal(12, 4)
+  estimatedEarningsUsd Decimal @default(0) @db.Decimal(12, 4)
+  exchangeRate      Decimal  @default(1) @db.Decimal(12, 6)
+  exchangeRateDate  DateTime? @db.Date
+  exchangeRateSource String  @default("manual")
+  pageViews         Int      @default(0)
+  clicks            Int      @default(0)
+  impressions       Int      @default(0)
+  pageViewsRpm      Decimal  @default(0) @db.Decimal(12, 4)
+  currency          String   @default("BRL")
+  sourceCurrency    String   @default("USD")
+  source            String   @default("manual")
+  rawPayload        Json?
+  fetchedAt         DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  promoterEarnings  PromoterDailyEarning[]
+}
+
+model CronSyncLog {
+  id            Int            @id @default(autoincrement())
+  job           String
+  status        CronSyncStatus @default(RUNNING)
+  trigger       String         @default("cron")
+  startedAt     DateTime       @default(now())
+  finishedAt    DateTime?
+  daysRequested Int            @default(0)
+  syncedDays    Int            @default(0)
+  message       String?
+  error         String?
+  details       Json?
+
+  @@index([job, startedAt])
+  @@index([status])
+}
+
+model PromoterDailyEarning {
+  id              Int                @id @default(autoincrement())
+  date            DateTime           @db.Date
+  profileId       Int
+  profile         Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  campaignId      Int
+  campaign        Campaign           @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  reportId        Int
+  report          AdSenseDailyReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  validVisits     Int                @default(0)
+  tickets         Int                @default(0)
+  grossRevenue    Decimal            @default(0) @db.Decimal(12, 4)
+  promoterShare   Decimal            @default(0) @db.Decimal(12, 4)
+  platformShare   Decimal            @default(0) @db.Decimal(12, 4)
+  status          MonetizationStatus @default(ESTIMATED)
+
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@unique([date, profileId, campaignId])
+  @@index([profileId, date])
+  @@index([campaignId, date])
+  @@index([status])
 }
 
 model VerificationToken {

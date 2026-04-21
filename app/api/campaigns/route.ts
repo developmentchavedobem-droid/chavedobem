@@ -72,8 +72,21 @@ export async function POST(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
     if (!token) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { sub: string };
-    const { name, goal, description, imageUrl, ticketValue, ticketGoal } = await req.json();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { sub: string; role?: string };
+    const { name, goal, description, imageUrl, ticketGoal } = await req.json();
+
+    if (decoded.role !== "ADMIN") {
+      return NextResponse.json({ error: "Nao autorizado" }, { status: 401 });
+    }
+
+    const profile = await prisma.profile.findUnique({
+      where: { userId: Number(decoded.sub) },
+      select: { id: true },
+    });
+
+    if (!profile) {
+      return NextResponse.json({ error: "Perfil administrador nao encontrado" }, { status: 404 });
+    }
 
     const slug = slugify(name, { lower: true, strict: true }) + "-" + Math.floor(Math.random() * 1000);
 
@@ -84,9 +97,9 @@ export async function POST(req: NextRequest) {
         goal,
         description,
         imageUrl,
-        ticketValue: ticketValue || 0,
+        ticketValue: 0,
         ticketGoal: ticketGoal || 0,
-        createdById: Number(decoded.sub),
+        createdById: profile.id,
       },
     });
 

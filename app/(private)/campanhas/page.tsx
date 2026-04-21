@@ -7,6 +7,10 @@ import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 const numberFormatter = new Intl.NumberFormat("pt-BR");
+const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+});
 
 function getProgressPercentage(current: number, goal: number) {
   if (!goal) return 0;
@@ -19,23 +23,37 @@ export default async function CampaignsPage() {
   const decoded = token ? (jwt.decode(token) as any) : null;
 
   if (!decoded || decoded.role !== "ADMIN") {
-    redirect("/dashboard");
+    redirect("/home");
   }
 
-  const campaigns = await prisma.campaign.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const [campaigns, earningsByCampaign] = await Promise.all([
+    prisma.campaign.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: {
+          select: { visits: true, tickets: true },
+        },
+      },
+    }),
+    prisma.promoterDailyEarning.groupBy({
+      by: ["campaignId"],
+      _sum: {
+        grossRevenue: true,
+        validVisits: true,
+        tickets: true,
+      },
+    }),
+  ]);
+  const earningsMap = new Map(earningsByCampaign.map((item) => [item.campaignId, item]));
 
   return (
-    <div className="flex w-full items-end flex-col gap-4 overflow-x-hidden px-3 pb-4 sm:px-4 lg:px-0">
+    <div className="flex w-full flex-col items-end gap-4 overflow-x-hidden px-3 pb-4 sm:px-4 lg:px-0">
       <div className="flex w-full max-w-full flex-col gap-3 rounded-2xl bg-gray-100 p-4 lg:w-[80%]">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <h1 className="text-2xl font-bold text-[#026D9B]">Campanhas</h1>
             <p className="text-sm text-gray-600">
-              Gerencie as campanhas ativas e acompanhe o progresso dos tickets.
+              Gerencie as campanhas ativas e acompanhe renda, visitas e tickets.
             </p>
           </div>
 
@@ -48,7 +66,7 @@ export default async function CampaignsPage() {
           <div className="flex min-h-120 flex-col items-center justify-center rounded-2xl border border-dashed border-[#026D9B]/30 bg-white px-6 py-10 text-center">
             <h2 className="text-xl font-bold text-[#026D9B]">Nenhuma campanha cadastrada</h2>
             <p className="mt-2 max-w-md text-sm text-gray-600">
-              Crie sua primeira campanha para começar a coletar tickets.
+              Crie sua primeira campanha para comecar a registrar visitas, tickets e receita.
             </p>
             <Link href="/campanhas/create" className="btn btn-theme-primary mt-6">
               Criar campanha
@@ -57,8 +75,11 @@ export default async function CampaignsPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {campaigns.map((campaign) => {
-              // Alterado para calcular progresso baseado em tickets
-              const progress = getProgressPercentage(campaign.currentTickets, campaign.ticketGoal);
+              const earnings = earningsMap.get(campaign.id);
+              const grossRevenue = Number(earnings?._sum.grossRevenue || 0);
+              const validVisits = Number(earnings?._sum.validVisits || campaign._count.visits || 0);
+              const tickets = Number(earnings?._sum.tickets || campaign._count.tickets || campaign.currentTickets || 0);
+              const progress = getProgressPercentage(grossRevenue, campaign.goal);
 
               return (
                 <Link
@@ -85,13 +106,13 @@ export default async function CampaignsPage() {
                         </div>
                         <h2 className="line-clamp-2 text-2xl font-bold">{campaign.name}</h2>
                         <p className="line-clamp-2 text-sm text-white/90">
-                          {campaign.description || "Campanha pronta para coletar tickets."}
+                          {campaign.description || "Campanha pronta para registrar visitas monetizaveis."}
                         </p>
                       </div>
 
                       <div className="rounded-2xl bg-white/16 p-4 backdrop-blur-[2px]">
                         <div className="mb-2 flex items-center justify-between gap-3">
-                          <span className="text-sm font-semibold">Progresso dos Tickets</span>
+                          <span className="text-sm font-semibold">Progresso da Renda</span>
                           <span className="text-sm font-bold">{progress.toFixed(0)}%</span>
                         </div>
                         <progress
@@ -101,15 +122,13 @@ export default async function CampaignsPage() {
                         />
                         <div className="mt-3 flex items-end justify-between gap-3">
                           <div>
-                            <p className="text-xs uppercase tracking-wide text-white/75">Coletados</p>
-                            <p className="text-lg font-bold">
-                              {numberFormatter.format(campaign.currentTickets)}
-                            </p>
+                            <p className="text-xs uppercase tracking-wide text-white/75">Arrecadado</p>
+                            <p className="text-lg font-bold">{currencyFormatter.format(grossRevenue)}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs uppercase tracking-wide text-white/75">Meta de Tickets</p>
+                            <p className="text-xs uppercase tracking-wide text-white/75">Visitas / Tickets</p>
                             <p className="text-lg font-bold">
-                              {numberFormatter.format(campaign.ticketGoal)}
+                              {numberFormatter.format(validVisits)} / {numberFormatter.format(tickets)}
                             </p>
                           </div>
                         </div>

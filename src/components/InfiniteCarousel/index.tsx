@@ -11,9 +11,10 @@ interface CarouselItem {
 interface Props {
   items: CarouselItem[];
   speed?: number;
+  refCode?: string;
 }
 
-export default function InfiniteCarousel({ items, speed = 25 }: Props) {
+export default function InfiniteCarousel({ items, speed = 25, refCode }: Props) {
   if (!items || items.length === 0) return null;
   
   const carouselItems = items.length < 5 ? [...items, ...items, ...items] : [...items, ...items];
@@ -26,7 +27,7 @@ export default function InfiniteCarousel({ items, speed = 25 }: Props) {
       >
         {carouselItems.map((item, index) => (
           <Link 
-            href={`/campanha/${item.slug}`} 
+            href={`/campanha/${item.slug}${refCode ? `?ref=${refCode}` : ""}`} 
             key={`${item.slug}-${index}`} 
             className="mx-4 block transition-transform hover:scale-105 shrink-0"
           >

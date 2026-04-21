@@ -21,8 +21,6 @@ type FinancePeriod = {
   scope?: "month" | "year";
 };
 
-const USER_REVENUE_SHARE = 0.5;
-
 async function getSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
@@ -83,21 +81,26 @@ function formatWithdrawal(withdrawal: any) {
   };
 }
 
-async function sumTicketRevenue(where: any, share = 1) {
-  const tickets = await prisma.ticket.findMany({
+async function sumPromoterRevenue(where: any) {
+  const earnings = await prisma.promoterDailyEarning.findMany({
     where,
     select: {
-      campaign: {
-        select: {
-          ticketValue: true,
-        },
-      },
+      promoterShare: true,
     },
   });
 
-  return tickets.reduce((total, ticket) => {
-    return total + Number(ticket.campaign.ticketValue || 0) * share;
-  }, 0);
+  return earnings.reduce((total, earning) => total + Number(earning.promoterShare || 0), 0);
+}
+
+async function sumGrossRevenue(where: any) {
+  const earnings = await prisma.promoterDailyEarning.findMany({
+    where,
+    select: {
+      grossRevenue: true,
+    },
+  });
+
+  return earnings.reduce((total, earning) => total + Number(earning.grossRevenue || 0), 0);
 }
 
 export async function getFinanceUploadUrl(fileName: string, fileType: string, kind: "invoice" | "receipt") {
@@ -168,22 +171,32 @@ export async function getFinanceDashboardAction(period: FinancePeriod = {}) {
       return { error: "Carteira nao encontrada." };
     }
 
-    const previousWhere = {
-      createdAt: { gte: previousRange.start, lt: previousRange.end },
-      referralLink: { profileId: profile.id },
+    const previousEarningsWhere = {
+      date: { gte: previousRange.start, lt: previousRange.end },
+      profileId: profile.id,
     };
 
-    const selectedWhere = {
-      createdAt: { gte: selectedRange.start, lt: selectedRange.end },
-      referralLink: { profileId: profile.id },
+    const selectedEarningsWhere = {
+      date: { gte: selectedRange.start, lt: selectedRange.end },
+      profileId: profile.id,
     };
 
     const [previousRevenue, selectedRevenue, previousTickets, selectedTickets, previousVisits, selectedVisits, existingRequest, withdrawals] =
       await Promise.all([
-        sumTicketRevenue(previousWhere, USER_REVENUE_SHARE),
-        sumTicketRevenue(selectedWhere, USER_REVENUE_SHARE),
-        prisma.ticket.count({ where: previousWhere }),
-        prisma.ticket.count({ where: selectedWhere }),
+        sumPromoterRevenue(previousEarningsWhere),
+        sumPromoterRevenue(selectedEarningsWhere),
+        prisma.ticket.count({
+          where: {
+            createdAt: { gte: previousRange.start, lt: previousRange.end },
+            referralLink: { profileId: profile.id },
+          },
+        }),
+        prisma.ticket.count({
+          where: {
+            createdAt: { gte: selectedRange.start, lt: selectedRange.end },
+            referralLink: { profileId: profile.id },
+          },
+        }),
         prisma.visit.count({
           where: {
             createdAt: { gte: previousRange.start, lt: previousRange.end },
@@ -239,9 +252,11 @@ export async function getFinanceDashboardAction(period: FinancePeriod = {}) {
   }
 
   const dateFilter = { createdAt: { gte: selectedRange.start, lt: selectedRange.end } };
+  const earningsDateFilter = { date: { gte: selectedRange.start, lt: selectedRange.end } };
 
-  const [grossRevenue, tickets, visits, withdrawals, ticketsByUser, visitsByUser] = await Promise.all([
-    sumTicketRevenue(dateFilter, 1),
+  const [grossRevenue, promoterRevenue, tickets, visits, withdrawals, earningsByUser] = await Promise.all([
+    sumGrossRevenue(earningsDateFilter),
+    sumPromoterRevenue(earningsDateFilter),
     prisma.ticket.count({ where: dateFilter }),
     prisma.visit.count({ where: dateFilter }),
     prisma.withdrawal.findMany({
@@ -259,76 +274,45 @@ export async function getFinanceDashboardAction(period: FinancePeriod = {}) {
       orderBy: { createdAt: "desc" },
       take: 50,
     }),
-    prisma.ticket.findMany({
-      where: {
-        ...dateFilter,
-        referralLinkId: { not: null },
-      },
+    prisma.promoterDailyEarning.findMany({
+      where: earningsDateFilter,
       select: {
-        campaign: { select: { ticketValue: true } },
-        referralLink: {
+        validVisits: true,
+        tickets: true,
+        grossRevenue: true,
+        promoterShare: true,
+        platformShare: true,
+        profile: {
           select: {
-            profile: {
-              select: {
-                id: true,
-                name: true,
-                user: { select: { email: true } },
-              },
-            },
-          },
-        },
-      },
-    }),
-    prisma.visit.findMany({
-      where: dateFilter,
-      select: {
-        referral: {
-          select: {
-            profile: {
-              select: {
-                id: true,
-                name: true,
-                user: { select: { email: true } },
-              },
-            },
+            id: true,
+            name: true,
+            user: { select: { email: true } },
           },
         },
       },
     }),
   ]);
 
-  const userMap = new Map<number, { id: number; name: string; email: string; revenue: number; tickets: number; visits: number }>();
+  const userMap = new Map<number, { id: number; name: string; email: string; revenue: number; grossRevenue: number; platformRevenue: number; tickets: number; visits: number }>();
 
-  for (const ticket of ticketsByUser) {
-    const profile = ticket.referralLink?.profile;
-    if (!profile) continue;
-
+  for (const earning of earningsByUser) {
+    const profile = earning.profile;
     const current = userMap.get(profile.id) || {
       id: profile.id,
       name: profile.name,
       email: profile.user.email,
       revenue: 0,
+      grossRevenue: 0,
+      platformRevenue: 0,
       tickets: 0,
       visits: 0,
     };
 
-    current.revenue += Number(ticket.campaign.ticketValue || 0) * USER_REVENUE_SHARE;
-    current.tickets += 1;
-    userMap.set(profile.id, current);
-  }
-
-  for (const visit of visitsByUser) {
-    const profile = visit.referral.profile;
-    const current = userMap.get(profile.id) || {
-      id: profile.id,
-      name: profile.name,
-      email: profile.user.email,
-      revenue: 0,
-      tickets: 0,
-      visits: 0,
-    };
-
-    current.visits += 1;
+    current.revenue += Number(earning.promoterShare || 0);
+    current.grossRevenue += Number(earning.grossRevenue || 0);
+    current.platformRevenue += Number(earning.platformShare || 0);
+    current.tickets += earning.tickets;
+    current.visits += earning.validVisits;
     userMap.set(profile.id, current);
   }
 
@@ -339,7 +323,8 @@ export async function getFinanceDashboardAction(period: FinancePeriod = {}) {
       year: selectedRange.year,
       scope: period.scope || "month",
       grossRevenue,
-      promoterRevenue: grossRevenue * USER_REVENUE_SHARE,
+      promoterRevenue,
+      platformRevenue: grossRevenue - promoterRevenue,
       tickets,
       visits,
     },
@@ -376,13 +361,10 @@ export async function requestPreviousMonthPaymentAction(invoiceUrl: string) {
     return { error: "Carteira nao encontrada." };
   }
 
-  const amount = await sumTicketRevenue(
-    {
-      createdAt: { gte: previousRange.start, lt: previousRange.end },
-      referralLink: { profileId: profile.id },
-    },
-    USER_REVENUE_SHARE
-  );
+  const amount = await sumPromoterRevenue({
+    date: { gte: previousRange.start, lt: previousRange.end },
+    profileId: profile.id,
+  });
 
   if (amount <= 0) {
     return { error: "Nao ha faturamento do mes anterior para solicitar pagamento." };
@@ -428,6 +410,11 @@ export async function markWithdrawalAsPaidAction(withdrawalId: number, receiptUr
 
   const withdrawal = await prisma.withdrawal.findUnique({
     where: { id: withdrawalId },
+    include: {
+      wallet: {
+        select: { profileId: true },
+      },
+    },
   });
 
   if (!withdrawal) {
@@ -438,13 +425,31 @@ export async function markWithdrawalAsPaidAction(withdrawalId: number, receiptUr
     return { error: "Esta solicitacao ja foi paga." };
   }
 
-  await prisma.withdrawal.update({
-    where: { id: withdrawalId },
-    data: {
-      receiptUrl,
-      status: "PAID",
-      paidAt: new Date(),
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.withdrawal.update({
+      where: { id: withdrawalId },
+      data: {
+        receiptUrl,
+        status: "PAID",
+        paidAt: new Date(),
+      },
+    });
+
+    if (withdrawal.referenceMonth && withdrawal.referenceYear) {
+      const paidRange = getPeriodRange({
+        month: withdrawal.referenceMonth,
+        year: withdrawal.referenceYear,
+        scope: "month",
+      });
+
+      await tx.promoterDailyEarning.updateMany({
+        where: {
+          profileId: withdrawal.wallet.profileId,
+          date: { gte: paidRange.start, lt: paidRange.end },
+        },
+        data: { status: "PAID" },
+      });
+    }
   });
 
   revalidatePath("/faturamento");

@@ -15,6 +15,11 @@ export async function POST(req: Request) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
     const userId = Number(decoded.sub);
     const { campaignId } = await req.json();
+    const normalizedCampaignId = Number(campaignId);
+
+    if (!normalizedCampaignId) {
+      return NextResponse.json({ error: "Campanha invÃ¡lida" }, { status: 400 });
+    }
 
     // 1. Buscar o perfil do usuário logado (quem está clicando)
     const profile = await prisma.profile.findUnique({ where: { userId } });
@@ -49,13 +54,35 @@ export async function POST(req: Request) {
       }, { status: 429 });
     }
 
-    // 4. Incrementar o contador da campanha
-    await prisma.campaign.update({
-      where: { id: Number(campaignId) },
-      data: { currentTickets: { increment: 1 } }
+    const campaign = await prisma.campaign.findUnique({
+      where: { id: normalizedCampaignId },
+      select: { id: true, status: true }
     });
 
-    return NextResponse.json({ success: true });
+    if (!campaign || campaign.status !== "ACTIVE") {
+      return NextResponse.json({ error: "Campanha indisponÃ­vel" }, { status: 404 });
+    }
+
+    // 4. Criar o ticket real e atualizar o contador da campanha juntos
+    const ticket = await prisma.$transaction(async (tx) => {
+      const createdTicket = await tx.ticket.create({
+        data: {
+          campaignId: normalizedCampaignId,
+          profileId: profile.id,
+          referralLinkId,
+        },
+        select: { createdAt: true },
+      });
+
+      await tx.campaign.update({
+        where: { id: normalizedCampaignId },
+        data: { currentTickets: { increment: 1 } }
+      });
+
+      return createdTicket;
+    });
+
+    return NextResponse.json({ success: true, userLastTicketDate: ticket.createdAt });
 
   } catch (error) {
     console.error("Erro no Claim:", error);

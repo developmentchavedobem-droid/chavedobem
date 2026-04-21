@@ -5,7 +5,12 @@ import prisma from "@/src/lib/prisma";
 import RefTracker from "@/src/components/campaign/RefTracker";
 import { Suspense } from "react";
 
-export default async function ParticipePage() {
+export default async function ParticipePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ ref?: string }>;
+}) {
+  const { ref } = await searchParams;
   const campaigns = await prisma.campaign.findMany({
     where: { status: "ACTIVE" },
     take: 10,
@@ -46,7 +51,7 @@ export default async function ParticipePage() {
       </div>
 
       <div className="w-full py-4">
-        <InfiniteCarousel items={carouselItems} speed={30} />
+        <InfiniteCarousel items={carouselItems} speed={30} refCode={ref} />
       </div>
 
       <div className="flex flex-col items-center gap-4">

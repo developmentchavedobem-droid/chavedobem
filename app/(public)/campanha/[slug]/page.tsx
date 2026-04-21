@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { FaClock, FaCheckCircle } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
+import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
 
 export default async function CampaignArticlePage({
   params,
@@ -25,6 +26,8 @@ export default async function CampaignArticlePage({
 
   return (
     <div className="min-h-screen bg-zinc-100 pb-20 font-sans text-gray-800">
+      <AdPageVisitTracker slug={slug} page="campaign" refCode={ref} />
+
       {/* HEADER DA CAMPANHA */}
       <div className="w-full bg-[#053B80] text-white pt-16 pb-24 px-4">
         <div className="max-w-4xl mx-auto text-center space-y-4">

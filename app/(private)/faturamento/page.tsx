@@ -268,7 +268,7 @@ export default function FaturamentoPage() {
           </div>
         )}
 
-        <div className={`grid grid-cols-1 gap-4 transition-opacity ${loading ? "opacity-50" : "opacity-100"} lg:grid-cols-3`}>
+        <div className={`grid grid-cols-1 gap-4 transition-opacity ${loading ? "opacity-50" : "opacity-100"} ${isAdmin ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
           <div className="flex min-h-34 flex-col justify-between rounded-2xl bg-linear-to-br from-[#026D9B] to-[#1F8C6D] p-5 text-white">
             <div className="flex items-center justify-between gap-3">
               <span className="text-[10px] font-black uppercase tracking-widest opacity-80">
@@ -296,6 +296,17 @@ export default function FaturamentoPage() {
             <p className="text-3xl font-black text-[#026D9B]">{(selectedPeriod?.visits || 0).toLocaleString("pt-BR")}</p>
             <p className="text-xs font-semibold text-zinc-500">Acessos rastreados no periodo</p>
           </div>
+
+          {isAdmin && (
+            <div className="flex min-h-34 flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-5">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Plataforma</span>
+                <FaMoneyBillTransfer className="text-[#026D9B]" />
+              </div>
+              <p className="text-3xl font-black text-[#026D9B]">{formatBRL(selectedPeriod?.platformRevenue || 0)}</p>
+              <p className="text-xs font-semibold text-zinc-500">Parcela retida pelo sistema</p>
+            </div>
+          )}
 
           <div className="flex min-h-34 flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-5">
             <div className="flex items-center justify-between gap-3">
@@ -381,11 +392,16 @@ export default function FaturamentoPage() {
                         <p className="font-black text-zinc-800">{item.name}</p>
                         <p className="text-xs font-semibold text-zinc-500">{item.email}</p>
                       </div>
-                      <p className="font-black text-[#026D9B]">{formatBRL(item.revenue)}</p>
+                      <div className="text-right">
+                        <p className="font-black text-[#026D9B]">{formatBRL(item.revenue)}</p>
+                        <p className="text-[10px] font-bold uppercase text-zinc-400">repasse</p>
+                      </div>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-xs font-bold text-zinc-500">
                       <span>{item.visits.toLocaleString("pt-BR")} visitas</span>
                       <span>{item.tickets.toLocaleString("pt-BR")} tickets</span>
+                      <span>{formatBRL(item.grossRevenue || 0)} bruto</span>
+                      <span>{formatBRL(item.platformRevenue || 0)} plataforma</span>
                     </div>
                   </div>
                 ))}

@@ -1,6 +1,7 @@
 import React from "react";
 import { FaUserPlus, FaEnvelopeOpenText, FaUnlockAlt, FaCheckCircle, FaInbox, FaMousePointer, FaLock } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
+import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
 import prisma from "@/src/lib/prisma";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -22,6 +23,7 @@ export default async function TutorialPage({
 
   return (
     <div className="min-h-screen bg-zinc-100 pb-20 font-sans text-gray-800">
+      <AdPageVisitTracker slug={slug} page="tutorial" refCode={ref} />
       
       {/* HEADER */}
       <div className="w-full bg-[#053B80] text-white pt-16 pb-24 px-4 text-center">
