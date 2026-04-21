@@ -1,8 +1,8 @@
-{
-  "crons": [
-    {
-      "path": "/api/cron/adsense-sync",
-      "schedule": "*/10 * * * *"
-    }
-  ]
-}
+// {
+//  "crons": [
+//    {
+//      "path": "/api/cron/adsense-sync",
+//      "schedule": "*/10 * * * *"
+//    }
+//  ]
+// }
