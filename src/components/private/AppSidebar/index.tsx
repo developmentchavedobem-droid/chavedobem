@@ -52,7 +52,7 @@ export default function AppSidebar({
           <div className={`font-bold text-[#053B80] ${collapsed ? "lg:hidden" : "block mx-auto"}`}>
             <Image
               className="w-20 sm:w-72 md:w-40 h-auto"
-              src="/logo.svg"
+              src="/logo.png"
               alt="ChaveDoBem logo"
               width={300}
               height={300}

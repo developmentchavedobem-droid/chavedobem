@@ -44,7 +44,7 @@ export default async function Home() {
 
         <Image
           className="w-40 sm:w-72 md:w-80 h-auto"
-          src="/logo.svg"
+          src="/logo.png"
           alt="ChaveDoBem logo"
           width={300}
           height={300}

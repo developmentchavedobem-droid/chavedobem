@@ -24,7 +24,7 @@ export default function Contact() {
           <div className="flex flex-col gap-4 text-base">
             <Image
               className="mx-auto sm:mx-0"
-              src="/logo.svg"
+              src="/logo.png"
               alt="ChaveDoBem logo"
               width={200}
               height={200}

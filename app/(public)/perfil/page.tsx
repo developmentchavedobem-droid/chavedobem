@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function PerfilPage() {
-  const { user, refreshUser, logout, loading: authLoading } = useAuthStore();
+  const { refreshUser, logout, loading: authLoading } = useAuthStore();
   const router = useRouter();
 
   const [userData, setUserData] = useState<any>(null);

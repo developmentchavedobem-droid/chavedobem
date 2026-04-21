@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: "Participe e ganhe prêmios!",
     images: [
       {
-        url: "/logo.svg",
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "Chave do Bem"

@@ -2,6 +2,7 @@
 
 import PublicHeader from "@/src/components/PublicHeader";
 import Footer from "@/src/components/Footer";
+import PublicContentBoost from "@/src/components/PublicContentBoost";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 
@@ -32,6 +33,7 @@ export default function PublicLayout({
           <main className="pt-10 min-h-screen">
             {children}
           </main>
+          <PublicContentBoost pathname={pathname || "/"} />
           <Footer />
         </>
       ) : (

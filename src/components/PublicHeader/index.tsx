@@ -30,7 +30,7 @@ export default function PublicHeader() {
         <header className="w-full h-20 flex items-center justify-between bg-white dark:bg-neutral-900 px-6 sm:px-10 fixed z-10 shadow">
           <Link href="/">
             <Image
-              src="/logo.svg"
+              src="/logo.png"
               alt="ChaveDoBem logo"
               width={80}
               height={20}

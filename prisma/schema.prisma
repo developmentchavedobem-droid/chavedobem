@@ -160,12 +160,21 @@ model Withdrawal {
   id          Int              @id @default(autoincrement())
   amount      Float
   status      WithdrawalStatus @default(PENDING)
+  referenceMonth Int?
+  referenceYear  Int?
+  invoiceUrl     String?
+  receiptUrl     String?
   
   walletId    Int
   wallet      Wallet           @relation(fields: [walletId], references: [id])
 
   createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   paidAt      DateTime?
+
+  @@unique([walletId, referenceMonth, referenceYear])
+  @@index([status])
+  @@index([referenceYear, referenceMonth])
 }
 
 model AdRevenue {

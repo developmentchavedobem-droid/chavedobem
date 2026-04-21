@@ -207,6 +207,23 @@ export default function AuthLogin() {
           <p className="text-sm text-zinc-500 text-center px-4 leading-relaxed italic">
             Acompanhe o desempenho dos seus links e gerencie suas metas em um só lugar.
           </p>
+
+          <div className="rounded-2xl bg-zinc-50 p-4 text-center text-xs leading-5 text-zinc-500">
+            <p>
+              Esta area e destinada a parceiros e divulgadores autorizados da Chave do Bem. O acesso permite consultar informacoes operacionais, acompanhar resultados e utilizar ferramentas internas vinculadas as campanhas.
+            </p>
+            <p className="mt-2">
+              Para sua seguranca, use apenas dispositivos confiaveis, mantenha sua senha protegida e consulte nossos{" "}
+              <Link href="/termos-uso" className="font-bold text-[#053B80] hover:underline">
+                Termos de Uso
+              </Link>{" "}
+              e nossa{" "}
+              <Link href="/politica-privacidade" className="font-bold text-[#053B80] hover:underline">
+                Politica de Privacidade
+              </Link>{" "}
+              antes de utilizar a plataforma.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -215,7 +232,7 @@ export default function AuthLogin() {
         <div className="flex items-center justify-center bg-gradient-to-br from-[#026D9B] to-[#1D8C6C] w-full h-full rounded-[3rem] shadow-2xl">
           <Image
             className="w-64 h-auto drop-shadow-2xl animate-pulse"
-            src="/logo.svg"
+            src="/logo.png"
             alt="ChaveDoBem logo"
             width={300}
             height={300}

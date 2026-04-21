@@ -1,8 +1,7 @@
 import prisma from "@/src/lib/prisma";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
-import { FaClock, FaCheckCircle, FaGift } from "react-icons/fa";
+import { FaClock, FaCheckCircle } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
 
 export default async function CampaignArticlePage({
@@ -74,6 +73,79 @@ export default async function CampaignArticlePage({
                 planos
               </h2>
               <p className="text-gray-600">{campaign.description}</p>
+              <p className="text-gray-600">
+                Esta pagina foi preparada para reunir as informacoes principais
+                da campanha antes do cadastro. Aqui voce encontra um resumo da
+                proposta, entende como o ingresso gratuito e gerado e confere os
+                cuidados recomendados para participar de forma consciente. A
+                Chave do Bem acredita que uma boa experiencia comeca antes do
+                clique: o participante deve saber o que esta fazendo, quais dados
+                serao utilizados e por que cada etapa existe.
+              </p>
+              <p className="text-gray-600">
+                Recomendamos que voce leia todo o conteudo antes de avancar para
+                as instrucoes. A leitura ajuda a evitar erros de cadastro,
+                reduz duvidas sobre prazos e melhora a seguranca do processo. A
+                participacao e gratuita, individual e vinculada ao perfil criado
+                na plataforma, por isso dados reais e atualizados sao essenciais
+                para qualquer contato futuro.
+              </p>
+            </section>
+
+            <section className="space-y-6 rounded-3xl border border-[#053B80]/10 bg-[#053B80]/5 p-6 md:p-10">
+              <h3 className="text-2xl font-black text-[#053B80]">
+                O que voce deve saber antes de participar
+              </h3>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="space-y-3">
+                  <h4 className="font-black uppercase text-gray-800">
+                    Participacao sem custo
+                  </h4>
+                  <p className="text-base text-gray-600">
+                    A campanha nao exige pagamento para cadastro, retirada de
+                    ingresso ou consulta de informacoes. Caso alguem solicite
+                    Pix, transferencia, deposito, compra de produto ou taxa de
+                    liberacao usando o nome da Chave do Bem, desconsidere a
+                    mensagem e procure nossos canais oficiais.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="font-black uppercase text-gray-800">
+                    Dados corretos importam
+                  </h4>
+                  <p className="text-base text-gray-600">
+                    Nome, e-mail e telefone devem ser preenchidos com atencao.
+                    Essas informacoes permitem validar o participante, enviar
+                    comunicados importantes e consultar a conta quando houver
+                    necessidade de suporte. Informacoes incompletas podem
+                    dificultar contato e verificacoes.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="font-black uppercase text-gray-800">
+                    Regras publicas
+                  </h4>
+                  <p className="text-base text-gray-600">
+                    As instrucoes de cada campanha ficam disponiveis no proprio
+                    site. O participante deve observar limites de resgate,
+                    validacao por e-mail, autenticacao e demais orientacoes
+                    exibidas durante a jornada. Essas regras existem para manter
+                    um processo organizado e mais justo.
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <h4 className="font-black uppercase text-gray-800">
+                    Consulta posterior
+                  </h4>
+                  <p className="text-base text-gray-600">
+                    Depois do cadastro, seus ingressos ficam vinculados ao seu
+                    perfil. Isso permite consultar participacoes, acompanhar
+                    campanhas e manter um historico organizado. Sempre que
+                    possivel, acesse sua conta pelo mesmo e-mail utilizado no
+                    primeiro cadastro.
+                  </p>
+                </div>
+              </div>
             </section>
 
             <section className="bg-zinc-50 p-6 md:p-10 rounded-3xl border border-zinc-100 space-y-6">
@@ -164,6 +236,35 @@ export default async function CampaignArticlePage({
                     </p>
                   </div>
                 </div>
+              </div>
+
+              <div className="space-y-6 rounded-3xl bg-white p-6 ring-1 ring-zinc-100 md:p-10">
+                <h3 className="text-2xl font-black text-[#053B80]">
+                  Por que existe uma etapa de leitura antes do cadastro?
+                </h3>
+                <p className="text-base leading-7 text-gray-600">
+                  Muitas pessoas chegam a uma campanha por meio de redes sociais,
+                  indicacoes ou links compartilhados. Por isso, esta pagina
+                  funciona como uma camada de orientacao. Antes de informar dados
+                  pessoais ou gerar um ingresso, o visitante consegue entender a
+                  natureza da iniciativa, confirmar que esta no dominio correto e
+                  conhecer o caminho oficial de participacao.
+                </p>
+                <p className="text-base leading-7 text-gray-600">
+                  Essa organizacao tambem reduz erros comuns, como criar contas
+                  duplicadas, usar e-mails inacessiveis ou tentar participar com
+                  dados de terceiros. A Chave do Bem busca manter campanhas com
+                  informacoes claras, linguagem simples e regras visiveis para
+                  que a experiencia seja util tanto para novos visitantes quanto
+                  para participantes recorrentes.
+                </p>
+                <p className="text-base leading-7 text-gray-600">
+                  Ao avancar para a proxima etapa, voce sera direcionado para as
+                  instrucoes oficiais da campanha. Elas explicam o cadastro, a
+                  verificacao de e-mail, o resgate gratuito e os cuidados de
+                  seguranca. Leia com calma e so prossiga quando estiver seguro
+                  de que compreendeu o fluxo.
+                </p>
               </div>
 
               <div className="bg-[#053B80]/5 p-6 rounded-2xl border border-[#053B80]/10 italic text-sm text-[#053B80] font-medium">

@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import {
   FaInfoCircle,
   FaUserPlus,
@@ -70,6 +69,56 @@ export default async function InstructionsPage({
                 <strong>Chave do Bem</strong> cheguem a quem realmente precisa,
                 mantendo a integridade da nossa comunidade de apoiadores.
               </p>
+              <p className="text-gray-600 leading-relaxed">
+                Esta etapa tambem ajuda voce a compreender o papel de cada
+                informacao solicitada. O cadastro nao deve ser feito com pressa:
+                revise nome, e-mail, telefone e documento antes de confirmar.
+                Um dado incorreto pode impedir a validacao da conta, dificultar
+                o contato da equipe ou gerar conflito com participacoes
+                anteriores.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                A Chave do Bem nao solicita pagamentos para liberar ingressos,
+                nao envia links encurtados para cobranca e nao pede senhas por
+                mensagens privadas. Sempre confirme se voce esta navegando no
+                site oficial antes de inserir qualquer informacao pessoal.
+              </p>
+            </section>
+
+            <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
+                <h3 className="mb-3 text-lg font-black text-[#053B80]">
+                  Elegibilidade
+                </h3>
+                <p className="text-sm leading-6 text-gray-600">
+                  A participacao deve ser feita por pessoa real, maior de idade
+                  e com dados proprios. Contas duplicadas, documentos invalidos
+                  ou informacoes de terceiros podem impedir a validacao do
+                  ingresso e comprometer o contato em caso de selecao.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
+                <h3 className="mb-3 text-lg font-black text-[#053B80]">
+                  Comunicacao oficial
+                </h3>
+                <p className="text-sm leading-6 text-gray-600">
+                  Use apenas os canais publicados no site para tirar duvidas. A
+                  equipe pode enviar comunicados por e-mail ou WhatsApp, mas nao
+                  solicita senha, codigo de verificacao, deposito, Pix ou taxa
+                  para confirmar participacao.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
+                <h3 className="mb-3 text-lg font-black text-[#053B80]">
+                  Responsabilidade
+                </h3>
+                <p className="text-sm leading-6 text-gray-600">
+                  O participante e responsavel por manter os dados atualizados e
+                  por ler as regras antes de prosseguir. Essa leitura reduz
+                  erros, evita expectativas incorretas e torna a experiencia
+                  mais transparente para todos.
+                </p>
+              </div>
             </section>
             {/* PASSOS DETALHADOS */}
             <div className="grid grid-cols-1 gap-10">
@@ -157,6 +206,38 @@ export default async function InstructionsPage({
                 </div>
               </div>
 
+              <div className="rounded-3xl border border-[#053B80]/10 bg-[#053B80]/5 p-6 md:p-8">
+                <h3 className="text-2xl font-black text-[#053B80]">
+                  Como avaliamos uma participacao valida
+                </h3>
+                <div className="mt-5 grid grid-cols-1 gap-5 text-sm leading-6 text-gray-600 md:grid-cols-2">
+                  <p>
+                    Uma participacao valida combina cadastro consistente,
+                    confirmacao de e-mail, respeito ao intervalo de resgate e
+                    uso correto da conta. Esses fatores ajudam a diferenciar
+                    usuarios reais de tentativas automatizadas ou duplicadas.
+                  </p>
+                  <p>
+                    O sistema registra informacoes tecnicas necessarias para
+                    seguranca, como horario de acesso e vinculacao do ingresso
+                    ao perfil autenticado. Esses dados auxiliam auditorias
+                    internas e melhoram a confiabilidade das campanhas.
+                  </p>
+                  <p>
+                    Caso voce perceba qualquer divergencia no seu cadastro,
+                    atualize seus dados antes de retirar novos ingressos. Um
+                    telefone antigo ou e-mail sem acesso pode atrasar avisos
+                    importantes e dificultar suporte.
+                  </p>
+                  <p>
+                    As regras nao existem para dificultar a participacao, mas
+                    para proteger o processo. Quanto mais claro e verificavel for
+                    o cadastro, maior a qualidade da campanha para todos os
+                    envolvidos.
+                  </p>
+                </div>
+              </div>
+
               {/* CARD DE VERIFICAÇÃO FINAL ANTES DO FAQ */}
               <div className="bg-zinc-900 text-white p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group mb-6">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
@@ -221,6 +302,33 @@ export default async function InstructionsPage({
                     o vencedor não seja localizado no chat, nossa equipe entrará
                     em contato via WhatsApp e E-mail cadastrados em até 24
                     horas.
+                  </p>
+                </details>
+                <details className="group border-b border-zinc-100 pb-4">
+                  <summary className="font-bold text-gray-700 cursor-pointer list-none flex justify-between items-center">
+                    Posso usar o cadastro de outra pessoa?
+                    <span className="group-open:rotate-180 transition-transform">
+                      ▼
+                    </span>
+                  </summary>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Nao. O cadastro deve representar a pessoa que esta
+                    participando. Usar documentos, telefone ou e-mail de
+                    terceiros pode gerar inconsistencias e impedir a validacao do
+                    ingresso.
+                  </p>
+                </details>
+                <details className="group border-b border-zinc-100 pb-4">
+                  <summary className="font-bold text-gray-700 cursor-pointer list-none flex justify-between items-center">
+                    O que devo fazer se receber uma cobranca?
+                    <span className="group-open:rotate-180 transition-transform">
+                      ▼
+                    </span>
+                  </summary>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Interrompa a conversa e procure os canais oficiais da Chave
+                    do Bem. A participacao nas campanhas publicadas no site nao
+                    exige pagamento para cadastro ou retirada de ingresso.
                   </p>
                 </details>
               </div>

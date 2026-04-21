@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUserPlus, FaEnvelopeOpenText, FaUnlockAlt, FaCheckCircle, FaShieldAlt, FaArrowRight, FaInbox, FaMousePointer, FaLock } from "react-icons/fa";
+import { FaUserPlus, FaEnvelopeOpenText, FaUnlockAlt, FaCheckCircle, FaInbox, FaMousePointer, FaLock } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
 import prisma from "@/src/lib/prisma";
 import Image from "next/image";
@@ -66,6 +66,22 @@ export default async function TutorialPage({
                   <p className="text-sm text-gray-500 leading-relaxed">
                     É fundamental que os dados inseridos sejam idênticos aos seus documentos oficiais. Nosso sistema utiliza uma camada de proteção que valida a autenticidade das informações para garantir que cada participante seja uma pessoa real. Dados incorretos ou incompletos podem impossibilitar a entrega de futuras premiações, por isso, revise cada campo antes de prosseguir.
                   </p>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    O cadastro tambem serve para organizar sua jornada dentro da
+                    plataforma. Com uma conta ativa, seus ingressos ficam
+                    vinculados ao perfil correto, suas participacoes podem ser
+                    consultadas posteriormente e a equipe consegue localizar suas
+                    informacoes caso seja necessario prestar suporte. Evite usar
+                    e-mails temporarios, numeros de telefone de terceiros ou
+                    dados que voce nao consiga comprovar.
+                  </p>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    Antes de enviar o formulario, confira se o nome esta escrito
+                    corretamente, se o documento nao possui erro de digitacao e
+                    se o WhatsApp informado esta ativo. Pequenos erros nessa
+                    etapa podem gerar atrasos em validacoes futuras ou impedir
+                    que comunicados importantes cheguem ate voce.
+                  </p>
                 </div>
               </div>
 
@@ -106,6 +122,21 @@ export default async function TutorialPage({
                   {/* TEXTO ADICIONADO */}
                   <p className="text-sm text-gray-500 leading-relaxed">
                     A verificação de e-mail é uma etapa obrigatória de segurança. Ela serve para confirmar que você tem acesso ao meio de contato informado e para evitar a criação de contas automatizadas (bots). Caso não encontre a mensagem em sua caixa de entrada principal em alguns instantes, verifique as pastas de Spam ou Lixo Eletrônico.
+                  </p>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    Essa confirmacao tambem protege sua conta contra cadastros
+                    feitos com e-mails digitados por engano. Somente depois da
+                    validacao o sistema considera que voce tem controle sobre o
+                    canal informado. Por isso, nao compartilhe o link de
+                    confirmacao com outras pessoas e nao envie codigos recebidos
+                    por e-mail para contatos externos.
+                  </p>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    Se o e-mail nao chegar, aguarde alguns minutos antes de
+                    tentar novamente. Provedores diferentes podem ter tempos de
+                    entrega variados. Verifique tambem se sua caixa esta cheia,
+                    se o dominio nao foi bloqueado e se o endereco usado no
+                    cadastro foi escrito corretamente.
                   </p>
                 </div>
               </div>
@@ -162,6 +193,20 @@ export default async function TutorialPage({
                   <p className="text-sm text-gray-500 leading-relaxed">
                     Com seu e-mail validado, você terá acesso total à plataforma. Basta realizar o login para ser direcionado novamente à página da campanha. Lá, você encontrará o botão de resgate liberado. Ao clicar, o sistema gerará instantaneamente o seu número da sorte, que ficará salvo em seu perfil para consulta a qualquer momento.
                   </p>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    O resgate deve ser feito apenas quando voce estiver logado
+                    na sua propria conta. Isso garante que o ingresso seja salvo
+                    no perfil correto e evita confusao quando mais de uma pessoa
+                    utiliza o mesmo aparelho. Apos resgatar, confira seu perfil
+                    para confirmar se a participacao foi registrada.
+                  </p>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    Algumas campanhas possuem intervalo minimo entre resgates.
+                    Esse limite ajuda a proteger a plataforma contra uso
+                    automatizado e torna a distribuicao de ingressos mais
+                    equilibrada. Caso apareca um contador, aguarde o tempo
+                    indicado antes de tentar novamente.
+                  </p>
                 </div>
               </div>
 
@@ -208,6 +253,59 @@ export default async function TutorialPage({
                 Anúncio Responsivo (Google AdSense)
               </div>
             </div>
+
+            <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
+                <h3 className="text-xl font-black text-[#053B80]">
+                  Boas praticas para concluir o tutorial
+                </h3>
+                <div className="mt-4 space-y-3 text-sm leading-6 text-gray-600">
+                  <p>
+                    Use uma conexao estavel durante o cadastro e evite atualizar
+                    a pagina enquanto estiver enviando informacoes. Em redes
+                    lentas, aguarde a resposta do sistema antes de clicar
+                    novamente em botoes de envio.
+                  </p>
+                  <p>
+                    Mantenha documentos e telefone por perto. Se for necessario
+                    corrigir algum campo, faca isso antes de avancar para a etapa
+                    de resgate. A revisao antecipada economiza tempo e reduz
+                    solicitacoes de suporte.
+                  </p>
+                  <p>
+                    Sempre que tiver duvida, volte uma etapa e releia as
+                    instrucoes. O objetivo do tutorial e justamente tornar o
+                    processo previsivel, simples e seguro para novos
+                    participantes.
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-[#053B80]/10 bg-[#053B80]/5 p-6">
+                <h3 className="text-xl font-black text-[#053B80]">
+                  O que acontece depois do ingresso?
+                </h3>
+                <div className="mt-4 space-y-3 text-sm leading-6 text-gray-600">
+                  <p>
+                    Depois do resgate, o ingresso passa a fazer parte do seu
+                    historico de participacao. Ele pode ser usado para consulta
+                    interna da campanha e para confirmar que a etapa foi
+                    concluida corretamente.
+                  </p>
+                  <p>
+                    Continue acompanhando os canais oficiais e mantenha sua
+                    conta acessivel. Caso a campanha tenha comunicados
+                    posteriores, eles dependerao dos dados informados no
+                    cadastro.
+                  </p>
+                  <p>
+                    A Chave do Bem recomenda que voce salve seus dados de acesso
+                    com seguranca e nao compartilhe sua conta. O uso individual
+                    ajuda a preservar a confiabilidade das campanhas.
+                  </p>
+                </div>
+              </div>
+            </section>
 
             {/* CTA FINAL */}
             <div className="pt-10 border-t border-zinc-100 text-center space-y-8">
