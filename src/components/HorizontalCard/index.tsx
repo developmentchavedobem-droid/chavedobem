@@ -9,7 +9,7 @@ interface HorizontalCardProps {
 export default function HorizontalCard({ campaign }: HorizontalCardProps) {
   return (
     <div className="w-full rounded-xl border overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer bg-white">
-      <Link href={`/campanha/${campaign.slug}`} className="flex h-full">
+      <Link href={`/campanha/${campaign.slug}`} prefetch className="flex h-full">
         {/* Lado da Imagem */}
         <div className="relative w-1/3 min-w-[120px] h-32">
           <Image

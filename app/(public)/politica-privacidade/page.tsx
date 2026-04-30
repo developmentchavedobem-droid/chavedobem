@@ -2,162 +2,145 @@ export default function PrivacyPolicy() {
   return (
     <section className="bg-zinc-100 pt-15">
       <div className="max-w-4xl mx-auto px-6 py-10 text-gray-800 leading-relaxed">
-        <h1 className="text-3xl font-bold mb-6">Política de Privacidade</h1>
+        <h1 className="text-3xl font-bold mb-6">Politica de Privacidade</h1>
 
         <p className="mb-4">
-          A proteção dos seus dados pessoais é fundamental para nós na{" "}
-          <strong>Chave do Bem</strong>. Nossa política é baseada no compromisso
-          de garantir privacidade absoluta em relação às informações que
-          coletamos em nosso site e demais plataformas sob nossa gestão.
-        </p>
-
-        <p className="mb-4">
-          Solicitamos seus dados pessoais somente quando indispensáveis para a
-          prestação dos nossos serviços. A coleta dessas informações é realizada
-          de maneira ética, transparente e sempre mediante sua autorização
-          explícita. Além disso, esclarecemos previamente como essas informações
-          serão utilizadas.
-        </p>
-
-        <p className="mb-4">
-          Mantemos suas informações apenas pelo tempo estritamente necessário
-          para cumprir o propósito inicial pelo qual foram coletadas. Garantimos
-          a proteção dessas informações com procedimentos rigorosos para evitar
-          vazamentos, perdas ou acessos indevidos.
-        </p>
-
-        <p className="mb-4">
-          Jamais compartilhamos informações pessoais identificáveis com
-          terceiros ou as divulgamos publicamente, exceto nos casos exigidos por
-          lei.
-        </p>
-
-        <p className="mb-4">
-          Nosso site pode conter links externos que redirecionam para páginas
-          que não são gerenciadas por nossa equipe. Não assumimos
-          responsabilidade pelas políticas de privacidade praticadas por esses
-          ambientes externos.
-        </p>
-
-        <p className="mb-4">
-          Você possui total liberdade para recusar fornecer dados pessoais
-          solicitados por nós, ciente de que isso pode impedir o acesso a
-          determinados serviços oferecidos.
-        </p>
-
-        <p className="mb-8">
-          Ao continuar utilizando nosso site, você concorda automaticamente com
-          nossa política de privacidade. Em caso de dúvidas sobre a gestão de
-          suas informações, entre em contato diretamente conosco.
+          A protecao dos dados pessoais dos visitantes e participantes e uma
+          prioridade da <strong>Chave do Bem</strong>. Esta politica explica
+          quais informacoes podem ser tratadas durante a navegacao, cadastro,
+          participacao em campanhas, uso de cookies e exibicao de publicidade.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Segurança do Site Chave do Bem
+          Dados que podemos coletar
         </h2>
-        <p className="mb-8">
-          Nosso site é seguro e confiável, sendo periodicamente verificado por
-          ferramentas especializadas que monitoram continuamente possíveis
-          riscos e vulnerabilidades de segurança.
+        <p className="mb-4">
+          Podemos coletar dados informados diretamente pelo usuario, como nome,
+          e-mail, telefone, data de nascimento, documentos de identificacao e
+          mensagens enviadas pelos canais de contato. Tambem podemos tratar
+          dados tecnicos de navegacao, como endereco IP, identificadores de
+          dispositivo, data e hora de acesso, paginas visitadas e registros de
+          seguranca.
+        </p>
+        <p className="mb-4">
+          Esses dados sao utilizados para criar e manter contas, validar
+          participacoes, prevenir fraude, melhorar a experiencia do usuario,
+          responder solicitacoes, cumprir obrigacoes legais e manter a
+          integridade das campanhas publicadas no site.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Política de Cookies da Chave do Bem
+          Cookies e tecnologias semelhantes
         </h2>
-
-        <h3 className="text-xl font-semibold mt-6 mb-3">O que são cookies?</h3>
         <p className="mb-4">
-          Cookies são pequenos arquivos armazenados no seu computador que têm
-          como objetivo melhorar sua experiência de navegação. Este documento
-          esclarece quais dados coletamos por meio dos cookies, como eles são
-          utilizados e como você pode gerenciar seu armazenamento.
+          Utilizamos cookies e tecnologias semelhantes para viabilizar recursos
+          essenciais do site, manter sessoes de login, lembrar preferencias,
+          entender padroes de acesso, medir desempenho e oferecer uma navegacao
+          mais segura.
         </p>
-
-        <h3 className="text-xl font-semibold mt-6 mb-3">
-          Como utilizamos os cookies?
-        </h3>
         <p className="mb-4">
-          Os cookies são utilizados por diversos motivos técnicos e
-          operacionais. Em muitos casos, sua desativação pode comprometer
-          funcionalidades importantes do site. Por isso, recomendamos mantê-los
-          ativos para garantir a melhor experiência possível.
-        </p>
-
-        <h3 className="text-xl font-semibold mt-6 mb-3">Desativação de cookies</h3>
-        <p className="mb-6">
-          Você pode desativar os cookies nas configurações do seu navegador. No
-          entanto, isso pode impactar negativamente a experiência em nosso site
-          e em outros serviços online.
-        </p>
-
-        <h3 className="text-xl font-semibold mt-6 mb-3">
-          Tipos de cookies que utilizamos
-        </h3>
-        <ul className="list-disc pl-6 space-y-3 mb-8">
-          <li>
-            <strong>Cookies para contas e login:</strong> auxiliam na gestão de
-            cadastro e autenticação, permitindo acesso contínuo e seguro às
-            áreas restritas.
-          </li>
-          <li>
-            <strong>Cookies de comunicação:</strong> registram preferências
-            relacionadas a newsletters e notificações.
-          </li>
-          <li>
-            <strong>Cookies de comércio eletrônico:</strong> armazenam
-            informações necessárias para o processamento adequado de compras e
-            transações.
-          </li>
-          <li>
-            <strong>Cookies para pesquisas e formulários:</strong> identificam
-            usuários que já participaram de pesquisas ou preencheram
-            formulários.
-          </li>
-          <li>
-            <strong>Cookies de preferências:</strong> guardam configurações
-            pessoais para proporcionar uma experiência personalizada.
-          </li>
-        </ul>
-
-        <h3 className="text-xl font-semibold mt-6 mb-3">Cookies de terceiros</h3>
-        <p className="mb-8">
-          Nosso site pode utilizar ferramentas analíticas para compreender
-          padrões de acesso e interação dos usuários, permitindo melhorias
-          contínuas no conteúdo e na navegabilidade.
+          O usuario pode bloquear ou apagar cookies nas configuracoes do
+          navegador. A desativacao de cookies essenciais pode limitar recursos
+          como cadastro, autenticacao, validacao de participacao e exibicao
+          correta de determinadas paginas.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Compromissos dos Usuários
+          Publicidade, Google AdSense e cookies de terceiros
         </h2>
-        <ul className="list-disc pl-6 space-y-3 mb-8">
-          <li>
-            Não praticar atividades ilegais ou que violem normas éticas e
-            sociais;
-          </li>
-          <li>
-            Não divulgar conteúdos preconceituosos, ilegais ou que infrinjam
-            direitos humanos;
-          </li>
-          <li>
-            Não comprometer a integridade tecnológica do site, introduzindo
-            vírus ou sistemas prejudiciais.
-          </li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">Como bloquear cookies</h2>
-        <p className="mb-8">
-          Você pode bloquear cookies nas configurações do seu navegador.
-          Consulte a documentação oficial do navegador que utiliza para
-          instruções detalhadas.
+        <p className="mb-4">
+          A Chave do Bem pode utilizar o Google AdSense para exibir anuncios no
+          site. O Google e seus parceiros podem usar cookies, identificadores de
+          publicidade e tecnologias semelhantes para veicular anuncios, limitar
+          repeticoes, medir desempenho e, quando aplicavel, personalizar
+          publicidade com base em visitas anteriores a este ou a outros sites.
+        </p>
+        <p className="mb-4">
+          Esses terceiros podem coletar ou receber informacoes do navegador ou
+          dispositivo do usuario durante a exibicao de anuncios. O tratamento
+          desses dados segue tambem as politicas de privacidade e publicidade do
+          Google e dos respectivos fornecedores de tecnologia.
+        </p>
+        <p className="mb-4">
+          O usuario pode gerenciar preferencias de anuncios do Google em{" "}
+          <a
+            href="https://adssettings.google.com/"
+            className="font-semibold text-[#053B80] underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            adssettings.google.com
+          </a>{" "}
+          e consultar informacoes sobre como o Google usa dados em{" "}
+          <a
+            href="https://policies.google.com/technologies/partner-sites"
+            className="font-semibold text-[#053B80] underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            policies.google.com/technologies/partner-sites
+          </a>
+          .
         </p>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">Mais informações</h2>
-        <p className="mb-6">
-          Em caso de dúvidas adicionais, recomendamos manter os cookies ativados
-          para assegurar a melhor experiência possível em nossos serviços.
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Compartilhamento de informacoes
+        </h2>
+        <p className="mb-4">
+          Nao vendemos dados pessoais. Podemos compartilhar informacoes apenas
+          quando necessario para operar a plataforma, prestar suporte, prevenir
+          fraudes, cumprir obrigacoes legais, proteger direitos da Chave do Bem
+          ou viabilizar servicos de terceiros usados no site, como hospedagem,
+          autenticacao, e-mail, analise tecnica e publicidade.
+        </p>
+
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Seguranca e retencao
+        </h2>
+        <p className="mb-4">
+          Mantemos medidas tecnicas e administrativas para reduzir riscos de
+          acesso nao autorizado, perda, alteracao indevida ou uso inadequado dos
+          dados. As informacoes sao mantidas pelo periodo necessario para as
+          finalidades descritas nesta politica, observados prazos legais,
+          auditorias, prevencao de fraude e defesa de direitos.
+        </p>
+
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Direitos do usuario
+        </h2>
+        <p className="mb-4">
+          O usuario pode solicitar informacoes sobre seus dados, correcao,
+          atualizacao, exclusao quando aplicavel, revogacao de consentimento e
+          esclarecimentos sobre o tratamento realizado pela Chave do Bem.
+          Solicitacoes podem exigir confirmacao de identidade para proteger a
+          seguranca da conta.
+        </p>
+
+        <h2 className="text-2xl font-semibold mt-10 mb-4">
+          Links externos
+        </h2>
+        <p className="mb-4">
+          Nosso site pode conter links para paginas externas que nao sao
+          operadas pela Chave do Bem. Recomendamos que o usuario leia as
+          politicas desses sites, pois nao controlamos suas praticas de
+          privacidade, seguranca ou publicidade.
+        </p>
+
+        <h2 className="text-2xl font-semibold mt-10 mb-4">Contato</h2>
+        <p className="mb-8">
+          Em caso de duvidas sobre esta politica ou sobre o tratamento de dados
+          pessoais, entre em contato pelo e-mail{" "}
+          <a
+            href="mailto:contato@chavedobem.com.br"
+            className="font-semibold text-[#053B80] underline"
+          >
+            contato@chavedobem.com.br
+          </a>
+          .
         </p>
 
         <p className="mt-10 text-sm text-gray-600">
-          Esta política entra em vigor a partir de março de 2026.
+          Esta politica entra em vigor a partir de abril de 2026.
         </p>
       </div>
     </section>

@@ -7,6 +7,7 @@ import { IoClose } from "react-icons/io5";
 import AuthModal from "@/src/components/campaign/AuthModal";
 import { useAuthStore } from "@/src/stores/auth.store";
 import { notFound } from "next/navigation";
+import { buildCampaignContent } from "@/src/utils/campaign-content";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -136,6 +137,10 @@ export default function ParticiparPage({ params }: PageProps) {
 
   if (loading || authLoading) return <div className="min-h-screen bg-zinc-100 animate-pulse" />;
   if (!campaign) return notFound();
+  const content = buildCampaignContent({
+    ...campaign,
+    ticketsCount: campaign._count?.tickets,
+  });
 
   return (
     <div className="min-h-screen bg-zinc-100 font-sans pb-10">
@@ -208,53 +213,27 @@ export default function ParticiparPage({ params }: PageProps) {
               Leia antes de confirmar o resgate
             </h3>
             <p className="text-sm leading-6 text-zinc-600">
-              Esta e a etapa final para gerar seu ingresso gratuito nesta
-              campanha. Antes de clicar, confirme se voce esta usando sua propria
-              conta e se reconhece a campanha exibida no topo da pagina. O
-              ingresso sera vinculado ao perfil autenticado no momento do
-              resgate, por isso e importante evitar o uso de contas de terceiros
-              ou dispositivos compartilhados sem conferir o login.
+              {content.finalCheck}
             </p>
             <p className="text-sm leading-6 text-zinc-600">
-              A Chave do Bem utiliza regras de intervalo para reduzir abusos,
-              evitar automacoes e proteger a experiencia de todos os
-              participantes. Caso o contador esteja ativo, aguarde o prazo
-              indicado. Tentar atualizar a pagina repetidamente nao antecipa o
-              resgate e pode tornar a navegacao mais lenta.
+              Esta tela confirma a acao final. O ingresso sera criado para a
+              conta autenticada, e nao para o aparelho ou navegador usado no
+              momento.
             </p>
           </section>
 
           <section className="grid grid-cols-1 gap-3 text-left">
-            <div className="rounded-2xl border border-zinc-100 bg-white p-4">
-              <h4 className="mb-2 text-sm font-black uppercase text-[#053B80]">
-                Participacao gratuita
-              </h4>
-              <p className="text-xs leading-5 text-zinc-500">
-                Voce nao precisa pagar para gerar o ingresso. Desconfie de
-                mensagens que prometem vantagem, liberacao imediata ou aumento
-                de chances mediante pagamento.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-zinc-100 bg-white p-4">
-              <h4 className="mb-2 text-sm font-black uppercase text-[#053B80]">
-                Registro no perfil
-              </h4>
-              <p className="text-xs leading-5 text-zinc-500">
-                Depois de confirmado, o ingresso fica associado ao seu cadastro.
-                Acesse sua area de perfil para acompanhar participacoes e manter
-                seus dados sempre atualizados.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-zinc-100 bg-white p-4">
-              <h4 className="mb-2 text-sm font-black uppercase text-[#053B80]">
-                Canais oficiais
-              </h4>
-              <p className="text-xs leading-5 text-zinc-500">
-                Comunicados importantes devem ser conferidos dentro do site ou
-                nos canais oficiais da Chave do Bem. Nao compartilhe senha,
-                codigo de verificacao ou documentos por conversas suspeitas.
-              </p>
-            </div>
+            {content.finalCards.map((card) => (
+              <div
+                key={card.title}
+                className="rounded-2xl border border-zinc-100 bg-white p-4"
+              >
+                <h4 className="mb-2 text-sm font-black uppercase text-[#053B80]">
+                  {card.title}
+                </h4>
+                <p className="text-xs leading-5 text-zinc-500">{card.body}</p>
+              </div>
+            ))}
           </section>
 
           <section className="rounded-3xl border border-[#053B80]/10 bg-[#053B80]/5 p-5 text-left">
@@ -262,11 +241,7 @@ export default function ParticiparPage({ params }: PageProps) {
               Dicas para uma experiencia segura
             </h3>
             <div className="mt-3 space-y-3 text-sm leading-6 text-zinc-600">
-              <p>
-                Mantenha seu e-mail ativo e seu telefone atualizado. Esses dados
-                podem ser usados para comunicacoes relacionadas a campanhas,
-                suporte e confirmacao de informacoes quando necessario.
-              </p>
+              <p>{content.tutorialAfterTicket}</p>
               <p>
                 Se voce notar qualquer comportamento estranho, como cobrancas,
                 promessas de prioridade ou links que levem para dominios

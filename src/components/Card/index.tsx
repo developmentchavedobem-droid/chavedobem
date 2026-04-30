@@ -13,7 +13,11 @@ export default function Card({ campaign }: { campaign: any }) {
 
   return (
     <div className="group bg-white rounded-2xl shadow-sm hover:shadow-md border border-zinc-200 overflow-hidden transition-all">
-      <Link href={`/campanha/${campaign.slug}`} className="flex flex-row items-center p-3 gap-4">
+      <Link
+        href={`/campanha/${campaign.slug}`}
+        prefetch
+        className="flex flex-row items-center p-3 gap-4"
+      >
         
         {/* Thumbnail Quadrada (Estilo Link do Bem) */}
         <div className="relative w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-xl overflow-hidden">

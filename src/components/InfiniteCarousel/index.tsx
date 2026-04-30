@@ -28,6 +28,7 @@ export default function InfiniteCarousel({ items, speed = 25, refCode }: Props) 
         {carouselItems.map((item, index) => (
           <Link 
             href={`/campanha/${item.slug}${refCode ? `?ref=${refCode}` : ""}`} 
+            prefetch
             key={`${item.slug}-${index}`} 
             className="mx-4 block transition-transform hover:scale-105 shrink-0"
           >

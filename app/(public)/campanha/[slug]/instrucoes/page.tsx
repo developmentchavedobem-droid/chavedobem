@@ -10,6 +10,10 @@ import {
 } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
 import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
+import AdSenseBlock from "@/src/components/AdsenseBlock";
+import prisma from "@/src/lib/prisma";
+import { notFound } from "next/navigation";
+import { buildCampaignContent } from "@/src/utils/campaign-content";
 
 export default async function InstructionsPage({
   params,
@@ -21,7 +25,17 @@ export default async function InstructionsPage({
   const { slug } = await params;
   const { ref } = await searchParams;
 
+  const campaign = await prisma.campaign.findUnique({
+    where: { slug },
+    include: { _count: { select: { tickets: true } } },
+  });
+  if (!campaign || campaign.status !== "ACTIVE") notFound();
+
   const nextStepUrl = `/campanha/${slug}/tutorial${ref ? `?ref=${ref}` : ""}`;
+  const content = buildCampaignContent({
+    ...campaign,
+    ticketsCount: campaign._count.tickets,
+  });
 
   return (
     <div className="min-h-screen bg-zinc-100 pb-20 font-sans text-gray-800">
@@ -35,13 +49,11 @@ export default async function InstructionsPage({
             Regulamento e Instruções Oficiais
           </div>
           <h1 className="text-3xl md:text-5xl font-black leading-tight uppercase tracking-tight">
-            Como Garantir sua Participação
+            Regras antes do cadastro
           </h1>
           <p className="opacity-90 max-w-2xl mx-auto font-medium leading-relaxed">
-            A <strong>Chave do Bem</strong> preza pela transparência e
-            conformidade em todas as campanhas. Leia atentamente as etapas e
-            diretrizes para que sua inscrição seja validada corretamente pelo
-            nosso sistema.
+            Esta etapa resume criterios de validacao, limites de uso e cuidados
+            especificos antes de voce seguir para o tutorial.
           </p>
         </div>
       </div>
@@ -49,13 +61,8 @@ export default async function InstructionsPage({
       <main className="max-w-4xl mx-auto px-4 -mt-12">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-zinc-200">
           {/* ADSENSE SUPERIOR */}
-          <div className="w-full bg-gray-50 border-b flex flex-col items-center">
-            <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-              Publicidade
-            </span>
-            <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
-              Anúncio Responsivo (Google AdSense)
-            </div>
+          <div className="w-full border-b bg-gray-50 px-4 py-6">
+            <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
           </div>
 
           <div className="p-6 md:p-12 space-y-2">
@@ -66,19 +73,10 @@ export default async function InstructionsPage({
                 Compromisso com a Veracidade
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                Nossa plataforma utiliza um sistema de verificação em duas
-                etapas para assegurar que cada ingresso resgatado pertença a um
-                usuário real e único. Isso garante que as doações e prêmios da{" "}
-                <strong>Chave do Bem</strong> cheguem a quem realmente precisa,
-                mantendo a integridade da nossa comunidade de apoiadores.
+                {content.instructionIntro}
               </p>
               <p className="text-gray-600 leading-relaxed">
-                Esta etapa tambem ajuda voce a compreender o papel de cada
-                informacao solicitada. O cadastro nao deve ser feito com pressa:
-                revise nome, e-mail, telefone e documento antes de confirmar.
-                Um dado incorreto pode impedir a validacao da conta, dificultar
-                o contato da equipe ou gerar conflito com participacoes
-                anteriores.
+                {content.instructionTrust}
               </p>
               <p className="text-gray-600 leading-relaxed">
                 A Chave do Bem nao solicita pagamentos para liberar ingressos,
@@ -89,57 +87,38 @@ export default async function InstructionsPage({
             </section>
 
             <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
-                <h3 className="mb-3 text-lg font-black text-[#053B80]">
-                  Elegibilidade
-                </h3>
-                <p className="text-sm leading-6 text-gray-600">
-                  A participacao deve ser feita por pessoa real, maior de idade
-                  e com dados proprios. Contas duplicadas, documentos invalidos
-                  ou informacoes de terceiros podem impedir a validacao do
-                  ingresso e comprometer o contato em caso de selecao.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
-                <h3 className="mb-3 text-lg font-black text-[#053B80]">
-                  Comunicacao oficial
-                </h3>
-                <p className="text-sm leading-6 text-gray-600">
-                  Use apenas os canais publicados no site para tirar duvidas. A
-                  equipe pode enviar comunicados por e-mail ou WhatsApp, mas nao
-                  solicita senha, codigo de verificacao, deposito, Pix ou taxa
-                  para confirmar participacao.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
-                <h3 className="mb-3 text-lg font-black text-[#053B80]">
-                  Responsabilidade
-                </h3>
-                <p className="text-sm leading-6 text-gray-600">
-                  O participante e responsavel por manter os dados atualizados e
-                  por ler as regras antes de prosseguir. Essa leitura reduz
-                  erros, evita expectativas incorretas e torna a experiencia
-                  mais transparente para todos.
-                </p>
-              </div>
+              {content.instructionCards.map((card) => (
+                <div
+                  key={card.title}
+                  className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6"
+                >
+                  <h3 className="mb-3 text-lg font-black text-[#053B80]">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm leading-6 text-gray-600">
+                    {card.body}
+                  </p>
+                </div>
+              ))}
             </section>
             {/* PASSOS DETALHADOS */}
             <div className="grid grid-cols-1 gap-10">
-              <Step
-                icon={<FaUserPlus />}
-                title="1. Registro de Perfil Único"
-                desc="Para iniciar, você deve criar um perfil utilizando dados válidos. O uso de informações falsas ou duplicadas resultará na anulação automática de qualquer ingresso vinculado. Precisamos do seu WhatsApp e E-mail para comunicações urgentes sobre o status da campanha."
-              />
-              <Step
-                icon={<FaEnvelopeOpenText />}
-                title="2. Verificação de Identidade Digital"
-                desc="Após o cadastro, um link de confirmação será enviado para o seu endereço de e-mail. Esta etapa é crucial para evitar bots e garantir que você tenha acesso à sua conta para futuras consultas de ingressos e resultados das transmissões."
-              />
-              <Step
-                icon={<FaUnlockAlt />}
-                title="3. Resgate de Ingresso Numerado"
-                desc="Com a conta ativa, você poderá navegar até a página da campanha desejada e realizar o resgate. Cada ingresso gera um código alfanumérico exclusivo que será utilizado no momento da dinâmica ao vivo."
-              />
+              {content.instructionSteps.map((step, index) => (
+                <Step
+                  key={step.title}
+                  icon={
+                    index === 0 ? (
+                      <FaUserPlus />
+                    ) : index === 1 ? (
+                      <FaEnvelopeOpenText />
+                    ) : (
+                      <FaUnlockAlt />
+                    )
+                  }
+                  title={step.title}
+                  desc={step.body}
+                />
+              ))}
             </div>
             {/* SEÇÃO DE SEGURANÇA (IMPORTANTE PARA ADSENSE) */}
             <section className="bg-zinc-50 p-6 md:p-8 rounded-3xl border border-zinc-100 flex flex-col md:flex-row gap-6 items-center">
@@ -160,14 +139,7 @@ export default async function InstructionsPage({
               </div>
             </section>
 
-            <div className="w-full my-8 flex flex-col items-center">
-              <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-                Publicidade
-              </span>
-              <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
-                Anúncio Responsivo (Google AdSense)
-              </div>
-            </div>
+            <AdSenseBlock className="mx-auto my-8 min-h-24 max-w-[728px]" />
 
             {/* SEÇÃO DE TRANSPARÊNCIA E SUSTENTABILIDADE */}
             <section className="space-y-8 pt-4">
@@ -180,26 +152,26 @@ export default async function InstructionsPage({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-600 leading-relaxed text-sm md:text-base">
                   <div className="space-y-4">
                     <p>
-                      Muitos usuários nos questionam como conseguimos manter uma
-                      estrutura robusta e premiar nossa comunidade sem cobrar
-                      taxas de inscrição. A resposta é simples:{" "}
-                      <strong>Economia de Atenção</strong>.
+                      A Chave do Bem mantem uma estrutura digital para publicar
+                      campanhas, orientar participantes e registrar ingressos de
+                      forma organizada. A participacao nas campanhas publicadas
+                      no site nao depende de pagamento, compra de produto ou
+                      transferencia para terceiros.
                     </p>
                     <p>
-                      Através das exibições publicitárias que você visualiza em
-                      nosso portal, geramos o faturamento necessário para cobrir
-                      custos operacionais, servidores de alta performance e,
-                      claro, o fundo de doações de cada campanha ativa.
+                      A sustentabilidade da plataforma envolve custos de
+                      tecnologia, atendimento, comunicacao e auditoria. Por
+                      isso, as paginas priorizam informacao clara, navegacao
+                      segura e canais oficiais de suporte.
                     </p>
                   </div>
 
                   <div className="space-y-4">
                     <p>
-                      Ao seguir as instruções desta página, você nos ajuda a
-                      manter um ecossistema saudável e auditável. Cada clique e
-                      cada verificação realizada garante que o prêmio final seja
-                      entregue a uma pessoa real, combatendo fraudes e perfis
-                      automatizados.
+                      Ao seguir as instrucoes desta pagina, voce ajuda a manter
+                      um processo saudavel e auditavel. Cadastro consistente,
+                      e-mail confirmado e uso de conta individual reduzem
+                      fraudes e perfis automatizados.
                     </p>
                     <div className="bg-[#053B80]/5 p-4 rounded-xl border-l-4 border-[#053B80] font-bold text-[#053B80]">
                       Nosso objetivo é democratizar o acesso a oportunidades
@@ -249,25 +221,11 @@ export default async function InstructionsPage({
                     Critérios de Desclassificação
                   </h4>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm opacity-90">
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-500">●</span> Cadastro de
-                      CPF gerado ou inválido.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-500">●</span> Uso de VPN ou
-                      proxies para mascarar localização.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-500">●</span> Múltiplas
-                      contas acessadas pelo mesmo dispositivo.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-500">●</span> Tentativas de
-                      script para burlar o cronômetro de resgate.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-500">●</span> Usuário menor de 18 anos.
-                    </li>
+                    {content.disqualificationItems.map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <span className="text-emerald-500">-</span> {item}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -287,10 +245,10 @@ export default async function InstructionsPage({
                     </span>
                   </summary>
                   <p className="text-sm text-gray-500 mt-2">
-                    Sim. A Chave do Bem é sustentada por parcerias
-                    publicitárias, o que permite que o usuário não tenha custos
-                    diretos para participar e concorrer aos prêmios das
-                    campanhas.
+                    Sim. A Chave do Bem nao cobra taxa de cadastro ou de
+                    retirada de ingresso do participante. A operacao da
+                    plataforma e mantida por processos internos, parcerias e
+                    estrutura propria.
                   </p>
                 </details>
                 <details className="group border-b border-zinc-100 pb-4">
@@ -337,14 +295,7 @@ export default async function InstructionsPage({
               </div>
             </section>
             {/* ADSENSE MEIO */}
-            <div className="w-full flex flex-col items-center">
-              <span className="text-[10px] text-gray-400 uppercase mb-2 font-bold">
-                Publicidade
-              </span>
-              <div className="w-full h-48 bg-gray-50 border border-dashed rounded-2xl flex items-center justify-center text-zinc-400 text-xs uppercase font-bold text-center px-10">
-                Anúncio de Conteúdo (Google AdSense)
-              </div>
-            </div>
+            <AdSenseBlock className="min-h-48" />
             {/* BOTÃO FINAL COM ADOVERLAY */}
             <div className="pt-8 border-t border-zinc-100 flex flex-col gap-6">
               <div className="text-center space-y-2">

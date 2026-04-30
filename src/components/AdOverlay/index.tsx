@@ -1,6 +1,8 @@
-'use client'
+"use client";
 
+import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
+import AdSenseBlock from "@/src/components/AdsenseBlock";
 
 interface AdOverlayProps {
   isOpen: boolean;
@@ -8,32 +10,59 @@ interface AdOverlayProps {
 }
 
 export default function AdOverlay({ isOpen, onClose }: AdOverlayProps) {
+  const [status, setStatus] = useState<"loading" | "filled">("loading");
+
+  useEffect(() => {
+    if (!isOpen || status !== "loading") return;
+
+    const fallbackTimer = window.setTimeout(onClose, 3500);
+
+    return () => window.clearTimeout(fallbackTimer);
+  }, [isOpen, onClose, status]);
+
+  useEffect(() => {
+    if (isOpen) setStatus("loading");
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-300 w-screen h-screen">
-      {/* Fundo Desfocado */}
+    <div className="fixed inset-0 z-[100] flex h-screen w-screen items-center justify-center animate-in fade-in duration-300">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
 
-      {/* Botão Fechar no Canto Superior Esquerdo */}
-      <button 
-        onClick={onClose}
-        className="absolute top-6 left-6 z-[110] bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all border border-white/20"
-      >
-        <IoClose size={32} />
-      </button>
+      {status === "filled" && (
+        <button
+          onClick={onClose}
+          aria-label="Fechar anuncio"
+          className="absolute left-6 top-6 z-[110] rounded-full border border-white/20 bg-white/10 p-3 text-white transition-all hover:bg-white/20"
+        >
+          <IoClose size={32} />
+        </button>
+      )}
 
-      {/* Container do Anúncio */}
-      <div className="relative z-[110] w-[90%] max-w-[400px] aspect-[3/4] sm:aspect-square bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col items-center justify-center p-4">
-        <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-4 font-bold">Publicidade</span>
-        
-        {/* Slot do AdSense */}
-        <div className="w-full h-full bg-zinc-100 border border-dashed border-zinc-300 flex items-center justify-center text-gray-400 text-center px-6">
-          <p className="text-sm italic">
-            [ Slot AdSense Intersticial ]<br/>
-            Bloco de Anúncio Responsivo
-          </p>
-        </div>
+      <div className="relative z-[110] flex aspect-[3/4] w-[90%] max-w-[400px] items-center justify-center overflow-hidden rounded-3xl bg-white p-4 shadow-2xl sm:aspect-square">
+        {status === "loading" && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white text-center">
+            <span className="h-10 w-10 animate-spin rounded-full border-4 border-zinc-200 border-t-[#053B80]" />
+            <p className="text-xs font-black uppercase tracking-widest text-zinc-400">
+              Carregando
+            </p>
+          </div>
+        )}
+
+        <AdSenseBlock
+          className={`h-full min-h-64 transition-opacity ${
+            status === "filled" ? "opacity-100" : "opacity-0"
+          }`}
+          onStatusChange={(adStatus) => {
+            if (adStatus === "filled") {
+              setStatus("filled");
+              return;
+            }
+
+            onClose();
+          }}
+        />
       </div>
     </div>
   );

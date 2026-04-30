@@ -5,6 +5,8 @@ import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
 import prisma from "@/src/lib/prisma";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import AdSenseBlock from "@/src/components/AdsenseBlock";
+import { buildCampaignContent } from "@/src/utils/campaign-content";
 
 export default async function TutorialPage({ 
   params, 
@@ -20,6 +22,7 @@ export default async function TutorialPage({
   if (!campaign) notFound();
 
   const nextStepUrl = `/campanha/${slug}/participar${ref ? `?ref=${ref}` : ""}`;
+  const content = buildCampaignContent(campaign);
 
   return (
     <div className="min-h-screen bg-zinc-100 pb-20 font-sans text-gray-800">
@@ -35,7 +38,7 @@ export default async function TutorialPage({
             Guia de Participação
           </h1>
           <p className="opacity-90 max-w-2xl mx-auto font-medium">
-            Siga o fluxo visual abaixo para garantir que seu ingresso seja gerado corretamente.
+            {content.tutorialIntro}
           </p>
         </div>
       </div>
@@ -43,13 +46,8 @@ export default async function TutorialPage({
       <main className="max-w-4xl mx-auto px-4 -mt-12">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-zinc-200">
 
-          <div className="w-full bg-gray-50 border-b py-6 flex flex-col items-center">
-            <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-              Publicidade
-            </span>
-            <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
-              Anúncio Responsivo (Google AdSense)
-            </div>
+          <div className="w-full border-b bg-gray-50 px-4 py-6">
+            <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
           </div>
           
           <div className="p-6 md:p-12 space-y-32">
@@ -62,28 +60,19 @@ export default async function TutorialPage({
                 </div>
                 <div className="space-y-4">
                   <h2 className="text-2xl font-black text-[#053B80] uppercase">1. Preenchimento do Cadastro</h2>
-                  <p className="text-gray-600">Informe seus dados reais. O CPF/CNPJ e data de nascimento são essenciais para a auditoria de ganhadores.</p>
+                  <p className="text-gray-600">
+                    Preencha o cadastro como aparece nos seus documentos.
+                  </p>
                   
                   {/* TEXTO ADICIONADO */}
                   <p className="text-sm text-gray-500 leading-relaxed">
-                    É fundamental que os dados inseridos sejam idênticos aos seus documentos oficiais. Nosso sistema utiliza uma camada de proteção que valida a autenticidade das informações para garantir que cada participante seja uma pessoa real. Dados incorretos ou incompletos podem impossibilitar a entrega de futuras premiações, por isso, revise cada campo antes de prosseguir.
+                    {content.tutorialIntro}
                   </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    O cadastro tambem serve para organizar sua jornada dentro da
-                    plataforma. Com uma conta ativa, seus ingressos ficam
-                    vinculados ao perfil correto, suas participacoes podem ser
-                    consultadas posteriormente e a equipe consegue localizar suas
-                    informacoes caso seja necessario prestar suporte. Evite usar
-                    e-mails temporarios, numeros de telefone de terceiros ou
-                    dados que voce nao consiga comprovar.
-                  </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    Antes de enviar o formulario, confira se o nome esta escrito
-                    corretamente, se o documento nao possui erro de digitacao e
-                    se o WhatsApp informado esta ativo. Pequenos erros nessa
-                    etapa podem gerar atrasos em validacoes futuras ou impedir
-                    que comunicados importantes cheguem ate voce.
-                  </p>
+                  {content.tutorialTips.slice(0, 1).map((tip) => (
+                    <p key={tip} className="text-sm text-gray-500 leading-relaxed">
+                      {tip}
+                    </p>
+                  ))}
                 </div>
               </div>
 
@@ -102,14 +91,7 @@ export default async function TutorialPage({
               </div>
             </section>
 
-            <div className="w-full py-6 flex flex-col items-center">
-              <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-                Publicidade
-              </span>
-              <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
-                Anúncio Responsivo (Google AdSense)
-              </div>
-            </div>
+            <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
 
             {/* ETAPA 2: SEGURANÇA (EMAIL) */}
             <section className="space-y-12">
@@ -122,23 +104,15 @@ export default async function TutorialPage({
                   <p className="text-gray-600">Verifique seu e-mail para ativar sua conta. Sem esta etapa, o resgate não é liberado.</p>
                   
                   {/* TEXTO ADICIONADO */}
+                  {content.tutorialTips.slice(1, 2).map((tip) => (
+                    <p key={tip} className="text-sm text-gray-500 leading-relaxed">
+                      {tip}
+                    </p>
+                  ))}
                   <p className="text-sm text-gray-500 leading-relaxed">
-                    A verificação de e-mail é uma etapa obrigatória de segurança. Ela serve para confirmar que você tem acesso ao meio de contato informado e para evitar a criação de contas automatizadas (bots). Caso não encontre a mensagem em sua caixa de entrada principal em alguns instantes, verifique as pastas de Spam ou Lixo Eletrônico.
-                  </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    Essa confirmacao tambem protege sua conta contra cadastros
-                    feitos com e-mails digitados por engano. Somente depois da
-                    validacao o sistema considera que voce tem controle sobre o
-                    canal informado. Por isso, nao compartilhe o link de
-                    confirmacao com outras pessoas e nao envie codigos recebidos
-                    por e-mail para contatos externos.
-                  </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    Se o e-mail nao chegar, aguarde alguns minutos antes de
-                    tentar novamente. Provedores diferentes podem ter tempos de
-                    entrega variados. Verifique tambem se sua caixa esta cheia,
-                    se o dominio nao foi bloqueado e se o endereco usado no
-                    cadastro foi escrito corretamente.
+                    A confirmacao de e-mail protege sua conta contra cadastros
+                    feitos por engano. Nao compartilhe links ou codigos recebidos
+                    por e-mail com contatos externos.
                   </p>
                 </div>
               </div>
@@ -192,22 +166,15 @@ export default async function TutorialPage({
                   <p className="text-gray-600">Faça o login e resgate seu cupom na página da campanha desejada.</p>
                   
                   {/* TEXTO ADICIONADO */}
+                  {content.tutorialTips.slice(2).map((tip) => (
+                    <p key={tip} className="text-sm text-gray-500 leading-relaxed">
+                      {tip}
+                    </p>
+                  ))}
                   <p className="text-sm text-gray-500 leading-relaxed">
-                    Com seu e-mail validado, você terá acesso total à plataforma. Basta realizar o login para ser direcionado novamente à página da campanha. Lá, você encontrará o botão de resgate liberado. Ao clicar, o sistema gerará instantaneamente o seu número da sorte, que ficará salvo em seu perfil para consulta a qualquer momento.
-                  </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    O resgate deve ser feito apenas quando voce estiver logado
-                    na sua propria conta. Isso garante que o ingresso seja salvo
-                    no perfil correto e evita confusao quando mais de uma pessoa
-                    utiliza o mesmo aparelho. Apos resgatar, confira seu perfil
-                    para confirmar se a participacao foi registrada.
-                  </p>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    Algumas campanhas possuem intervalo minimo entre resgates.
-                    Esse limite ajuda a proteger a plataforma contra uso
-                    automatizado e torna a distribuicao de ingressos mais
-                    equilibrada. Caso apareca um contador, aguarde o tempo
-                    indicado antes de tentar novamente.
+                    Se houver limite de tempo entre resgates, o contador sera
+                    exibido na tela final. Aguarde o prazo terminar antes de
+                    tentar novamente.
                   </p>
                 </div>
               </div>
@@ -247,14 +214,7 @@ export default async function TutorialPage({
               </div>
             </section>
 
-            <div className="w-full py-2 flex flex-col items-center">
-              <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-                Publicidade
-              </span>
-              <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg text-[10px] text-center px-4">
-                Anúncio Responsivo (Google AdSense)
-              </div>
-            </div>
+            <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
 
             <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6">
@@ -262,24 +222,9 @@ export default async function TutorialPage({
                   Boas praticas para concluir o tutorial
                 </h3>
                 <div className="mt-4 space-y-3 text-sm leading-6 text-gray-600">
-                  <p>
-                    Use uma conexao estavel durante o cadastro e evite atualizar
-                    a pagina enquanto estiver enviando informacoes. Em redes
-                    lentas, aguarde a resposta do sistema antes de clicar
-                    novamente em botoes de envio.
-                  </p>
-                  <p>
-                    Mantenha documentos e telefone por perto. Se for necessario
-                    corrigir algum campo, faca isso antes de avancar para a etapa
-                    de resgate. A revisao antecipada economiza tempo e reduz
-                    solicitacoes de suporte.
-                  </p>
-                  <p>
-                    Sempre que tiver duvida, volte uma etapa e releia as
-                    instrucoes. O objetivo do tutorial e justamente tornar o
-                    processo previsivel, simples e seguro para novos
-                    participantes.
-                  </p>
+                  {content.tutorialTips.map((tip) => (
+                    <p key={tip}>{tip}</p>
+                  ))}
                 </div>
               </div>
 
@@ -288,12 +233,7 @@ export default async function TutorialPage({
                   O que acontece depois do ingresso?
                 </h3>
                 <div className="mt-4 space-y-3 text-sm leading-6 text-gray-600">
-                  <p>
-                    Depois do resgate, o ingresso passa a fazer parte do seu
-                    historico de participacao. Ele pode ser usado para consulta
-                    interna da campanha e para confirmar que a etapa foi
-                    concluida corretamente.
-                  </p>
+                  <p>{content.tutorialAfterTicket}</p>
                   <p>
                     Continue acompanhando os canais oficiais e mantenha sua
                     conta acessivel. Caso a campanha tenha comunicados

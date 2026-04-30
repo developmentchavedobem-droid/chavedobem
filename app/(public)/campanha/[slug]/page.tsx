@@ -4,6 +4,8 @@ import Image from "next/image";
 import { FaClock, FaCheckCircle } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
 import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
+import AdSenseBlock from "@/src/components/AdsenseBlock";
+import { buildCampaignContent } from "@/src/utils/campaign-content";
 
 export default async function CampaignArticlePage({
   params,
@@ -23,6 +25,10 @@ export default async function CampaignArticlePage({
   if (!campaign || campaign.status !== "ACTIVE") notFound();
 
   const nextStep = `/campanha/${slug}/instrucoes${ref ? `?ref=${ref}` : ""}`;
+  const content = buildCampaignContent({
+    ...campaign,
+    ticketsCount: campaign._count.tickets,
+  });
 
   return (
     <div className="min-h-screen bg-zinc-100 pb-20 font-sans text-gray-800">
@@ -60,94 +66,37 @@ export default async function CampaignArticlePage({
             <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
           </div>
 
-          <div className="w-full bg-gray-50 border-b py-6 flex flex-col items-center">
-            <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-              Publicidade
-            </span>
-            <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg">
-              Slot AdSense (Banner de Topo)
-            </div>
+          <div className="w-full border-b bg-gray-50 px-4 py-6">
+            <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
           </div>
 
           <div className="p-6 md:p-12 space-y-8 text-lg leading-relaxed">
             <section className="space-y-6">
               <h2 className="text-2xl md:text-3xl font-bold text-[#053B80] leading-tight">
-                Descubra como participar desta iniciativa e transformar seus
-                planos
+                Entenda a proposta antes de gerar seu ingresso
               </h2>
-              <p className="text-gray-600">{campaign.description}</p>
+              <p className="text-gray-600">{content.summary}</p>
               <p className="text-gray-600">
-                Esta pagina foi preparada para reunir as informacoes principais
-                da campanha antes do cadastro. Aqui voce encontra um resumo da
-                proposta, entende como o ingresso gratuito e gerado e confere os
-                cuidados recomendados para participar de forma consciente. A
-                Chave do Bem acredita que uma boa experiencia comeca antes do
-                clique: o participante deve saber o que esta fazendo, quais dados
-                serao utilizados e por que cada etapa existe.
+                {content.articleIntro}
               </p>
               <p className="text-gray-600">
-                Recomendamos que voce leia todo o conteudo antes de avancar para
-                as instrucoes. A leitura ajuda a evitar erros de cadastro,
-                reduz duvidas sobre prazos e melhora a seguranca do processo. A
-                participacao e gratuita, individual e vinculada ao perfil criado
-                na plataforma, por isso dados reais e atualizados sao essenciais
-                para qualquer contato futuro.
+                {content.articleContext}
               </p>
             </section>
 
             <section className="space-y-6 rounded-3xl border border-[#053B80]/10 bg-[#053B80]/5 p-6 md:p-10">
               <h3 className="text-2xl font-black text-[#053B80]">
-                O que voce deve saber antes de participar
+                Pontos principais desta campanha
               </h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="space-y-3">
-                  <h4 className="font-black uppercase text-gray-800">
-                    Participacao sem custo
-                  </h4>
-                  <p className="text-base text-gray-600">
-                    A campanha nao exige pagamento para cadastro, retirada de
-                    ingresso ou consulta de informacoes. Caso alguem solicite
-                    Pix, transferencia, deposito, compra de produto ou taxa de
-                    liberacao usando o nome da Chave do Bem, desconsidere a
-                    mensagem e procure nossos canais oficiais.
-                  </p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="font-black uppercase text-gray-800">
-                    Dados corretos importam
-                  </h4>
-                  <p className="text-base text-gray-600">
-                    Nome, e-mail e telefone devem ser preenchidos com atencao.
-                    Essas informacoes permitem validar o participante, enviar
-                    comunicados importantes e consultar a conta quando houver
-                    necessidade de suporte. Informacoes incompletas podem
-                    dificultar contato e verificacoes.
-                  </p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="font-black uppercase text-gray-800">
-                    Regras publicas
-                  </h4>
-                  <p className="text-base text-gray-600">
-                    As instrucoes de cada campanha ficam disponiveis no proprio
-                    site. O participante deve observar limites de resgate,
-                    validacao por e-mail, autenticacao e demais orientacoes
-                    exibidas durante a jornada. Essas regras existem para manter
-                    um processo organizado e mais justo.
-                  </p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="font-black uppercase text-gray-800">
-                    Consulta posterior
-                  </h4>
-                  <p className="text-base text-gray-600">
-                    Depois do cadastro, seus ingressos ficam vinculados ao seu
-                    perfil. Isso permite consultar participacoes, acompanhar
-                    campanhas e manter um historico organizado. Sempre que
-                    possivel, acesse sua conta pelo mesmo e-mail utilizado no
-                    primeiro cadastro.
-                  </p>
-                </div>
+                {content.overviewCards.map((card) => (
+                  <div key={card.title} className="space-y-3">
+                    <h4 className="font-black uppercase text-gray-800">
+                      {card.title}
+                    </h4>
+                    <p className="text-base text-gray-600">{card.body}</p>
+                  </div>
+                ))}
               </div>
             </section>
 
@@ -160,7 +109,7 @@ export default async function CampaignArticlePage({
                   "Transmissão ao vivo via YouTube",
                   "Resgate de ticket instantâneo",
                   "Sem custos de participação",
-                  "Sistema de ranking Top 5",
+                  "Acompanhamento pelo perfil",
                 ].map((text, i) => (
                   <div
                     key={i}
@@ -171,22 +120,22 @@ export default async function CampaignArticlePage({
                   </div>
                 ))}
               </div>
+              <div className="grid grid-cols-1 gap-3 text-sm leading-6 text-gray-600">
+                {content.processNotes.map((detail) => (
+                  <p key={detail} className="rounded-2xl bg-white p-4">
+                    {detail}
+                  </p>
+                ))}
+              </div>
             </section>
 
-            <div className="w-full py-6 flex flex-col items-center">
-              <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-2 font-bold">
-                Publicidade
-              </span>
-              <div className="w-full max-w-[728px] h-[90px] bg-gray-200/50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 mx-4 rounded-lg">
-                Slot AdSense (Banner do meio)
-              </div>
-            </div>
+            <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
 
             <section className="grid grid-cols-1 gap-8 pt-4">
               <div className="space-y-4">
                 <h3 className="text-xl font-black text-[#053B80] uppercase flex items-center gap-2">
                   <div className="w-2 h-6 bg-emerald-500 rounded-full"></div>
-                  Transparência e Resultados
+                  Transparência e acompanhamento
                 </h3>
                 <div className="space-y-6 text-gray-600 text-base md:text-lg">
                   <div className="border-l-4 border-zinc-200 pl-4">
@@ -220,22 +169,21 @@ export default async function CampaignArticlePage({
                       <strong className="text-gray-800">
                         Custo Zero (100% Grátis):
                       </strong>{" "}
-                      A Chave do Bem é sustentada por parcerias publicitárias.
-                      Isso significa que você nunca será solicitado a fazer
-                      transferências, pagamentos via PIX ou comprar qualquer
-                      produto para participar. Sua única moeda de troca é o
-                      seu tempo e engajamento.
+                      A Chave do Bem nunca solicita transferências, pagamentos
+                      via PIX ou compra de produtos para liberar a participação.
+                      Caso alguém prometa vantagem mediante pagamento, a
+                      orientação é interromper a conversa e procurar os canais
+                      oficiais.
                     </p>
                   </div>
 
                   <div className="border-l-4 border-zinc-200 pl-4">
                     <p>
                       <strong className="text-gray-800">Ranking Top 5:</strong>{" "}
-                      Valorizamos quem compartilha o bem. Nosso sistema de
-                      ranking bonifica os usuários mais ativos e aqueles que
-                      convidam novos participantes. Quanto maior sua posição no
-                      ranking, maiores são as bonificações acumuladas em sua
-                      carteira digital.
+                      A equipe acompanha a origem dos acessos e os cadastros
+                      concluidos para entender quais canais estao ajudando a
+                      divulgar a campanha. Esse controle serve para suporte,
+                      auditoria e melhoria da comunicacao.
                     </p>
                   </div>
                 </div>
@@ -246,27 +194,20 @@ export default async function CampaignArticlePage({
                   Por que existe uma etapa de leitura antes do cadastro?
                 </h3>
                 <p className="text-base leading-7 text-gray-600">
-                  Muitas pessoas chegam a uma campanha por meio de redes sociais,
-                  indicacoes ou links compartilhados. Por isso, esta pagina
-                  funciona como uma camada de orientacao. Antes de informar dados
-                  pessoais ou gerar um ingresso, o visitante consegue entender a
-                  natureza da iniciativa, confirmar que esta no dominio correto e
-                  conhecer o caminho oficial de participacao.
+                  Muitas pessoas chegam por links compartilhados, videos curtos
+                  ou indicacoes diretas. Por isso, esta etapa apresenta o
+                  contexto da campanha antes de qualquer formulario, evitando que
+                  o visitante informe dados sem reconhecer a iniciativa.
                 </p>
                 <p className="text-base leading-7 text-gray-600">
-                  Essa organizacao tambem reduz erros comuns, como criar contas
-                  duplicadas, usar e-mails inacessiveis ou tentar participar com
-                  dados de terceiros. A Chave do Bem busca manter campanhas com
-                  informacoes claras, linguagem simples e regras visiveis para
-                  que a experiencia seja util tanto para novos visitantes quanto
-                  para participantes recorrentes.
+                  Aqui o foco e decisao informada: conferir a proposta, entender
+                  o fluxo e perceber sinais de seguranca. Regras operacionais
+                  mais detalhadas aparecem na proxima etapa.
                 </p>
                 <p className="text-base leading-7 text-gray-600">
-                  Ao avancar para a proxima etapa, voce sera direcionado para as
-                  instrucoes oficiais da campanha. Elas explicam o cadastro, a
-                  verificacao de e-mail, o resgate gratuito e os cuidados de
-                  seguranca. Leia com calma e so prossiga quando estiver seguro
-                  de que compreendeu o fluxo.
+                  Ao avancar, voce entra na area de instrucoes. Ela explica os
+                  criterios de validacao e prepara o caminho para o tutorial de
+                  cadastro.
                 </p>
               </div>
 
@@ -278,14 +219,7 @@ export default async function CampaignArticlePage({
               </div>
             </section>
 
-            <div className="w-full flex flex-col items-center py-4">
-              <span className="text-[10px] text-gray-400 uppercase mb-2 font-bold">
-                Publicidade
-              </span>
-              <div className="w-full h-64 bg-gray-50 flex items-center justify-center text-gray-400 border border-dashed border-gray-300 rounded-2xl">
-                Slot AdSense (Bloco de Conteúdo)
-              </div>
-            </div>
+            <AdSenseBlock className="min-h-64" />
 
             <div className="flex flex-col items-center py-4">
               <NextStepButton
