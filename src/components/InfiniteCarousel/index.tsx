@@ -37,7 +37,7 @@ export default function InfiniteCarousel({ items, speed = 25, refCode }: Props) 
               alt="Campanha"
               width={240}
               height={160}
-              className="rounded-xl shadow-md object-cover object-center h-[120px] w-[220px]"
+              className="rounded-xl shadow-md object-cover object-center w-[250px] h-auto"
             />
           </Link>
         ))}

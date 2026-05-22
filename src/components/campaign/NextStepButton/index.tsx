@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from "react";
+import type React from "react";
 import { useRouter } from "next/navigation";
 import { FaArrowRight } from "react-icons/fa";
-import AdOverlay from "@/src/components/AdOverlay";
+// import AdOverlay from "@/src/components/AdOverlay";
 
 interface Props {
   nextStepUrl: string;
@@ -13,22 +13,22 @@ interface Props {
 }
 
 export default function NextStepButton({ nextStepUrl, label, className, showIcon }: Props) {
-  const [showAd, setShowAd] = useState(false);
+  // const [showAd, setShowAd] = useState(false);
   const router = useRouter();
 
   const handleAction = (e: React.MouseEvent) => {
     e.preventDefault();
-    setShowAd(true);
-  };
-
-  const onAdClose = () => {
-    setShowAd(false);
     router.push(nextStepUrl);
   };
 
+  // const onAdClose = () => {
+  //   setShowAd(false);
+  //   router.push(nextStepUrl);
+  // };
+
   return (
     <>
-      <AdOverlay isOpen={showAd} onClose={onAdClose} />
+      {/* <AdOverlay isOpen={showAd} onClose={onAdClose} /> */}
       <button onClick={handleAction} className={className}>
         {label} {showIcon && <FaArrowRight />}
       </button>

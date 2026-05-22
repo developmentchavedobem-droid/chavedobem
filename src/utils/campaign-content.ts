@@ -1,3 +1,5 @@
+import { stripHtml } from "@/src/utils/html-content";
+
 type CampaignContentInput = {
   name: string;
   description?: string | null;
@@ -9,7 +11,7 @@ type CampaignContentInput = {
 };
 
 function normalizeText(text?: string | null) {
-  return text?.replace(/\s+/g, " ").trim() || "";
+  return stripHtml(text);
 }
 
 function formatNumber(value?: number | null) {

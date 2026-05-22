@@ -1,124 +1,133 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-
-import { FaPhone, FaEnvelope, FaLocationDot } from "react-icons/fa6"
+import { FormEvent, useState } from "react";
+import { FaEnvelope, FaPhone } from "react-icons/fa6";
 
 export default function Contact() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("sending");
+    setFeedback("");
+
+    const formData = new FormData(event.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      setStatus("error");
+      setFeedback(data?.error || "Nao foi possivel enviar sua mensagem agora.");
+      return;
+    }
+
+    event.currentTarget.reset();
+    setStatus("success");
+    setFeedback("Mensagem enviada com sucesso. Nossa equipe retornara pelo e-mail informado.");
+  }
+
   return (
-    <section className="bg-zinc-100 pt-30 pb-38 flex flex-col px-6">
-      
-      {/* Header */}
-      <header className="text-center mb-16">
-        <h3 className="text-[#053B80] text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+    <section className="flex flex-col bg-zinc-100 px-6 pb-24 pt-30">
+      <header className="mb-12 text-center">
+        <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-[#053B80] md:text-5xl">
           Fale Conosco
-        </h3>
-        <div className="w-24 h-1 bg-cyan-900/70 mx-auto rounded-full"></div>
+        </h1>
+        <div className="mx-auto h-1 w-24 rounded-full bg-cyan-900/70" />
+        <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-zinc-600">
+          Use este canal para tirar duvidas sobre cadastro, campanhas, privacidade
+          ou suporte relacionado a sua participacao.
+        </p>
       </header>
 
-      {/* Conteúdo */}
-      <div className="max-w-6xl mx-auto w-full flex items-center justify-center">
-
-        {/* Informações de Contato */}
-        {/* <div className="flex flex-col gap-6 text-zinc-700">
-          <div className="flex flex-col gap-4 text-base">
-            <Image
-              className="mx-auto sm:mx-0"
-              src="/logo.png"
-              alt="ChaveDoBem logo"
-              width={200}
-              height={200}
-              priority
-            />
-            <span className="font-bold text-lg text-[#053B80]">
-              Informações de Contato
-            </span>
-
-            <div className="flex items-center gap-4">
-              <FaPhone size={20} className="text-cyan-900" />
-              <span>(11) 99559-2200</span>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <FaEnvelope size={20} className="text-cyan-900" />
-              <span>contato@chavedobem.com.br</span>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <FaLocationDot size={20} className="text-cyan-900" />
-              <span>Av. Itajaúna, Centro, SP.</span>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-zinc-200">
-            <p className="text-sm text-zinc-600 leading-relaxed">
-              Estamos prontos para atender você. Envie sua mensagem pelo formulário
-              ou entre em contato diretamente pelos nossos canais.
+      <div className="mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+        <aside className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+          <h2 className="text-xl font-bold text-[#053B80]">Canais oficiais</h2>
+          <div className="mt-6 space-y-5 text-sm text-zinc-700">
+            <p className="flex items-center gap-3">
+              <FaEnvelope className="text-[#053B80]" />
+              <a href="mailto:contato@chavedobem.com.br" className="font-semibold underline">
+                contato@chavedobem.com.br
+              </a>
+            </p>
+            <p className="flex items-center gap-3">
+              <FaPhone className="text-[#053B80]" />
+              <span>Atendimento pelos canais oficiais informados nas campanhas.</span>
             </p>
           </div>
-        </div> */}
+          <p className="mt-6 rounded-xl bg-blue-50 p-4 text-sm leading-6 text-[#053B80]">
+            A Chave do Bem nao solicita pagamentos, senhas ou codigos de
+            verificacao por conversas externas para liberar participacao.
+          </p>
+        </aside>
 
-        {/* Formulário */}
-        <div className="bg-white p-8 rounded-2xl shadow-md border border-zinc-200 w-full sm:max-w-5xl">
-          <form className="flex flex-col gap-5">
-
-            <div className="form-control ">
-              <label className="label text-[#053B80]">
-                <span className="label-text font-semibold">Nome</span>
-              </label>
+        <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-md">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <label className="form-control">
+              <span className="label-text mb-2 font-semibold text-[#053B80]">Nome</span>
               <input
+                name="name"
                 type="text"
                 placeholder="Digite seu nome"
-                className="input placeholder:text-gray-500 text-black input-bordered w-full"
+                className="input input-bordered w-full bg-white text-black placeholder:text-gray-500"
                 required
               />
-            </div>
+            </label>
 
-            <div className="form-control">
-              <label className="label text-[#053B80]">
-                <span className="label-text font-semibold">E-mail</span>
-              </label>
+            <label className="form-control">
+              <span className="label-text mb-2 font-semibold text-[#053B80]">E-mail</span>
               <input
+                name="email"
                 type="email"
                 placeholder="Digite seu e-mail"
-                className="input placeholder:text-gray-500 text-black input-bordered w-full"
+                className="input input-bordered w-full bg-white text-black placeholder:text-gray-500"
                 required
               />
-            </div>
+            </label>
 
-            <div className="form-control">
-              <label className="label text-[#053B80]">
-                <span className="label-text font-semibold">Assunto</span>
-              </label>
+            <label className="form-control">
+              <span className="label-text mb-2 font-semibold text-[#053B80]">Assunto</span>
               <input
+                name="subject"
                 type="text"
                 placeholder="Assunto da mensagem"
-                className="input placeholder:text-gray-500 text-black input-bordered w-full"
+                className="input input-bordered w-full bg-white text-black placeholder:text-gray-500"
                 required
               />
-            </div>
+            </label>
 
-            <div className="form-control">
-              <label className="label text-[#053B80]">
-                <span className="label-text font-semibold">Mensagem</span>
-              </label>
+            <label className="form-control">
+              <span className="label-text mb-2 font-semibold text-[#053B80]">Mensagem</span>
               <textarea
+                name="message"
                 placeholder="Escreva sua mensagem"
-                className="textarea placeholder:text-gray-500 text-black textarea-bordered w-full h-32"
+                className="textarea textarea-bordered h-32 w-full bg-white text-black placeholder:text-gray-500"
                 required
-              ></textarea>
-            </div>
+              />
+            </label>
+
+            {feedback && (
+              <p className={status === "success" ? "text-sm font-semibold text-emerald-600" : "text-sm font-semibold text-red-600"}>
+                {feedback}
+              </p>
+            )}
 
             <button
               type="submit"
-              className="btn bg-[#053B80] hover:bg-[#042e63] text-white border-none mt-2"
+              disabled={status === "sending"}
+              className="btn border-none bg-[#053B80] text-white hover:bg-[#042e63]"
             >
-              Enviar Mensagem
+              {status === "sending" ? "Enviando..." : "Enviar mensagem"}
             </button>
-
           </form>
         </div>
       </div>
     </section>
-  )
+  );
 }

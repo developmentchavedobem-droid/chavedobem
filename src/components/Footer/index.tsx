@@ -1,61 +1,48 @@
-import Image from "next/image"
+import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram } from "react-icons/fa6";
-import { FaFacebook } from "react-icons/fa6";
-import { FaSquareYoutube } from "react-icons/fa6";
-import { FaPhone } from "react-icons/fa6";
 import { FaEnvelope } from "react-icons/fa6";
-import { FaLocationDot } from "react-icons/fa6";
 
 export default function Footer() {
-    return(
-        <footer className="w-full sm:h-50 bg-linear-to-r from-[#1d8c6d] to-[#026e93] flex flex-inline flex-wrap gap-5 sm:gap-0 sm:flex-row items-center justify-between px-5 sm:px-15 py-10 sm:py-5">
-            <Image
-                className="w-30 h-auto "
-                src="/logo.png"
-                alt="ChaveDoBem logo"
-                width={300}
-                height={300}
-                priority
-            />
-            {/* <div className="flex flex-col">
-                <span className="font-bold">Social</span>
-                <div className="flex gap-4">
-                    <FaInstagram size={26} />
-                    <FaFacebook size={26} />
-                    <FaSquareYoutube size={26} />
-                </div>
-            </div>
-            <div className="flex flex-col gap-4 text-sm">
-                <span className="font-bold">Fale conosco</span>
-                <div className="flex gap-4">
-                    <FaPhone size={20} />
-                    <span>(11) 99559-2200</span>
-                </div>
-                <div className="flex gap-4">
-                    <FaEnvelope size={20} />
-                    <span>contato@chavedobem.com.br</span>
-                </div>
-                <div className="flex gap-4">
-                    <FaLocationDot size={20} />
-                    <span>Av. Itajaúna, Centro, SP.</span>
-                </div>
-            </div> */}
+  return (
+    <footer className="w-full bg-linear-to-r from-[#1d8c6d] to-[#026e93] px-5 py-10 text-white sm:px-15 sm:py-6">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+        <div className="flex w-full flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <Image
+            className="h-auto w-30"
+            src="/logo.png"
+            alt="Chave do Bem"
+            width={300}
+            height={300}
+            priority
+          />
 
-            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4 h-full">
-                <Link href="/quem-somos" className="font-semibold">
-                    Quem Somos
-                </Link>
-                <Link href="/politica-privacidade" className="font-semibold">
-                    Politica de Privacidade
-                </Link>
-                <Link href="/termos-uso" className="font-semibold">
-                    Termos de Uso
-                </Link>
-                <Link href="/fale-conosco" className="font-semibold">
-                    Fale Conosco
-                </Link>
-            </div>
-        </footer>
-    )
+          <nav className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Link href="/quem-somos" className="font-semibold">
+              Quem Somos
+            </Link>
+            <Link href="/politica-privacidade" className="font-semibold">
+              Politica de Privacidade
+            </Link>
+            <Link href="/termos-uso" className="font-semibold">
+              Termos de Uso
+            </Link>
+            <Link href="/fale-conosco" className="font-semibold">
+              Fale Conosco
+            </Link>
+          </nav>
+        </div>
+
+        <div className="flex flex-col gap-3 border-t border-white/20 pt-5 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p>Copyright 2026. Todos os direitos reservados. Chave do Bem.</p>
+          <a
+            href="mailto:contato@chavedobem.com.br"
+            className="flex items-center gap-2 font-semibold underline"
+          >
+            <FaEnvelope />
+            contato@chavedobem.com.br
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
 }

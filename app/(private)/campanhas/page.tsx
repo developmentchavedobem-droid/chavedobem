@@ -3,6 +3,7 @@ import prisma from "@/src/lib/prisma";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { redirect } from "next/navigation";
+import { getTextPreview } from "@/src/utils/html-content";
 
 export const dynamic = "force-dynamic";
 
@@ -106,7 +107,7 @@ export default async function CampaignsPage() {
                         </div>
                         <h2 className="line-clamp-2 text-2xl font-bold">{campaign.name}</h2>
                         <p className="line-clamp-2 text-sm text-white/90">
-                          {campaign.description || "Campanha pronta para registrar visitas monetizaveis."}
+                          {getTextPreview(campaign.description, "Campanha pronta para registrar visitas monetizaveis.")}
                         </p>
                       </div>
 

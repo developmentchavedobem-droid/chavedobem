@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Campaign } from "@/app/generated/prisma/client";
+import { getTextPreview } from "@/src/utils/html-content";
 
 interface HorizontalCardProps {
   campaign: Campaign;
@@ -27,7 +28,7 @@ export default function HorizontalCard({ campaign }: HorizontalCardProps) {
             {campaign.name}
           </h4>
           <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">
-            {campaign.description || "Clique para saber mais sobre esta doação e como participar."}
+            {getTextPreview(campaign.description, "Clique para saber mais sobre esta doação e como participar.")}
           </p>
           
           <div className="mt-3 flex items-center gap-2">

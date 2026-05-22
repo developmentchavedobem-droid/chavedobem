@@ -1,8 +1,8 @@
-import HorizontalCard from "@/src/components/HorizontalCard";
 import { Campaign } from "@/app/generated/prisma/client";
 import prisma from "@/src/lib/prisma";
+import Image from "next/image";
+import Link from "next/link";
 
-// Forçamos a página a ser dinâmica para evitar falhas de conexão com banco no build estático
 export const dynamic = "force-dynamic";
 
 interface CampaignsProps {
@@ -10,31 +10,50 @@ interface CampaignsProps {
 }
 
 export default async function CampaignsPage({ campaigns }: CampaignsProps) {
-  // 1. Lógica de fallback: se não recebeu via props (build/acesso direto), busca no Prisma
-  const list = campaigns ?? await prisma.campaign.findMany({
-    where: { status: "ACTIVE" },
-    orderBy: { createdAt: "desc" }
-  });
+  const list =
+    campaigns ??
+    (await prisma.campaign.findMany({
+      where: { status: "ACTIVE" },
+      orderBy: { createdAt: "desc" },
+    }));
 
-  // 2. Garantimos que 'list' seja pelo menos um array vazio para o .length não quebrar
   const safeList = list || [];
 
   return (
-    <div className="min-h-75 w-full bg-zinc-100 font-sans pb-20">
-      <div className="w-full sm:max-w-5xl h-full mx-auto flex flex-col items-center px-5">
-        <h3 className="text-[#053B80] text-2xl font-bold mb-8">Participe conosco!</h3>
-        
+    <div className="min-h-75 w-full bg-zinc-100 pb-20 font-sans">
+      <div className="mx-auto flex h-full w-full flex-col items-center px-5 sm:max-w-6xl">
+        <h3 className="mb-8 text-2xl font-bold text-[#053B80]">
+          Participe conosco!
+        </h3>
+
         {safeList.length === 0 ? (
-          <div className="text-center py-10">
-            <p className="text-gray-500">Nenhuma campanha disponível no momento.</p>
+          <div className="py-10 text-center">
+            <p className="text-gray-500">Nenhuma campanha disponivel no momento.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {safeList.map((campaign) => (
-              <HorizontalCard 
-                key={campaign.id} 
-                campaign={campaign} 
-              />
+              <Link
+                key={campaign.id}
+                href={`/campanha/${campaign.slug}`}
+                prefetch
+                className="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-200">
+                  <Image
+                    src={campaign.imageUrl || "/placeholder.png"}
+                    alt={campaign.name}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5">
+                  <h4 className="line-clamp-2 text-xl font-black uppercase leading-tight text-[#053B80] transition group-hover:text-emerald-600">
+                    {campaign.name}
+                  </h4>
+                </div>
+              </Link>
             ))}
           </div>
         )}

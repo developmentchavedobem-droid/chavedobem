@@ -1,89 +1,70 @@
 export default function WhoWeAre() {
-    return(
-        <section className="pt-10">
-            <section className="relative bg-linear-to-br from-emerald-600 via-teal-600 to-cyan-700 text-white py-20 px-6 overflow-hidden">
-                
-                <div className="absolute top-0 left-0 w-72 h-72 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+  return (
+    <section className="bg-zinc-100 pt-20">
+      <section className="relative overflow-hidden bg-linear-to-br from-emerald-600 via-teal-600 to-cyan-700 px-6 py-20 text-white">
+        <div className="absolute left-0 top-0 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-96 w-96 translate-x-1/3 translate-y-1/3 rounded-full bg-white/10 blur-3xl" />
 
-                <div className="relative max-w-5xl mx-auto">
-                    
-                    <header className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-                        Quem Somos
-                    </h1>
-                    <div className="w-24 h-1 bg-white/70 mx-auto rounded-full"></div>
-                    </header>
+        <div className="relative mx-auto max-w-5xl">
+          <header className="mb-16 text-center">
+            <h1 className="mb-4 text-4xl font-extrabold tracking-tight md:text-5xl">
+              Quem Somos
+            </h1>
+            <div className="mx-auto h-1 w-24 rounded-full bg-white/70" />
+          </header>
 
-                    <article className="space-y-8 text-lg leading-relaxed text-white/95">
+          <article className="space-y-8 text-lg leading-relaxed text-white/95">
+            <p>
+              A <strong>Chave do Bem</strong> nasce com um proposito claro:
+              ampliar o acesso a campanhas gratuitas, organizadas e divulgadas
+              com responsabilidade para pessoas de diferentes regioes do Brasil.
+            </p>
 
-                    <p>
-                        A <strong>Chave do Bem</strong> nasce com um propósito claro: ampliar o acesso à ajuda real em todo o Brasil. 
-                        Somos uma plataforma nacional que conecta pessoas em situação de vulnerabilidade a oportunidades concretas de apoio — 
-                        de forma gratuita, simples e acessível.
-                    </p>
+            <p>
+              Nossa atuacao e direta: publicamos campanhas, explicamos as regras
+              de participacao e orientamos cada visitante antes do cadastro. O
+              objetivo e criar uma jornada simples, segura e transparente.
+            </p>
 
-                    <p>
-                        Nossa atuação é direta e objetiva. Promovemos ações solidárias amplamente divulgadas pela internet, 
-                        permitindo que qualquer pessoa, de qualquer região do país, possa se cadastrar sem custos. 
-                        Quando selecionada, ela recebe suporte verdadeiro — seja por meio de bens essenciais, eletrodomésticos ou auxílio financeiro.
-                    </p>
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-8 shadow-xl backdrop-blur-md">
+              <p className="text-center text-xl font-semibold">
+                Nao solicitamos pagamentos, taxas ou contribuicoes para liberar
+                participacao.
+              </p>
+              <p className="mt-4 text-center text-white/90">
+                Quem participa deve usar apenas os canais oficiais da plataforma.
+              </p>
+            </div>
 
-                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/20">
-                        <p className="text-xl font-semibold text-center">
-                        Não solicitamos pagamentos.  
-                        Não cobramos taxas.  
-                        Não exigimos contribuições.
-                        </p>
-                        <p className="text-center mt-4 text-white/90">
-                        Aqui, quem participa entra para ser ajudado — sem obrigações.
-                        </p>
-                    </div>
+            <p>
+              Utilizamos tecnologia para organizar cadastros, reduzir fraudes,
+              orientar participantes e registrar etapas importantes das campanhas.
+              As informacoes publicadas buscam ajudar o visitante a tomar uma
+              decisao informada antes de prosseguir.
+            </p>
 
-                    <p>
-                        Acreditamos que solidariedade não deve depender de localização, renda ou burocracia. 
-                        Utilizamos a tecnologia como ponte para alcançar centros urbanos, periferias, comunidades isoladas 
-                        e regiões remotas. Onde houver necessidade, buscamos estar presentes.
-                    </p>
+            <p>
+              Nao somos uma instituicao publica e nao representamos orgaos
+              governamentais. Somos uma plataforma independente que atua com
+              responsabilidade, comunicacao clara e compromisso com a seguranca
+              dos usuarios.
+            </p>
 
-                    <p>
-                        Não somos uma instituição filantrópica tradicional e não representamos órgãos públicos. 
-                        Somos uma rede independente que atua com responsabilidade, organização e compromisso diário 
-                        com quem precisa.
-                    </p>
+            <p>
+              Transparencia e um valor central. Por isso mantemos paginas de
+              regras, politica de privacidade, termos de uso e canais de contato
+              acessiveis para todos os visitantes.
+            </p>
 
-                    <p>
-                        Transparência é um valor inegociável para nós. Todas as ações realizadas são legítimas, 
-                        conduzidas com seriedade e divulgadas em nossos canais oficiais. 
-                        O que anunciamos é cumprido — com respeito e responsabilidade.
-                    </p>
-
-                    <div className="border-l-4 border-white/80 pl-6 py-2">
-                        <p className="text-xl italic">
-                        A Chave do Bem não é aposta.  
-                        É acesso.
-                        </p>
-                    </div>
-
-                    <p>
-                        Nosso trabalho é estar disponível antes que a urgência se transforme em emergência. 
-                        É mostrar que ainda existem caminhos possíveis — mesmo quando tudo parece fechado.
-                    </p>
-
-                    <p className="text-lg font-semibold">
-                        Não prometemos milagres.  
-                        Não criamos ilusões.  
-                        Entregamos ajuda concreta.
-                    </p>
-
-                    <p>
-                        E seguimos firmes, todos os dias, conectando quem precisa ao que pode transformar sua realidade.
-                    </p>
-
-                    </article>
-
-                </div>
-                </section>
-        </section>
-    )
+            <div className="border-l-4 border-white/80 py-2 pl-6">
+              <p className="text-xl italic">
+                A Chave do Bem nao e aposta. E acesso, informacao e participacao
+                gratuita.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  );
 }

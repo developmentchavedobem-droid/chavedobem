@@ -3,6 +3,7 @@
 import PublicHeader from "@/src/components/PublicHeader";
 import Footer from "@/src/components/Footer";
 import PublicContentBoost from "@/src/components/PublicContentBoost";
+import CookieConsentBanner from "@/src/components/CookieConsentBanner";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 
@@ -35,6 +36,7 @@ export default function PublicLayout({
           </main>
           {/* <PublicContentBoost pathname={pathname || "/"} /> */}
           <Footer />
+          <CookieConsentBanner />
         </>
       ) : (
         /* Na página participe, renderiza APENAS o conteúdo puro */

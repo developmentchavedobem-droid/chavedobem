@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/src/lib/prisma";
 import jwt from "jsonwebtoken";
 import slugify from "slugify";
+import { sanitizeCampaignHtml } from "@/src/utils/html-content";
 
 /**
  * @swagger
@@ -95,7 +96,7 @@ export async function POST(req: NextRequest) {
         name,
         slug,
         goal,
-        description,
+        description: sanitizeCampaignHtml(description),
         imageUrl,
         ticketValue: 0,
         ticketGoal: ticketGoal || 0,

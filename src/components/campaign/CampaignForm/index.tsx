@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUploadUrl } from "@/src/actions/campanhas";
 import Link from "next/link";
+import RichTextEditor from "@/src/components/campaign/RichTextEditor";
 
 interface CampaignFormProps {
   initialData?: any;
@@ -83,14 +84,16 @@ export default function CampaignForm({ initialData, isEditing }: CampaignFormPro
           />
         </label>
 
-        <label className="form-control w-full">
-          <span className="label-text mb-2 font-semibold">Descricao</span>
-          <textarea
-            className="textarea textarea-bordered h-70 w-full bg-white"
+        <div className="form-control w-full">
+          <span className="label-text mb-2 font-semibold">Conteudo da Campanha</span>
+          <RichTextEditor
             value={form.description}
-            onChange={(event) => setForm({ ...form, description: event.target.value })}
+            onChange={(description) => setForm((current) => ({ ...current, description }))}
           />
-        </label>
+          <p className="mt-2 text-xs text-gray-500">
+            Use este campo como um artigo: explique a proposta, os detalhes, as regras e o contexto da campanha.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">

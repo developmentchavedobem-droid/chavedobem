@@ -7,6 +7,8 @@ import {
   FaShieldAlt,
   FaBalanceScale,
   FaQuestionCircle,
+  FaGift,
+  FaCheckCircle,
 } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
 import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
@@ -29,292 +31,374 @@ export default async function InstructionsPage({
     where: { slug },
     include: { _count: { select: { tickets: true } } },
   });
+
   if (!campaign || campaign.status !== "ACTIVE") notFound();
 
-  const nextStepUrl = `/campanha/${slug}/tutorial${ref ? `?ref=${ref}` : ""}`;
+  const nextStepUrl = `/campanha/${slug}/tutorial${
+    ref ? `?ref=${ref}` : ""
+  }`;
+
   const content = buildCampaignContent({
     ...campaign,
     ticketsCount: campaign._count.tickets,
   });
 
   return (
-    <div className="min-h-screen bg-zinc-100 pb-20 font-sans text-gray-800">
+    <div className="min-h-screen bg-zinc-100 py-20 font-sans text-gray-800">
       <AdPageVisitTracker slug={slug} page="instructions" refCode={ref} />
 
-      {/* HEADER ROBUSTO */}
-      <div className="w-full bg-[#053B80] text-white pt-16 pb-24 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-1 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
-            <FaBalanceScale className="text-emerald-400" />
-            Regulamento e Instruções Oficiais
+      {/* HERO */}
+      <div className="w-full bg-gradient-to-b from-[#053B80] to-[#04295A] text-white pt-16 pb-24 px-4">
+        <div className="max-w-5xl mx-auto text-center space-y-6">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 backdrop-blur-sm px-5 py-2 rounded-full text-sm font-semibold">
+            <FaGift className="text-emerald-400" />
+            Campanha Oficial Chave do Bem
           </div>
-          <h1 className="text-3xl md:text-5xl font-black leading-tight uppercase tracking-tight">
-            Regras antes do cadastro
+
+          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-tight">
+            Antes de participar,
+            <br />
+            leia as orientações
           </h1>
-          <p className="opacity-90 max-w-2xl mx-auto font-medium leading-relaxed">
-            Esta etapa resume criterios de validacao, limites de uso e cuidados
-            especificos antes de voce seguir para o tutorial.
+
+          <p className="max-w-3xl mx-auto text-base md:text-lg text-white/80 leading-relaxed">
+            Esta etapa reúne informações importantes sobre validação de
+            participação, segurança da campanha, funcionamento das transmissões
+            e critérios utilizados para garantir uma experiência transparente
+            para todos os participantes.
           </p>
         </div>
       </div>
 
-      <main className="max-w-4xl mx-auto px-4 -mt-12">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-zinc-200">
-          {/* ADSENSE SUPERIOR */}
-          <div className="w-full border-b bg-gray-50 px-4 py-6">
+      <main className="max-w-5xl mx-auto px-4 -mt-12">
+        <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-zinc-200">
+          {/* ADSENSE TOPO */}
+          {/* <div className="w-full border-b bg-zinc-50 px-4 py-6">
             <AdSenseBlock className="mx-auto min-h-24 max-w-[728px]" />
-          </div>
+          </div> */}
 
-          <div className="p-6 md:p-12 space-y-2">
-            {/* TEXTO DE INTRODUÇÃO PARA O ADSENSE */}
-            <section className="prose prose-zinc max-w-none">
-              <h2 className="text-2xl font-black text-[#053B80] flex items-center gap-2">
-                <FaInfoCircle size={20} className="text-blue-500" />
-                Compromisso com a Veracidade
-              </h2>
-              <p className="text-gray-600 leading-relaxed">
-                {content.instructionIntro}
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                {content.instructionTrust}
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                A Chave do Bem nao solicita pagamentos para liberar ingressos,
-                nao envia links encurtados para cobranca e nao pede senhas por
-                mensagens privadas. Sempre confirme se voce esta navegando no
-                site oficial antes de inserir qualquer informacao pessoal.
-              </p>
-            </section>
-
-            <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {content.instructionCards.map((card) => (
-                <div
-                  key={card.title}
-                  className="rounded-3xl border border-zinc-100 bg-zinc-50 p-6"
-                >
-                  <h3 className="mb-3 text-lg font-black text-[#053B80]">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm leading-6 text-gray-600">
-                    {card.body}
-                  </p>
-                </div>
-              ))}
-            </section>
-            {/* PASSOS DETALHADOS */}
-            <div className="grid grid-cols-1 gap-10">
-              {content.instructionSteps.map((step, index) => (
-                <Step
-                  key={step.title}
-                  icon={
-                    index === 0 ? (
-                      <FaUserPlus />
-                    ) : index === 1 ? (
-                      <FaEnvelopeOpenText />
-                    ) : (
-                      <FaUnlockAlt />
-                    )
-                  }
-                  title={step.title}
-                  desc={step.body}
-                />
-              ))}
-            </div>
-            {/* SEÇÃO DE SEGURANÇA (IMPORTANTE PARA ADSENSE) */}
-            <section className="bg-zinc-50 p-6 md:p-8 rounded-3xl border border-zinc-100 flex flex-col md:flex-row gap-6 items-center">
-              <div className="bg-white p-4 rounded-2xl shadow-sm text-[#053B80]">
-                <FaShieldAlt size={40} />
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-black text-[#053B80] text-lg uppercase tracking-tight">
-                  Privacidade e Proteção de Dados
-                </h4>
-                <p className="text-sm text-gray-500 leading-relaxed">
-                  Seus dados são protegidos por criptografia de ponta a ponta e
-                  processados de acordo com a LGPD. A{" "}
-                  <strong>Chave do Bem</strong> nunca solicitará pagamentos,
-                  transferências ou senhas através de aplicativos de terceiros.
-                  Toda a interação oficial ocorre dentro deste domínio seguro.
-                </p>
-              </div>
-            </section>
-
-            <AdSenseBlock className="mx-auto my-8 min-h-24 max-w-[728px]" />
-
-            {/* SEÇÃO DE TRANSPARÊNCIA E SUSTENTABILIDADE */}
-            <section className="space-y-8 pt-4">
-              <div className="flex flex-col gap-6">
-                <h3 className="text-2xl font-black text-[#053B80] uppercase italic tracking-tighter flex items-center gap-3">
-                  <div className="w-10 h-1 bg-emerald-500"></div>
-                  Transparência e Sustentabilidade
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-600 leading-relaxed text-sm md:text-base">
-                  <div className="space-y-4">
-                    <p>
-                      A Chave do Bem mantem uma estrutura digital para publicar
-                      campanhas, orientar participantes e registrar ingressos de
-                      forma organizada. A participacao nas campanhas publicadas
-                      no site nao depende de pagamento, compra de produto ou
-                      transferencia para terceiros.
-                    </p>
-                    <p>
-                      A sustentabilidade da plataforma envolve custos de
-                      tecnologia, atendimento, comunicacao e auditoria. Por
-                      isso, as paginas priorizam informacao clara, navegacao
-                      segura e canais oficiais de suporte.
-                    </p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <p>
-                      Ao seguir as instrucoes desta pagina, voce ajuda a manter
-                      um processo saudavel e auditavel. Cadastro consistente,
-                      e-mail confirmado e uso de conta individual reduzem
-                      fraudes e perfis automatizados.
-                    </p>
-                    <div className="bg-[#053B80]/5 p-4 rounded-xl border-l-4 border-[#053B80] font-bold text-[#053B80]">
-                      Nosso objetivo é democratizar o acesso a oportunidades
-                      reais através da tecnologia e do marketing digital ético.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-[#053B80]/10 bg-[#053B80]/5 p-6 md:p-8">
-                <h3 className="text-2xl font-black text-[#053B80]">
-                  Como avaliamos uma participacao valida
-                </h3>
-                <div className="mt-5 grid grid-cols-1 gap-5 text-sm leading-6 text-gray-600 md:grid-cols-2">
-                  <p>
-                    Uma participacao valida combina cadastro consistente,
-                    confirmacao de e-mail, respeito ao intervalo de resgate e
-                    uso correto da conta. Esses fatores ajudam a diferenciar
-                    usuarios reais de tentativas automatizadas ou duplicadas.
-                  </p>
-                  <p>
-                    O sistema registra informacoes tecnicas necessarias para
-                    seguranca, como horario de acesso e vinculacao do ingresso
-                    ao perfil autenticado. Esses dados auxiliam auditorias
-                    internas e melhoram a confiabilidade das campanhas.
-                  </p>
-                  <p>
-                    Caso voce perceba qualquer divergencia no seu cadastro,
-                    atualize seus dados antes de retirar novos ingressos. Um
-                    telefone antigo ou e-mail sem acesso pode atrasar avisos
-                    importantes e dificultar suporte.
-                  </p>
-                  <p>
-                    As regras nao existem para dificultar a participacao, mas
-                    para proteger o processo. Quanto mais claro e verificavel for
-                    o cadastro, maior a qualidade da campanha para todos os
-                    envolvidos.
-                  </p>
-                </div>
-              </div>
-
-              {/* CARD DE VERIFICAÇÃO FINAL ANTES DO FAQ */}
-              <div className="bg-zinc-900 text-white p-8 rounded-[2.5rem] shadow-sm relative overflow-hidden group mb-6">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                <div className="relative z-10 space-y-4">
-                  <h4 className="text-xl font-black uppercase tracking-tight text-emerald-400">
-                    Critérios de Desclassificação
-                  </h4>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm opacity-90">
-                    {content.disqualificationItems.map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <span className="text-emerald-500">-</span> {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </section>
-
-            {/* PERGUNTAS FREQUENTES (TEXTO EXTRA PARA SEO/ADSENSE) */}
+          <div className="p-6 md:p-12 space-y-12">
+            {/* INTRO */}
             <section className="space-y-6">
-              <h3 className="text-xl font-black text-[#053B80] flex items-center gap-2 italic underline decoration-emerald-400">
-                <FaQuestionCircle className="text-emerald-500" /> FAQ Rápido
-              </h3>
+              <div className="flex items-center gap-3">
+                <div className="w-14 h-14 rounded-2xl bg-[#053B80] text-white flex items-center justify-center text-2xl shadow-lg">
+                  <FaInfoCircle />
+                </div>
+
+                <div>
+                  <h2 className="text-3xl font-black text-[#053B80] uppercase tracking-tight">
+                    Como funciona a campanha
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    Informações importantes antes do cadastro
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 text-gray-600 leading-relaxed">
+                <div className="space-y-4">
+                  <p>
+                    As campanhas publicadas pela <strong>Chave do Bem</strong>{" "}
+                    funcionam através de transmissões ao vivo realizadas nos
+                    canais oficiais do projeto.
+                  </p>
+
+                  <p>
+                    Durante as lives, participantes cadastrados podem ser
+                    chamados para participar de dinâmicas simples envolvendo
+                    perguntas de conhecimentos gerais, curiosidades populares e
+                    temas do cotidiano.
+                  </p>
+
+                  <p>
+                    Caso o participante conclua corretamente a dinâmica, a
+                    equipe realiza a confirmação oficial da premiação.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <p>
+                    A plataforma não realiza cobranças para cadastro,
+                    participação ou liberação de campanhas.
+                  </p>
+
+                  <p>
+                    Nosso objetivo é manter um ambiente organizado, seguro e com
+                    critérios transparentes para reduzir fraudes, cadastros
+                    duplicados e tentativas automatizadas.
+                  </p>
+
+                  <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 font-semibold text-emerald-700">
+                    Toda participação é gratuita e ocorre exclusivamente pelos
+                    canais oficiais da Chave do Bem.
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* CARDS */}
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-zinc-50 border border-zinc-100 rounded-3xl p-7 space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-blue-100 text-[#053B80] flex items-center justify-center text-2xl">
+                  <FaUserPlus />
+                </div>
+
+                <h3 className="text-xl font-black text-[#053B80]">
+                  Cadastro Correto
+                </h3>
+
+                <p className="text-gray-600 text-sm leading-6">
+                  Utilize informações reais e atualizadas durante o cadastro.
+                  Dados inconsistentes podem dificultar validações futuras e
+                  impedir contato da equipe oficial.
+                </p>
+              </div>
+
+              <div className="bg-zinc-50 border border-zinc-100 rounded-3xl p-7 space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl">
+                  <FaEnvelopeOpenText />
+                </div>
+
+                <h3 className="text-xl font-black text-[#053B80]">
+                  Comunicação Oficial
+                </h3>
+
+                <p className="text-gray-600 text-sm leading-6">
+                  A equipe entra em contato apenas através dos canais oficiais
+                  da plataforma. Nunca compartilhamos links de cobrança ou
+                  solicitamos pagamentos antecipados.
+                </p>
+              </div>
+
+              <div className="bg-zinc-50 border border-zinc-100 rounded-3xl p-7 space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-500 flex items-center justify-center text-2xl">
+                  <FaShieldAlt />
+                </div>
+
+                <h3 className="text-xl font-black text-[#053B80]">
+                  Participação Segura
+                </h3>
+
+                <p className="text-gray-600 text-sm leading-6">
+                  O sistema monitora atividades suspeitas, acessos duplicados e
+                  inconsistências para proteger campanhas e melhorar a
+                  confiabilidade das participações.
+                </p>
+              </div>
+            </section>
+
+            {/* ETAPAS */}
+            <section className="space-y-10">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-black text-[#053B80] uppercase tracking-tight">
+                  Etapas da participação
+                </h2>
+
+                <p className="text-gray-500">
+                  Entenda como funciona o processo antes da transmissão oficial.
+                </p>
+              </div>
+
+              <div className="space-y-10">
+                <Step
+                  icon={<FaUserPlus />}
+                  title="1. Faça seu cadastro"
+                  desc="Preencha corretamente suas informações no formulário oficial da campanha. Utilize telefone, e-mail e dados atualizados para evitar problemas de validação."
+                />
+
+                <Step
+                  icon={<FaEnvelopeOpenText />}
+                  title="2. Aguarde a transmissão"
+                  desc="Após atingir a meta de inscrições válidas, a equipe divulgará oficialmente a data da live. Acompanhar os canais oficiais aumenta suas chances de não perder avisos importantes."
+                />
+
+                <Step
+                  icon={<FaUnlockAlt />}
+                  title="3. Participe ao vivo"
+                  desc="Durante a transmissão, participantes poderão ser chamados para responder perguntas rápidas e simples. Caso a dinâmica seja concluída corretamente, a equipe confirma oficialmente a premiação."
+                />
+              </div>
+            </section>
+
+            {/* BLOCO ESCURO */}
+            <section className="bg-zinc-900 text-white rounded-[2rem] p-8 md:p-10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-52 h-52 bg-emerald-500/10 rounded-full blur-3xl"></div>
+
+              <div className="relative z-10 space-y-8">
+                <div>
+                  <h3 className="text-3xl font-black uppercase tracking-tight text-emerald-400">
+                    Regras importantes
+                  </h3>
+
+                  <p className="text-white/70 mt-2 leading-relaxed">
+                    Algumas práticas podem impedir a validação da participação e
+                    comprometer o funcionamento da campanha.
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-5">
+                  {content.disqualificationItems.map((item) => (
+                    <div
+                      key={item}
+                      className="bg-white/5 border border-white/10 rounded-2xl p-5 flex gap-3 items-start"
+                    >
+                      <FaCheckCircle className="text-emerald-400 mt-1 shrink-0" />
+
+                      <p className="text-sm text-white/80 leading-6">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* SEGURANÇA */}
+            <section className="rounded-[2rem] border border-zinc-200 bg-zinc-50 p-8 space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-[#053B80] text-white flex items-center justify-center text-3xl">
+                  <FaBalanceScale />
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-black text-[#053B80] uppercase tracking-tight">
+                    Transparência e segurança
+                  </h3>
+
+                  <p className="text-gray-500 text-sm">
+                    Informações sobre proteção e validação da plataforma
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8 text-gray-600 leading-relaxed">
+                <div className="space-y-4">
+                  <p>
+                    A plataforma utiliza mecanismos de segurança para registrar
+                    acessos, proteger contas e reduzir atividades automatizadas
+                    ou fraudulentas.
+                  </p>
+
+                  <p>
+                    Dados técnicos necessários para autenticação e validação
+                    podem ser utilizados para auditoria interna e integridade
+                    das campanhas.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <p>
+                    Toda interação oficial ocorre exclusivamente dentro dos
+                    canais verificados da Chave do Bem.
+                  </p>
+
+                  <p>
+                    Nunca solicitamos pagamentos, depósitos, transferências ou
+                    senhas para liberar campanhas ou confirmar participação.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* FAQ */}
+            <section className="space-y-8">
+              <div>
+                <h3 className="text-3xl font-black text-[#053B80] uppercase tracking-tight">
+                  Perguntas frequentes
+                </h3>
+
+                <p className="text-gray-500 mt-2">
+                  Dúvidas comuns sobre participação e funcionamento das
+                  campanhas.
+                </p>
+              </div>
+
               <div className="space-y-4">
-                <details className="group border-b border-zinc-100 pb-4">
-                  <summary className="font-bold text-gray-700 cursor-pointer list-none flex justify-between items-center">
-                    A participação é realmente gratuita?
+                <details className="group rounded-2xl border border-zinc-200 bg-white p-5">
+                  <summary className="cursor-pointer list-none font-bold flex justify-between items-center text-[#053B80]">
+                    Preciso pagar para participar?
                     <span className="group-open:rotate-180 transition-transform">
                       ▼
                     </span>
                   </summary>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Sim. A Chave do Bem nao cobra taxa de cadastro ou de
-                    retirada de ingresso do participante. A operacao da
-                    plataforma e mantida por processos internos, parcerias e
-                    estrutura propria.
+
+                  <p className="mt-4 text-sm text-gray-600 leading-6">
+                    Não. As campanhas da Chave do Bem são gratuitas e não
+                    exigem pagamentos para cadastro ou participação.
                   </p>
                 </details>
-                <details className="group border-b border-zinc-100 pb-4">
-                  <summary className="font-bold text-gray-700 cursor-pointer list-none flex justify-between items-center">
-                    Como recebo o aviso se ganhar?
+
+                <details className="group rounded-2xl border border-zinc-200 bg-white p-5">
+                  <summary className="cursor-pointer list-none font-bold flex justify-between items-center text-[#053B80]">
+                    Como saberei se fui chamado?
                     <span className="group-open:rotate-180 transition-transform">
                       ▼
                     </span>
                   </summary>
-                  <p className="text-sm text-gray-500 mt-2">
-                    O aviso principal ocorre durante a transmissão ao vivo. Caso
-                    o vencedor não seja localizado no chat, nossa equipe entrará
-                    em contato via WhatsApp e E-mail cadastrados em até 24
-                    horas.
+
+                  <p className="mt-4 text-sm text-gray-600 leading-6">
+                    O principal contato acontece durante a transmissão ao vivo.
+                    Em algumas situações, a equipe também poderá utilizar os
+                    dados cadastrados para comunicação complementar.
                   </p>
                 </details>
-                <details className="group border-b border-zinc-100 pb-4">
-                  <summary className="font-bold text-gray-700 cursor-pointer list-none flex justify-between items-center">
-                    Posso usar o cadastro de outra pessoa?
+
+                <details className="group rounded-2xl border border-zinc-200 bg-white p-5">
+                  <summary className="cursor-pointer list-none font-bold flex justify-between items-center text-[#053B80]">
+                    Posso utilizar dados de terceiros?
                     <span className="group-open:rotate-180 transition-transform">
                       ▼
                     </span>
                   </summary>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Nao. O cadastro deve representar a pessoa que esta
-                    participando. Usar documentos, telefone ou e-mail de
-                    terceiros pode gerar inconsistencias e impedir a validacao do
-                    ingresso.
+
+                  <p className="mt-4 text-sm text-gray-600 leading-6">
+                    Não. O cadastro deve pertencer à própria pessoa
+                    participante. Informações inconsistentes podem impedir
+                    validações futuras.
                   </p>
                 </details>
-                <details className="group border-b border-zinc-100 pb-4">
-                  <summary className="font-bold text-gray-700 cursor-pointer list-none flex justify-between items-center">
-                    O que devo fazer se receber uma cobranca?
+
+                <details className="group rounded-2xl border border-zinc-200 bg-white p-5">
+                  <summary className="cursor-pointer list-none font-bold flex justify-between items-center text-[#053B80]">
+                    O que fazer em caso de abordagem suspeita?
                     <span className="group-open:rotate-180 transition-transform">
                       ▼
                     </span>
                   </summary>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Interrompa a conversa e procure os canais oficiais da Chave
-                    do Bem. A participacao nas campanhas publicadas no site nao
-                    exige pagamento para cadastro ou retirada de ingresso.
+
+                  <p className="mt-4 text-sm text-gray-600 leading-6">
+                    Ignore cobranças, links suspeitos e pedidos de pagamento.
+                    Procure imediatamente os canais oficiais da Chave do Bem
+                    para confirmar qualquer informação.
                   </p>
                 </details>
               </div>
             </section>
+
             {/* ADSENSE MEIO */}
-            <AdSenseBlock className="min-h-48" />
-            {/* BOTÃO FINAL COM ADOVERLAY */}
-            <div className="pt-8 border-t border-zinc-100 flex flex-col gap-6">
-              <div className="text-center space-y-2">
-                <p className="text-gray-500 font-medium">
-                  Tudo pronto para começar?
-                </p>
-                <p className="text-xs text-gray-400">
-                  Ao clicar abaixo, você confirma estar de acordo com nossas
-                  diretrizes.
-                </p>
+            {/* <AdSenseBlock className="min-h-48" /> */}
+
+            {/* CTA */}
+            <section className="border-t border-zinc-100 pt-10">
+              <div className="bg-gradient-to-r from-[#053B80] to-[#04295A] text-white rounded-[2rem] p-8 md:p-10 text-center space-y-6">
+                <div className="space-y-3">
+                  <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tight">
+                    Tudo pronto?
+                  </h3>
+
+                  <p className="text-white/80 max-w-2xl mx-auto leading-relaxed">
+                    Revise as informações acima e siga para a próxima etapa para
+                    continuar sua participação na campanha oficial.
+                  </p>
+                </div>
+
+                <div className="flex justify-center pt-2">
+                  <NextStepButton
+                    nextStepUrl={nextStepUrl}
+                    label="CONTINUAR CADASTRO"
+                    className="w-full md:w-auto md:px-20 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-5 rounded-2xl font-black text-xl shadow-lg transition-all hover:scale-105 active:scale-95"
+                  />
+                </div>
               </div>
-              <div className="flex flex-col items-center py-4">
-                <NextStepButton
-                  nextStepUrl={nextStepUrl}
-                  label="CADASTRE-SE AGORA!"
-                  className="w-full md:w-auto md:px-20 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-5 rounded-2xl font-black text-xl shadow-lg transition-all hover:scale-105 active:scale-95"
-                />
-              </div>
-            </div>
+            </section>
           </div>
         </div>
       </main>
@@ -333,14 +417,16 @@ function Step({
 }) {
   return (
     <div className="flex gap-6 items-start">
-      <div className="w-14 h-14 rounded-2xl bg-[#053B80] text-white flex items-center justify-center shrink-0 shadow-lg text-2xl border-4 border-zinc-50">
+      <div className="w-16 h-16 rounded-3xl bg-[#053B80] text-white flex items-center justify-center shrink-0 shadow-lg text-2xl">
         {icon}
       </div>
-      <div className="space-y-1 pt-1">
-        <h3 className="font-black text-xl text-[#053B80] leading-tight uppercase tracking-tight">
+
+      <div className="space-y-2">
+        <h3 className="font-black text-2xl text-[#053B80] uppercase tracking-tight">
           {title}
         </h3>
-        <p className="text-gray-600 text-base leading-relaxed">{desc}</p>
+
+        <p className="text-gray-600 leading-relaxed">{desc}</p>
       </div>
     </div>
   );

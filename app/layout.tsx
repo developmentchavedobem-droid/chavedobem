@@ -7,35 +7,33 @@ import AuthBootstrap from "@/src/components/AuthBootstrap";
 const GA_MEASUREMENT_ID = "G-N4CX0EQM20";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chavedobem.com"),
+  metadataBase: new URL("https://chavedobem.com.br"),
   title: "Chave do Bem",
-  description: "Participe e ganhe prêmios!",
+  description: "Campanhas gratuitas com informacao clara e participacao segura.",
   openGraph: {
     title: "Chave do Bem",
-    description: "Participe e ganhe prêmios!",
+    description: "Campanhas gratuitas com informacao clara e participacao segura.",
     images: [
       {
         url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "Chave do Bem"
-      }
-    ]
+        alt: "Chave do Bem",
+      },
+    ],
   },
   robots: {
     index: true,
     follow: true,
-    nocache: true,
     googleBot: {
       index: true,
-      follow: true
-    }
+      follow: true,
+    },
   },
   other: {
-    "google-adsense-account": "ca-pub-2617789128311033"
-  }
+    "google-adsense-account": "ca-pub-2617789128311033",
+  },
 };
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,9 +68,7 @@ export default function RootLayout({
           `}
         </Script>
         <AuthBootstrap />
-        <main>
-          {children}
-        </main>
+        <main>{children}</main>
       </body>
     </html>
   );

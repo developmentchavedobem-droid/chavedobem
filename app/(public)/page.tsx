@@ -5,70 +5,66 @@ import prisma from "@/src/lib/prisma";
 import Link from "next/link";
 
 export default async function Home() {
-  // Buscamos apenas campanhas ativas
   const campaigns = await prisma.campaign.findMany({
     where: { status: "ACTIVE" },
     orderBy: { createdAt: "desc" },
   });
 
-  // Preparamos os itens para o carrossel (filtramos apenas as que tem imagem)
   const carouselItems = campaigns
-    .filter(c => c.imageUrl)
-    .map(c => ({
-      imageUrl: c.imageUrl!,
-      slug: c.slug
+    .filter((campaign) => campaign.imageUrl)
+    .map((campaign) => ({
+      imageUrl: campaign.imageUrl!,
+      slug: campaign.slug,
     }));
 
   return (
-    <div className="flex flex-col min-h-screen pt-10 bg-zinc-100 font-sans">
-      {/* HERO SECTION */}
-      <section className="w-full h-[70vh] flex flex-col-reverse sm:flex-row gap-5 sm:items-center bg-[url(/person.jpg)] bg-no-repeat bg-cover bg-center sm:bg-top">
-        <article className="flex flex-col justify-center gap-3 px-5 sm:px-20 w-full sm:w-fit h-4/6 sm:h-full bg-linear-to-t sm:bg-linear-to-r from-sky-700 text-white">
-          <h3 className="font-bold text-4xl">
-            Sua ponte direta para <br className="hidden sm:flex"/>transformar vidas.
-          </h3>
-          <p className="font-semibold">O Chave do Bem é a maior central de doações do Brasil.<br className="hidden sm:flex"/>Simples, transparente e totalmente gratuito.</p>
-          <div className="w-full flex items-center gap-2">
-            <Link href="/cadastre-se" >
+    <div className="flex min-h-screen flex-col bg-zinc-100 pt-10 font-sans">
+      <section className="flex h-[70vh] w-full flex-col-reverse gap-5 bg-[url(/person.jpg)] bg-cover bg-center bg-no-repeat sm:flex-row sm:items-center sm:justify-between sm:bg-top">
+        <article className="flex h-4/6 w-full flex-col justify-center gap-3 bg-linear-to-t from-sky-700 px-5 text-white sm:h-full sm:w-fit sm:bg-linear-to-r sm:px-20">
+          <h1 className="text-4xl font-bold">
+            Sua ponte direta para <br className="hidden sm:flex" />
+            transformar vidas.
+          </h1>
+          <p className="max-w-2xl font-semibold leading-7">
+            O Chave do Bem conecta pessoas a campanhas gratuitas, com
+            informacao clara, regras acessiveis e participacao segura.
+          </p>
+          <div className="flex w-full flex-wrap items-center gap-2">
+            <Link href="/cadastre-se">
               <button className="btn btn-outline btn-theme">
                 Quero participar
               </button>
             </Link>
-            <Link href="/cadastre-se">
+            <Link href="#campanhas">
               <button className="btn btn-outline btn-theme bg-transparent">
-                Campanhas disponíveis
+                Campanhas disponiveis
               </button>
             </Link>
           </div>
         </article>
 
         <Image
-          className="w-40 sm:w-72 md:w-80 h-auto"
+          className="h-auto w-40 sm:mr-10 sm:w-72 md:w-60"
           src="/logo.png"
-          alt="ChaveDoBem logo"
+          alt="Chave do Bem"
           width={300}
           height={300}
           priority
         />
-
       </section>
-      
-      {/* CAROUSEL SECTION */}
+
       {carouselItems.length > 0 && (
-        <div className="w-full py-16 flex flex-col items-center justify-center gap-10 bg-white shadow-xs">
-          <h3 className="font-bold text-[#053B80] text-2xl uppercase tracking-widest">
-            Doações em destaque
-          </h3>
+        <div className="flex w-full flex-col items-center justify-center gap-10 bg-white py-16 shadow-xs">
+          <h2 className="text-2xl font-bold uppercase tracking-widest text-[#053B80]">
+            Destaques
+          </h2>
           <InfiniteCarousel items={carouselItems} speed={30} />
         </div>
       )}
 
-      {/* CAMPAIGNS LIST */}
       <div id="campanhas" className="pt-10">
         <Campaigns campaigns={campaigns} />
       </div>
     </div>
   );
 }
-
-

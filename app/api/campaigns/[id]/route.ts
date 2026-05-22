@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/src/lib/prisma";
+import { sanitizeCampaignHtml } from "@/src/utils/html-content";
 
 /**
  * @swagger
@@ -92,6 +93,10 @@ export async function PUT(
     delete updateData.ticketValue;
     delete updateData.currentAmount;
     delete updateData.currentTickets;
+
+    if (typeof updateData.description === "string") {
+      updateData.description = sanitizeCampaignHtml(updateData.description);
+    }
 
     const updatedCampaign = await prisma.campaign.update({
       where: { id },
