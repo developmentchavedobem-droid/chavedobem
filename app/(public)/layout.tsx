@@ -30,10 +30,10 @@ export default function PublicLayout({
       {!isParticipePage ? (
         <>
           <PublicHeader />
-          <main className="pt-10 min-h-screen">
+          <main className="min-h-screen">
             {children}
           </main>
-          <PublicContentBoost pathname={pathname || "/"} />
+          {/* <PublicContentBoost pathname={pathname || "/"} /> */}
           <Footer />
         </>
       ) : (

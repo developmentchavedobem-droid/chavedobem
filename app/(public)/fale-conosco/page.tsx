@@ -6,7 +6,7 @@ import { FaPhone, FaEnvelope, FaLocationDot } from "react-icons/fa6"
 
 export default function Contact() {
   return (
-    <section className="bg-zinc-100 pt-30 pb-20 flex flex-col px-6">
+    <section className="bg-zinc-100 pt-30 pb-38 flex flex-col px-6">
       
       {/* Header */}
       <header className="text-center mb-16">
@@ -17,10 +17,10 @@ export default function Contact() {
       </header>
 
       {/* Conteúdo */}
-      <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-auto w-full flex items-center justify-center">
 
         {/* Informações de Contato */}
-        <div className="flex flex-col gap-6 text-zinc-700">
+        {/* <div className="flex flex-col gap-6 text-zinc-700">
           <div className="flex flex-col gap-4 text-base">
             <Image
               className="mx-auto sm:mx-0"
@@ -56,10 +56,10 @@ export default function Contact() {
               ou entre em contato diretamente pelos nossos canais.
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Formulário */}
-        <div className="bg-white p-8 rounded-2xl shadow-md border border-zinc-200">
+        <div className="bg-white p-8 rounded-2xl shadow-md border border-zinc-200 w-full sm:max-w-5xl">
           <form className="flex flex-col gap-5">
 
             <div className="form-control ">
@@ -69,7 +69,7 @@ export default function Contact() {
               <input
                 type="text"
                 placeholder="Digite seu nome"
-                className="input input-bordered w-full"
+                className="input placeholder:text-gray-500 text-black input-bordered w-full"
                 required
               />
             </div>
@@ -81,7 +81,7 @@ export default function Contact() {
               <input
                 type="email"
                 placeholder="Digite seu e-mail"
-                className="input input-bordered w-full"
+                className="input placeholder:text-gray-500 text-black input-bordered w-full"
                 required
               />
             </div>
@@ -93,7 +93,7 @@ export default function Contact() {
               <input
                 type="text"
                 placeholder="Assunto da mensagem"
-                className="input input-bordered w-full"
+                className="input placeholder:text-gray-500 text-black input-bordered w-full"
                 required
               />
             </div>
@@ -104,7 +104,7 @@ export default function Contact() {
               </label>
               <textarea
                 placeholder="Escreva sua mensagem"
-                className="textarea textarea-bordered w-full h-32"
+                className="textarea placeholder:text-gray-500 text-black textarea-bordered w-full h-32"
                 required
               ></textarea>
             </div>

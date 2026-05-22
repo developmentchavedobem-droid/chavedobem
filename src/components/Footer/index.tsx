@@ -9,16 +9,16 @@ import { FaLocationDot } from "react-icons/fa6";
 
 export default function Footer() {
     return(
-        <footer className="w-full sm:h-50 bg-linear-to-r from-[#1d8c6d] to-[#026e93] flex flex-inline flex-wrap gap-5 sm:gap-0 sm:flex-row items-start justify-between px-5 sm:px-15 py-10 sm:py-5">
+        <footer className="w-full sm:h-50 bg-linear-to-r from-[#1d8c6d] to-[#026e93] flex flex-inline flex-wrap gap-5 sm:gap-0 sm:flex-row items-center justify-between px-5 sm:px-15 py-10 sm:py-5">
             <Image
-                className="w-20 sm:w-72 md:w-40 h-auto "
+                className="w-30 h-auto "
                 src="/logo.png"
                 alt="ChaveDoBem logo"
                 width={300}
                 height={300}
                 priority
             />
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
                 <span className="font-bold">Social</span>
                 <div className="flex gap-4">
                     <FaInstagram size={26} />
@@ -40,9 +40,9 @@ export default function Footer() {
                     <FaLocationDot size={20} />
                     <span>Av. Itajaúna, Centro, SP.</span>
                 </div>
-            </div>
+            </div> */}
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4 h-full">
                 <Link href="/quem-somos" className="font-semibold">
                     Quem Somos
                 </Link>
@@ -51,6 +51,9 @@ export default function Footer() {
                 </Link>
                 <Link href="/termos-uso" className="font-semibold">
                     Termos de Uso
+                </Link>
+                <Link href="/fale-conosco" className="font-semibold">
+                    Fale Conosco
                 </Link>
             </div>
         </footer>
