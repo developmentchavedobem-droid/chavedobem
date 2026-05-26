@@ -20,7 +20,7 @@ export default function Card({ campaign }: { campaign: any }) {
         </div>
 
         <div className="flex flex-1 flex-col gap-1">
-          <h3 className="line-clamp-2 text-base font-black uppercase leading-tight tracking-tighter text-[#053B80] transition-colors group-hover:text-emerald-600 md:text-lg">
+          <h3 className="text-base font-black uppercase leading-tight tracking-tighter text-[#053B80] transition-colors group-hover:text-emerald-600 md:text-lg">
             {campaign.name}
           </h3>
         </div>

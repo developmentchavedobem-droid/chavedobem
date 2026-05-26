@@ -9,6 +9,7 @@ import {
   markWithdrawalAsPaidAction,
   requestPreviousMonthPaymentAction,
 } from "@/src/actions/finance";
+import { uploadToSignedS3Url } from "@/src/utils/s3-upload";
 import {
   FaArrowRotateRight,
   FaCalendarDays,
@@ -109,16 +110,7 @@ export default function FaturamentoPage() {
       throw new Error(signed.error || "Erro ao preparar upload.");
     }
 
-    const uploadResponse = await fetch(signed.uploadUrl, {
-      method: "PUT",
-      body: file,
-      headers: { "Content-Type": file.type },
-      credentials: "omit",
-    });
-
-    if (!uploadResponse.ok) {
-      throw new Error("Erro ao enviar o PDF.");
-    }
+    await uploadToSignedS3Url(signed.uploadUrl, file);
 
     return signed.publicUrl;
   }

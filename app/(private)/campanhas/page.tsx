@@ -105,7 +105,7 @@ export default async function CampaignsPage() {
                         <div className="badge border-0 bg-white/20 text-white">
                           {campaign.status.replaceAll("_", " ")}
                         </div>
-                        <h2 className="line-clamp-2 text-2xl font-bold">{campaign.name}</h2>
+                        <h2 className="text-2xl font-bold">{campaign.name}</h2>
                         <p className="line-clamp-2 text-sm text-white/90">
                           {getTextPreview(campaign.description, "Campanha pronta para registrar visitas monetizaveis.")}
                         </p>

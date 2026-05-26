@@ -220,3 +220,26 @@ O divulgador solicita pagamento do mes anterior. Quando o administrador marca a 
 ## Observacao sobre valores
 
 Os valores do AdSense sao estimativas e podem mudar por ajustes do Google, trafego invalido ou atraso de processamento. Por isso o sistema recalcula dias recentes automaticamente. Periodos ja pagos sao preservados.
+
+## Configuracao CORS do S3
+
+Uploads de imagens de campanhas e PDFs de faturamento usam URLs pre-assinadas e fazem `PUT` direto do navegador para o bucket S3. Em producao, o bucket precisa permitir o preflight CORS vindo do dominio do site.
+
+Configure o CORS do bucket `chave-do-bem` com:
+
+```json
+[
+  {
+    "AllowedOrigins": [
+      "https://www.chavedobem.com",
+      "https://chavedobem.com"
+    ],
+    "AllowedMethods": ["PUT", "GET", "HEAD"],
+    "AllowedHeaders": ["Content-Type"],
+    "ExposeHeaders": ["ETag"],
+    "MaxAgeSeconds": 3000
+  }
+]
+```
+
+Sem essa regra, o navegador bloqueia o `PUT` antes do upload e exibe erro como `No 'Access-Control-Allow-Origin' header is present on the requested resource`.

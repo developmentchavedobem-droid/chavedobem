@@ -24,7 +24,7 @@ export default function HorizontalCard({ campaign }: HorizontalCardProps) {
 
         {/* Lado do Conteúdo */}
         <div className="w-2/3 flex flex-col justify-center px-6 py-4 bg-white">
-          <h4 className="font-bold text-lg text-[#053B80] line-clamp-1">
+          <h4 className="font-bold text-lg text-[#053B80]">
             {campaign.name}
           </h4>
           <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">

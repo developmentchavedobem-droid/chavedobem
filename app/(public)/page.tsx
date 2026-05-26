@@ -8,7 +8,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-100 font-sans">
+    <div className="flex min-h-screen flex-col bg-zinc-100 font-sans pt-20">
       <div id="campanhas">
         <Campaigns campaigns={campaigns} />
       </div>
