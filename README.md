@@ -2,6 +2,7 @@
 
 Este documento explica o funcionamento do sistema para um administrador, sem exigir conhecimento tecnico profundo.
 
+
 ## Visao geral
 
 A Chave do Bem organiza campanhas publicas com paginas informativas e anuncios. Divulgadores recebem links proprios para divulgar. Quando uma pessoa acessa esses links e navega pelas paginas com anuncios, o sistema registra visitas validas. A receita do Google AdSense e importada para o sistema e distribuida proporcionalmente entre os divulgadores que geraram essas visitas.
