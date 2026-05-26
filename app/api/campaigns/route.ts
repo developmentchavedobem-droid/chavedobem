@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/src/lib/prisma";
 import jwt from "jsonwebtoken";
 import slugify from "slugify";
@@ -68,6 +69,14 @@ export async function GET() {
   }
 }
 
+function revalidateCampaignLists() {
+  revalidatePath("/");
+  revalidatePath("/sorteios");
+  revalidatePath("/cadastre-se");
+  revalidatePath("/doacoes");
+  revalidatePath("/campanhas");
+}
+
 export async function POST(req: NextRequest) {
   try {
     const token = req.cookies.get("token")?.value;
@@ -104,6 +113,8 @@ export async function POST(req: NextRequest) {
         createdById: profile.id,
       },
     });
+
+    revalidateCampaignLists();
 
     return NextResponse.json(campaign, { status: 201 });
   } catch (error) {

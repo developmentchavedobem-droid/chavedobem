@@ -1,6 +1,8 @@
 import prisma from "@/src/lib/prisma";
 import Card from "@/src/components/Card";
 
+export const dynamic = "force-dynamic";
+
 export default async function Donates() {
   const campaigns = await prisma.campaign.findMany({
     where: { status: "ACTIVE" },

@@ -1,6 +1,8 @@
 import Campaigns from "./sorteios/page";
 import prisma from "@/src/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const campaigns = await prisma.campaign.findMany({
     where: { status: "ACTIVE" },

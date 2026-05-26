@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/src/lib/prisma";
 import { sanitizeCampaignHtml } from "@/src/utils/html-content";
 
@@ -70,6 +71,21 @@ import { sanitizeCampaignHtml } from "@/src/utils/html-content";
  *         description: Erro ao deletar campanha
  */
 
+function revalidateCampaignViews(slug?: string) {
+  revalidatePath("/");
+  revalidatePath("/sorteios");
+  revalidatePath("/cadastre-se");
+  revalidatePath("/doacoes");
+  revalidatePath("/campanhas");
+
+  if (!slug) return;
+
+  revalidatePath(`/campanha/${slug}`);
+  revalidatePath(`/campanha/${slug}/descricao`);
+  revalidatePath(`/campanha/${slug}/instrucoes`);
+  revalidatePath(`/campanha/${slug}/tutorial`);
+}
+
 
 export async function PUT(
   req: NextRequest,
@@ -84,6 +100,10 @@ export async function PUT(
     const id = Number(resolvedParams.id);
     
     const body = await req.json();
+    const currentCampaign = await prisma.campaign.findUnique({
+      where: { id },
+      select: { slug: true },
+    });
 
     // Removemos campos que não devem ser editados manualmente
     const updateData = { ...body };
@@ -111,6 +131,8 @@ export async function PUT(
       },
     });
 
+    revalidateCampaignViews(updatedCampaign.slug || currentCampaign?.slug);
+
     return NextResponse.json(updatedCampaign);
   } catch (error) {
     console.error("Erro no PUT /api/campaigns/[id]:", error);
@@ -130,9 +152,16 @@ export async function DELETE(
     const resolvedParams = await params;
     const id = Number(resolvedParams.id);
 
+    const campaign = await prisma.campaign.findUnique({
+      where: { id },
+      select: { slug: true },
+    });
+
     await prisma.campaign.delete({
       where: { id },
     });
+
+    revalidateCampaignViews(campaign?.slug);
 
     return NextResponse.json({ message: "Campanha deletada com sucesso" });
   } catch (error) {
