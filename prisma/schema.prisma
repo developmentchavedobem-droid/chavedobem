@@ -119,6 +119,7 @@ model Campaign {
   name          String
   slug          String         @unique
   description   String?
+  secondDescription String?
   imageUrl      String?
   
   goal          Int

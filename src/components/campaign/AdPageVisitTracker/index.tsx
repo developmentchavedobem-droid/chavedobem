@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 type AdPageVisitTrackerProps = {
   slug: string;
-  page: "campaign" | "instructions" | "tutorial";
+  page: "campaign" | "description" | "instructions" | "tutorial";
   refCode?: string;
 };
 

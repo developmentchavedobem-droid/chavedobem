@@ -46,8 +46,8 @@ export default function Contact() {
         </p>
       </header>
 
-      <div className="mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-        <aside className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
+      <div className="mx-auto w-full sm:max-w-3xl">
+        {/* <aside className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-sm">
           <h2 className="text-xl font-bold text-[#053B80]">Canais oficiais</h2>
           <div className="mt-6 space-y-5 text-sm text-zinc-700">
             <p className="flex items-center gap-3">
@@ -65,9 +65,9 @@ export default function Contact() {
             A Chave do Bem nao solicita pagamentos, senhas ou codigos de
             verificacao por conversas externas para liberar participacao.
           </p>
-        </aside>
+        </aside> */}
 
-        <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-md">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-md w-full">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <label className="form-control">
               <span className="label-text mb-2 font-semibold text-[#053B80]">Nome</span>

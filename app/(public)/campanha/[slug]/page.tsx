@@ -6,7 +6,7 @@ import { FaCheckCircle, FaClock } from "react-icons/fa";
 import NextStepButton from "@/src/components/campaign/NextStepButton";
 import AdPageVisitTracker from "@/src/components/campaign/AdPageVisitTracker";
 import { buildCampaignContent } from "@/src/utils/campaign-content";
-import { sanitizeCampaignHtml, stripHtml } from "@/src/utils/html-content";
+import { hasHtmlContent, sanitizeCampaignHtml } from "@/src/utils/html-content";
 
 export default async function CampaignArticlePage({
   params,
@@ -34,13 +34,15 @@ export default async function CampaignArticlePage({
     take: 2,
   });
 
-  const nextStep = `/campanha/${slug}/instrucoes${ref ? `?ref=${ref}` : ""}`;
+  const secondDescriptionHtml = sanitizeCampaignHtml(campaign.secondDescription);
+  const hasSecondDescription = hasHtmlContent(secondDescriptionHtml);
+  const nextStep = `/campanha/${slug}/${hasSecondDescription ? "descricao" : "instrucoes"}${ref ? `?ref=${ref}` : ""}`;
   const content = buildCampaignContent({
     ...campaign,
     ticketsCount: campaign._count.tickets,
   });
   const campaignArticleHtml = sanitizeCampaignHtml(campaign.description);
-  const hasCampaignArticle = Boolean(stripHtml(campaignArticleHtml));
+  const hasCampaignArticle = hasHtmlContent(campaignArticleHtml);
 
   return (
     <div className="min-h-screen bg-zinc-100 py-20 font-sans text-gray-800">
@@ -83,7 +85,7 @@ export default async function CampaignArticlePage({
               </h2>
               {hasCampaignArticle ? (
                 <div
-                  className="space-y-4 text-gray-600 [&_a]:font-semibold [&_a]:text-[#053B80] [&_a]:underline [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_strong]:text-gray-800 [&_ul]:list-disc [&_ul]:pl-6"
+                  className="space-y-4 text-gray-600 [&_a]:font-semibold [&_a]:text-[#053B80] [&_a]:underline [&_img]:my-6 [&_img]:h-auto [&_img]:w-full [&_img]:rounded-2xl [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_strong]:text-gray-800 [&_ul]:list-disc [&_ul]:pl-6"
                   dangerouslySetInnerHTML={{ __html: campaignArticleHtml }}
                 />
               ) : (

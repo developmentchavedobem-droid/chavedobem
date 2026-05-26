@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/src/lib/prisma";
 
-const AD_PAGES = new Set(["campaign", "instructions", "tutorial"]);
+const AD_PAGES = new Set(["campaign", "description", "instructions", "tutorial"]);
 const VISIT_COOLDOWN_MS = 3 * 60 * 60 * 1000;
 
 function getCookie(request: Request, name: string) {

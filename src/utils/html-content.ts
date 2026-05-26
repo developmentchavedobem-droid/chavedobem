@@ -20,6 +20,12 @@ export function stripHtml(value?: string | null) {
     .trim();
 }
 
+export function hasHtmlContent(value?: string | null) {
+  if (!value) return false;
+
+  return Boolean(stripHtml(value) || /<img\b[^>]*\bsrc=/i.test(value));
+}
+
 export function sanitizeCampaignHtml(value?: string | null) {
   if (!value) return "";
 

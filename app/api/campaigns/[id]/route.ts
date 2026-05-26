@@ -97,6 +97,9 @@ export async function PUT(
     if (typeof updateData.description === "string") {
       updateData.description = sanitizeCampaignHtml(updateData.description);
     }
+    if (typeof updateData.secondDescription === "string") {
+      updateData.secondDescription = sanitizeCampaignHtml(updateData.secondDescription);
+    }
 
     const updatedCampaign = await prisma.campaign.update({
       where: { id },

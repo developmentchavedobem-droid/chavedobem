@@ -11,13 +11,151 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { useEffect, useRef } from "react";
-import { $createParagraphNode, $createTextNode, $getRoot, FORMAT_TEXT_COMMAND, REDO_COMMAND, UNDO_COMMAND } from "lexical";
-import type { EditorState, LexicalEditor } from "lexical";
+import { getUploadUrl } from "@/src/actions/campanhas";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import {
+  $createParagraphNode,
+  $createTextNode,
+  $getRoot,
+  $getSelection,
+  $insertNodes,
+  $isRangeSelection,
+  COMMAND_PRIORITY_EDITOR,
+  createCommand,
+  DecoratorNode,
+  FORMAT_TEXT_COMMAND,
+  REDO_COMMAND,
+  UNDO_COMMAND,
+} from "lexical";
+import type {
+  DOMConversionMap,
+  DOMConversionOutput,
+  DOMExportOutput,
+  EditorState,
+  LexicalCommand,
+  LexicalEditor,
+  NodeKey,
+  SerializedLexicalNode,
+  Spread,
+} from "lexical";
 
 interface RichTextEditorProps {
   value: string;
   onChange: (html: string) => void;
+}
+
+type ImagePayload = {
+  altText: string;
+  src: string;
+};
+
+type SerializedImageNode = Spread<
+  {
+    altText: string;
+    src: string;
+    type: "campaign-image";
+    version: 1;
+  },
+  SerializedLexicalNode
+>;
+
+const INSERT_IMAGE_COMMAND: LexicalCommand<ImagePayload> = createCommand("INSERT_IMAGE_COMMAND");
+
+function convertImageElement(domNode: Node): DOMConversionOutput {
+  const img = domNode as HTMLImageElement;
+  const src = img.getAttribute("src") || "";
+
+  if (!src) return { node: null };
+
+  return {
+    node: $createImageNode({
+      altText: img.getAttribute("alt") || "",
+      src,
+    }),
+  };
+}
+
+class ImageNode extends DecoratorNode<React.ReactNode> {
+  __altText: string;
+  __src: string;
+
+  static getType(): string {
+    return "campaign-image";
+  }
+
+  static clone(node: ImageNode): ImageNode {
+    return new ImageNode(node.__src, node.__altText, node.__key);
+  }
+
+  static importJSON(serializedNode: SerializedImageNode): ImageNode {
+    return $createImageNode({
+      altText: serializedNode.altText,
+      src: serializedNode.src,
+    });
+  }
+
+  static importDOM(): DOMConversionMap | null {
+    return {
+      img: () => ({
+        conversion: convertImageElement,
+        priority: 0,
+      }),
+    };
+  }
+
+  constructor(src: string, altText: string, key?: NodeKey) {
+    super(key);
+    this.__src = src;
+    this.__altText = altText;
+  }
+
+  exportJSON(): SerializedImageNode {
+    return {
+      ...super.exportJSON(),
+      altText: this.__altText,
+      src: this.__src,
+      type: "campaign-image",
+      version: 1,
+    };
+  }
+
+  exportDOM(): DOMExportOutput {
+    const element = document.createElement("img");
+    element.setAttribute("src", this.__src);
+    element.setAttribute("alt", this.__altText);
+    return { element };
+  }
+
+  createDOM(): HTMLElement {
+    const element = document.createElement("div");
+    element.className = "my-4";
+    return element;
+  }
+
+  updateDOM(): false {
+    return false;
+  }
+
+  isInline(): false {
+    return false;
+  }
+
+  decorate(): React.ReactNode {
+    return (
+      <Image
+        src={this.__src}
+        alt={this.__altText}
+        width={1200}
+        height={800}
+        className="my-4 h-auto w-full rounded-xl object-cover"
+      />
+    );
+  }
+}
+
+function $createImageNode({ altText, src }: ImagePayload): ImageNode {
+  return new ImageNode(src, altText);
 }
 
 function hasHtml(value: string) {
@@ -80,6 +218,32 @@ function ToolbarButton({
 
 function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async (file: File) => {
+    setUploading(true);
+
+    try {
+      const res = await getUploadUrl(file.name, file.type);
+      if (!res.success || !res.uploadUrl || !res.publicUrl) throw new Error("Erro no upload");
+
+      await fetch(res.uploadUrl, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+        credentials: "omit",
+      });
+
+      editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+        altText: file.name,
+        src: res.publicUrl,
+      });
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
 
   return (
     <div className="flex flex-wrap gap-2 border-b border-gray-200 bg-gray-50 p-3">
@@ -98,6 +262,19 @@ function ToolbarPlugin() {
       <ToolbarButton title="Lista numerada" onClick={() => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)}>
         1.
       </ToolbarButton>
+      <ToolbarButton title="Inserir imagem" onClick={() => inputRef.current?.click()}>
+        {uploading ? "Enviando..." : "Imagem"}
+      </ToolbarButton>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) void handleImageUpload(file);
+        }}
+      />
       <ToolbarButton title="Desfazer" onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}>
         Desfazer
       </ToolbarButton>
@@ -106,6 +283,35 @@ function ToolbarPlugin() {
       </ToolbarButton>
     </div>
   );
+}
+
+function ImagePlugin() {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (!editor.hasNodes([ImageNode])) {
+      throw new Error("ImagePlugin: ImageNode nao registrado no editor");
+    }
+
+    return editor.registerCommand<ImagePayload>(
+      INSERT_IMAGE_COMMAND,
+      (payload) => {
+        const imageNode = $createImageNode(payload);
+        const selection = $getSelection();
+
+        if ($isRangeSelection(selection)) {
+          selection.insertNodes([imageNode]);
+        } else {
+          $insertNodes([imageNode]);
+        }
+
+        return true;
+      },
+      COMMAND_PRIORITY_EDITOR
+    );
+  }, [editor]);
+
+  return null;
 }
 
 function OnChangeHtmlPlugin({ onChange }: { onChange: (html: string) => void }) {
@@ -137,7 +343,7 @@ function InitialHtmlPlugin({ value }: { value: string }) {
 export default function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   const initialConfig = {
     namespace: "CampaignRichTextEditor",
-    nodes: [ListNode, ListItemNode, LinkNode, AutoLinkNode],
+    nodes: [ListNode, ListItemNode, LinkNode, AutoLinkNode, ImageNode],
     onError(error: Error) {
       throw error;
     },
@@ -175,6 +381,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         </div>
         <HistoryPlugin />
         <ListPlugin />
+        <ImagePlugin />
         <OnChangeHtmlPlugin onChange={onChange} />
       </LexicalComposer>
     </div>

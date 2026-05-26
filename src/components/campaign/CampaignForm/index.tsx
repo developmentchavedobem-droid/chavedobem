@@ -17,6 +17,7 @@ export default function CampaignForm({ initialData, isEditing }: CampaignFormPro
     name: initialData?.name || "",
     goal: initialData?.goal?.toString() || "",
     description: initialData?.description || "",
+    secondDescription: initialData?.secondDescription || "",
     ticketGoal: initialData?.ticketGoal?.toString() || "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -92,6 +93,17 @@ export default function CampaignForm({ initialData, isEditing }: CampaignFormPro
           />
           <p className="mt-2 text-xs text-gray-500">
             Use este campo como um artigo: explique a proposta, os detalhes, as regras e o contexto da campanha.
+          </p>
+        </div>
+
+        <div className="form-control w-full">
+          <span className="label-text mb-2 font-semibold">Segunda Descricao</span>
+          <RichTextEditor
+            value={form.secondDescription}
+            onChange={(secondDescription) => setForm((current) => ({ ...current, secondDescription }))}
+          />
+          <p className="mt-2 text-xs text-gray-500">
+            Este conteudo aparece como a segunda etapa da campanha, antes das instrucoes.
           </p>
         </div>
       </div>

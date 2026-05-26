@@ -63,7 +63,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" }
     });
     return NextResponse.json(campaigns);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Erro ao buscar campanhas" }, { status: 500 });
   }
 }
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     if (!token) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { sub: string; role?: string };
-    const { name, goal, description, imageUrl, ticketGoal } = await req.json();
+    const { name, goal, description, secondDescription, imageUrl, ticketGoal } = await req.json();
 
     if (decoded.role !== "ADMIN") {
       return NextResponse.json({ error: "Nao autorizado" }, { status: 401 });
@@ -97,6 +97,7 @@ export async function POST(req: NextRequest) {
         slug,
         goal,
         description: sanitizeCampaignHtml(description),
+        secondDescription: sanitizeCampaignHtml(secondDescription),
         imageUrl,
         ticketValue: 0,
         ticketGoal: ticketGoal || 0,
