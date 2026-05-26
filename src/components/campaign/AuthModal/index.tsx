@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { IoClose, IoArrowBack, IoMailUnread, IoLockOpen } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { 
   registerAction, 
   customerLoginAction, 
@@ -203,7 +204,18 @@ export default function AuthModal({ isOpen, onClose, campaignSlug }: AuthModalPr
               <Input label="Melhor E-mail" name="email" type="email" required />
               <div className="flex gap-3 bg-zinc-50 p-4 rounded-2xl border border-zinc-100 mt-2">
                 <input type="checkbox" className="checkbox checkbox-primary checkbox-sm mt-0.5" required />
-                <p className="text-[10px] text-gray-500 leading-tight italic font-medium">Confirmo ter +18 anos e aceito os termos e políticas.</p>
+                <p className="text-[10px] text-gray-500 leading-tight italic font-medium">
+                  Confirmo ter +18 anos. Aceito os{" "}
+                  <Link href="/termos-uso" className="font-bold text-[#053B80] underline">
+                    Termos de Uso
+                  </Link>{" "}
+                  e a{" "}
+                  <Link href="/politica-privacidade" className="font-bold text-[#053B80] underline">
+                    Politica de Privacidade
+                  </Link>{" "}
+                  do Projeto Chave do Bem e concordo em ser contactado em tempo
+                  real durante a transmissao.
+                </p>
               </div>
               <button type="submit" disabled={isLoading} className="w-full bg-[#053B80] text-white font-black py-5 rounded-2xl shadow-lg uppercase mt-2 active:scale-95 transition-all disabled:opacity-50">
                 {isLoading ? "Processando..." : "CRIAR MINHA CONTA"}

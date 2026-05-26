@@ -9,7 +9,11 @@ export default function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    setIsVisible(localStorage.getItem(STORAGE_KEY) !== "accepted");
+    const timer = window.setTimeout(() => {
+      setIsVisible(localStorage.getItem(STORAGE_KEY) !== "accepted");
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   function acceptCookies() {
@@ -28,6 +32,10 @@ export default function CookieConsentBanner() {
           publicidade. Ao continuar, voce concorda com nossa{" "}
           <Link href="/politica-privacidade" className="font-bold text-[#053B80] underline">
             Politica de Privacidade
+          </Link>{" "}
+          e com os{" "}
+          <Link href="/termos-uso" className="font-bold text-[#053B80] underline">
+            Termos de Uso
           </Link>
           .
         </p>

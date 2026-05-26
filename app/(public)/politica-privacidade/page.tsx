@@ -3,29 +3,29 @@ export default function PrivacyPolicy() {
     <section className="bg-zinc-100 pt-15">
       <div className="max-w-4xl mx-auto px-6 py-10 text-gray-800 leading-relaxed">
         <h1 className="text-3xl font-bold mb-6">
-          Politica de Privacidade
+          Política de Privacidade
         </h1>
 
         <p className="mb-4">
-          A protecao dos dados pessoais dos visitantes e participantes e
-          prioridade da <strong>Chave do Bem</strong>. Esta politica
-          explica quais informacoes podem ser tratadas durante a
-          navegacao, cadastro, participacao em campanhas, uso de cookies
-          e exibicao de publicidade.
+          A proteção dos dados pessoais dos visitantes e participantes é
+          prioridade da <strong>Chave do Bem</strong>. Esta política
+          explica quais informações podem ser tratadas durante a
+          navegação, cadastro, participação em campanhas, uso de cookies
+          e exibição de publicidade.
         </p>
 
         <p className="mb-4">
-          Solicitamos dados pessoais apenas quando realmente necessarios
-          para fornecer funcionalidades, validar participacoes, prestar
-          suporte ou cumprir obrigacoes legais relacionadas aos servicos
+          Solicitamos dados pessoais apenas quando realmente necessários
+          para fornecer funcionalidades, validar participações, prestar
+          suporte ou cumprir obrigações legais relacionadas aos serviços
           da plataforma. A coleta ocorre de maneira transparente e,
-          quando aplicavel, mediante o consentimento do usuario.
+          quando aplicável, mediante o consentimento do usuário.
         </p>
 
         <p className="mb-4">
           Ao continuar utilizando o site da{" "}
-          <strong>Chave do Bem</strong>, o usuario declara estar ciente e
-          de acordo com os termos desta Politica de Privacidade.
+          <strong>Chave do Bem</strong>, o usuário declara estar ciente e
+          de acordo com os termos desta Política de Privacidade.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
@@ -33,19 +33,28 @@ export default function PrivacyPolicy() {
         </h2>
 
         <p className="mb-4">
-          Podemos coletar dados informados diretamente pelo usuario, como
+          Podemos coletar dados informados diretamente pelo usuário, como
           nome, e-mail, telefone, data de nascimento, documentos de
-          identificacao e mensagens enviadas pelos canais de contato.
-          Tambem podemos tratar dados tecnicos de navegacao, como
-          endereco IP, identificadores de dispositivo, data e hora de
-          acesso, paginas visitadas e registros de seguranca.
+          identificação e mensagens enviadas pelos canais de contato.
+          Também podemos tratar dados técnicos de navegação, como
+          endereço IP, identificadores de dispositivo, data e hora de
+          acesso, páginas visitadas e registros de segurança.
         </p>
 
         <p className="mb-4">
-          Esses dados sao utilizados para criar e manter contas, validar
-          participacoes, prevenir fraude, melhorar a experiencia do
-          usuario, responder solicitacoes, cumprir obrigacoes legais e
+          Esses dados são utilizados para criar e manter contas, validar
+          participações, prevenir fraude, melhorar a experiência do
+          usuário, responder solicitações, cumprir obrigações legais e
           manter a integridade das campanhas publicadas no site.
+        </p>
+
+        <p className="mb-4">
+          Quando o usuário participa de campanhas com dinâmicas em transmissão
+          ao vivo, os dados de contato informados, como telefone, WhatsApp e
+          e-mail, podem ser utilizados para contato em tempo real durante a
+          transmissão, validação da participação, confirmação de identidade,
+          comunicação de seleção e orientações relacionadas à entrega do
+          prêmio.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
@@ -54,31 +63,31 @@ export default function PrivacyPolicy() {
 
         <p className="mb-4">
           Utilizamos cookies e tecnologias semelhantes para viabilizar
-          recursos essenciais do site, manter sessoes de login, lembrar
-          preferencias, entender padroes de acesso, medir desempenho e
-          oferecer uma navegacao mais segura.
+          recursos essenciais do site, manter sessões de login, lembrar
+          preferências, entender padrões de acesso, medir desempenho e
+          oferecer uma navegação mais segura.
         </p>
 
         <p className="mb-4">
           Os cookies podem ser utilizados para gerenciamento de contas e
-          login, armazenamento de preferencias de navegacao,
-          autenticacao de sessoes, funcionamento de formularios,
-          comunicacoes, pesquisas internas e melhoria geral da
-          experiencia do usuario.
+          login, armazenamento de preferências de navegação,
+          autenticação de sessões, funcionamento de formulários,
+          comunicações, pesquisas internas e melhoria geral da
+          experiência do usuário.
         </p>
 
         <p className="mb-4">
-          O usuario pode bloquear ou apagar cookies nas configuracoes do
-          navegador. A desativacao de cookies essenciais pode limitar
-          recursos como cadastro, autenticacao, validacao de
-          participacao e exibicao correta de determinadas paginas.
+          O usuário pode bloquear ou apagar cookies nas configurações do
+          navegador. A desativação de cookies essenciais pode limitar
+          recursos como cadastro, autenticação, validação de
+          participação e exibição correta de determinadas páginas.
         </p>
 
         <p className="mb-4">
-          O usuario tambem pode bloquear cookies diretamente nas
-          configuracoes do navegador utilizado, como Google Chrome,
+          O usuário também pode bloquear cookies diretamente nas
+          configurações do navegador utilizado, como Google Chrome,
           Mozilla Firefox, Microsoft Edge, Opera ou Safari. A
-          desativacao de determinados cookies pode afetar
+          desativação de determinados cookies pode afetar
           funcionalidades essenciais do site.
         </p>
 
@@ -88,30 +97,30 @@ export default function PrivacyPolicy() {
 
         <p className="mb-4">
           A Chave do Bem pode utilizar o Google AdSense para exibir
-          anuncios no site. O Google e seus parceiros podem usar
+          anúncios no site. O Google e seus parceiros podem usar
           cookies, identificadores de publicidade e tecnologias
-          semelhantes para veicular anuncios, limitar repeticoes, medir
-          desempenho e, quando aplicavel, personalizar publicidade com
+          semelhantes para veicular anúncios, limitar repetições, medir
+          desempenho e, quando aplicável, personalizar publicidade com
           base em visitas anteriores a este ou a outros sites.
         </p>
 
         <p className="mb-4">
-          Esses terceiros podem coletar ou receber informacoes do
-          navegador ou dispositivo do usuario durante a exibicao de
-          anuncios. O tratamento desses dados segue tambem as politicas
+          Esses terceiros podem coletar ou receber informações do
+          navegador ou dispositivo do usuário durante a exibição de
+          anúncios. O tratamento desses dados segue também as políticas
           de privacidade e publicidade do Google e dos respectivos
           fornecedores de tecnologia.
         </p>
 
         <p className="mb-4">
-          Tambem podemos utilizar ferramentas de analise como o Google
-          Analytics para compreender padroes de navegacao, desempenho
-          das paginas, interacoes dos usuarios e melhorias de experiencia
+          Também podemos utilizar ferramentas de análise como o Google
+          Analytics para compreender padrões de navegação, desempenho
+          das páginas, interações dos usuários e melhorias de experiência
           na plataforma.
         </p>
 
         <p className="mb-4">
-          O usuario pode gerenciar preferencias de anuncios do Google em{" "}
+          O usuário pode gerenciar preferências de anúncios do Google em{" "}
           <a
             href="https://adssettings.google.com/"
             className="font-semibold text-[#053B80] underline"
@@ -120,7 +129,7 @@ export default function PrivacyPolicy() {
           >
             adssettings.google.com
           </a>{" "}
-          e consultar informacoes sobre como o Google usa dados em{" "}
+          e consultar informações sobre como o Google usa dados em{" "}
           <a
             href="https://policies.google.com/technologies/partner-sites"
             className="font-semibold text-[#053B80] underline"
@@ -133,75 +142,75 @@ export default function PrivacyPolicy() {
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Compartilhamento de informacoes
+          Compartilhamento de informações
         </h2>
 
         <p className="mb-4">
-          Nao vendemos, alugamos ou divulgamos publicamente dados
-          pessoais identificaveis. O compartilhamento de informacoes
-          ocorre apenas quando necessario para operacao da plataforma,
-          cumprimento de obrigacoes legais, prevencao de fraude,
-          protecao de direitos da Chave do Bem ou utilizacao de servicos
-          terceirizados essenciais, como hospedagem, autenticacao,
-          analise tecnica, publicidade e envio de comunicacoes.
+          Não vendemos, alugamos ou divulgamos publicamente dados
+          pessoais identificáveis. O compartilhamento de informações
+          ocorre apenas quando necessário para operação da plataforma,
+          cumprimento de obrigações legais, prevenção de fraude,
+          proteção de direitos da Chave do Bem ou utilização de serviços
+          terceirizados essenciais, como hospedagem, autenticação,
+          análise técnica, publicidade e envio de comunicações.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Seguranca e retencao
+          Segurança e retenção
         </h2>
 
         <p className="mb-4">
-          Mantemos medidas tecnicas e administrativas para reduzir riscos
-          de acesso nao autorizado, perda, alteracao indevida ou uso
-          inadequado dos dados. As informacoes sao mantidas pelo periodo
-          necessario para as finalidades descritas nesta politica,
-          observados prazos legais, auditorias, prevencao de fraude e
+          Mantemos medidas técnicas e administrativas para reduzir riscos
+          de acesso não autorizado, perda, alteração indevida ou uso
+          inadequado dos dados. As informações são mantidas pelo período
+          necessário para as finalidades descritas nesta política,
+          observados prazos legais, auditorias, prevenção de fraude e
           defesa de direitos.
         </p>
 
         <p className="mb-4">
           O site pode utilizar ferramentas de monitoramento e
-          verificacao de seguranca para auxiliar na identificacao de
-          riscos, acessos indevidos, vulnerabilidades e ameacas que
+          verificação de segurança para auxiliar na identificação de
+          riscos, acessos indevidos, vulnerabilidades e ameaças que
           possam comprometer a integridade da plataforma e dos dados
           armazenados.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Direitos do usuario
+          Direitos do usuário
         </h2>
 
         <p className="mb-4">
-          O usuario pode solicitar informacoes sobre seus dados,
-          correcao, atualizacao, exclusao quando aplicavel, revogacao de
+          O usuário pode solicitar informações sobre seus dados,
+          correção, atualização, exclusão quando aplicável, revogação de
           consentimento e esclarecimentos sobre o tratamento realizado
-          pela Chave do Bem. Solicitacoes podem exigir confirmacao de
-          identidade para proteger a seguranca da conta.
+          pela Chave do Bem. Solicitações podem exigir confirmação de
+          identidade para proteger a segurança da conta.
         </p>
 
         <p className="mb-4">
           O fornecimento de determinados dados pessoais pode ser
-          opcional. Entretanto, a recusa em fornecer algumas informacoes
-          pode impedir o acesso a funcionalidades especificas da
+          opcional. Entretanto, a recusa em fornecer algumas informações
+          pode impedir o acesso a funcionalidades específicas da
           plataforma.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Compromissos do usuario
+          Compromissos do usuário
         </h2>
 
         <p className="mb-4">
-          Ao utilizar a plataforma, o usuario compromete-se a nao
+          Ao utilizar a plataforma, o usuário compromete-se a não
           utilizar o site para atividades ilegais, fraudulentas ou que
-          violem normas eticas e sociais.
+          violem normas éticas e sociais.
         </p>
 
         <p className="mb-4">
-          Tambem e vedado publicar ou transmitir conteudos ofensivos,
-          discriminatorios, ilegais ou que infrinjam direitos de
-          terceiros, bem como tentar comprometer a seguranca,
-          estabilidade ou integridade tecnologica da plataforma por meio
-          de softwares maliciosos, acessos indevidos ou outras praticas
+          Também é vedado publicar ou transmitir conteúdos ofensivos,
+          discriminatórios, ilegais ou que infrinjam direitos de
+          terceiros, bem como tentar comprometer a segurança,
+          estabilidade ou integridade tecnológica da plataforma por meio
+          de softwares maliciosos, acessos indevidos ou outras práticas
           prejudiciais.
         </p>
 
@@ -210,10 +219,10 @@ export default function PrivacyPolicy() {
         </h2>
 
         <p className="mb-4">
-          Nosso site pode conter links para paginas externas que nao sao
-          operadas pela Chave do Bem. Recomendamos que o usuario leia as
-          politicas desses sites, pois nao controlamos suas praticas de
-          privacidade, seguranca ou publicidade.
+          Nosso site pode conter links para páginas externas que não são
+          operadas pela Chave do Bem. Recomendamos que o usuário leia as
+          políticas desses sites, pois não controlamos suas práticas de
+          privacidade, segurança ou publicidade.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
@@ -221,7 +230,7 @@ export default function PrivacyPolicy() {
         </h2>
 
         <p className="mb-8">
-          Em caso de duvidas sobre esta politica ou sobre o tratamento
+          Em caso de dúvidas sobre esta política ou sobre o tratamento
           de dados pessoais, entre em contato pelo e-mail{" "}
           <a
             href="mailto:contato@chavedobem.com.br"
@@ -233,7 +242,7 @@ export default function PrivacyPolicy() {
         </p>
 
         <p className="mt-10 text-sm text-gray-600">
-          Ultima atualizacao: maio de 2026.
+          Última atualização: maio de 2026.
         </p>
       </div>
     </section>

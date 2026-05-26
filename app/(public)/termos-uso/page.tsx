@@ -5,117 +5,126 @@ export default function UseTerms() {
         <h1 className="text-3xl font-bold mb-6">Termos de Uso</h1>
 
         <p className="mb-4">
-          Estes Termos de Uso apresentam as regras gerais para inscricao,
-          participacao nas campanhas e navegacao no site da{" "}
+          Estes Termos de Uso apresentam as regras gerais para inscrição,
+          participação nas campanhas e navegação no site da{" "}
           <strong>Chave do Bem</strong>. Ao se cadastrar, participar de uma
-          campanha ou acessar o site, o usuario declara que leu, compreendeu e
-          concorda integralmente com as condicoes descritas abaixo.
+          campanha ou acessar o site, o usuário declara que leu, compreendeu e
+          concorda integralmente com as condições descritas abaixo.
         </p>
 
         <p className="mb-4">
-          Caso nao concorde com qualquer disposicao destes termos, recomendamos
-          que nao prossiga com o cadastro, nao participe das campanhas e
+          Caso não concorde com qualquer disposição destes termos, recomendamos
+          que não prossiga com o cadastro, não participe das campanhas e
           interrompa o uso do site.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Regras gerais para inscricao e participacao nas campanhas
+          Regras gerais para inscrição e participação nas campanhas
         </h2>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Informacoes gerais
+          Informações gerais
         </h3>
         <p className="mb-4">
-          Este documento esclarece as normas essenciais para inscricao e
-          participacao nas campanhas promovidas pela{" "}
+          Este documento esclarece as normas essenciais para inscrição e
+          participação nas campanhas promovidas pela{" "}
           <strong>Chave do Bem</strong>, inclusive aquelas realizadas durante
-          transmissoes ao vivo em redes sociais e demais canais oficiais.
+          transmissões ao vivo em redes sociais e demais canais oficiais.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
           Processo de cadastro
         </h3>
         <p className="mb-4">
-          A participacao exige cadastro previo realizado conforme as instrucoes
+          A participação exige cadastro prévio realizado conforme as instruções
           fornecidas pela equipe da Chave do Bem. Ao efetuar o cadastro, o
-          participante confirma que compreendeu e aceitou todas as clausulas
-          destes termos, alem de declarar que as informacoes fornecidas sao
+          participante confirma que compreendeu e aceitou todas as cláusulas
+          destes termos, além de declarar que as informações fornecidas são
           verdadeiras, completas e atualizadas.
         </p>
         <p className="mb-4">
-          Inscricoes realizadas por menores de idade serao automaticamente
+          Inscrições realizadas por menores de idade serão automaticamente
           anuladas, podendo ser selecionado outro participante apto, de acordo
           com as regras da campanha.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Processo de selecao e contato ao vivo
+          Processo de seleção e contato ao vivo
         </h3>
         <p className="mb-4">
-          A equipe da Chave do Bem entrara em contato diretamente com o
-          candidato selecionado durante a transmissao ao vivo. Para garantir o
-          premio, o participante devera atender a chamada telefonica dentro do
-          tempo estipulado e responder corretamente a dinamica proposta.
+          A equipe da Chave do Bem entrará em contato diretamente com o
+          candidato selecionado durante a transmissão ao vivo. Para garantir o
+          prêmio, o participante deverá atender a chamada telefônica dentro do
+          tempo estipulado e responder corretamente à dinâmica proposta.
         </p>
         <p className="mb-4">
-          Nao ha obrigatoriedade de assistir a live, desde que o participante
-          responda a ligacao dentro do prazo definido pela organizacao. Em caso
-          de nao atendimento, um novo candidato podera ser imediatamente
+          Não há obrigatoriedade de assistir à live, desde que o participante
+          responda à ligação dentro do prazo definido pela organização. Em caso
+          de não atendimento, um novo candidato poderá ser imediatamente
           escolhido.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Uso e divulgacao de imagem
+          Uso e divulgação de imagem
         </h3>
         <p className="mb-4">
-          Ao participar das campanhas, o usuario consente e autoriza
+          Ao participar das campanhas, o usuário consente e autoriza
           expressamente o uso de sua imagem, voz, nome e demais elementos
-          relacionados a sua participacao para divulgacao institucional,
-          promocional e publicitaria vinculada a campanha e a Chave do Bem.
+          relacionados à sua participação para divulgação institucional,
+          promocional e publicitária vinculada à campanha e à Chave do Bem.
         </p>
         <p className="mb-4">
-          Caso nao concorde com essa condicao, o interessado nao devera
+          Caso não concorde com essa condição, o interessado não deverá
           prosseguir com o cadastro.
         </p>
 
-        <h3 className="text-xl font-semibold mt-8 mb-3">Sobre o premio</h3>
+        <h3 className="text-xl font-semibold mt-8 mb-3">Sobre o prêmio</h3>
         <p className="mb-4">
-          Quando houver opcao de recebimento em dinheiro, o premio sera
-          disponibilizado por transferencia Pix, conforme as normas financeiras
+          Quando houver opção de recebimento em dinheiro, o prêmio será
+          disponibilizado por transferência Pix, conforme as normas financeiras
           vigentes e os dados informados pelo participante selecionado.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Cronograma de entrega do premio
+          Cronograma de entrega do prêmio
         </h3>
         <p className="mb-4">
-          A entrega do premio podera ocorrer em ate 30 dias apos a data da
-          selecao, considerando a logistica da campanha e a agenda do
-          apresentador Rodrigo Dom, quando aplicavel.
+          A entrega do prêmio poderá ocorrer em até 30 dias após a data da
+          seleção, considerando a logística da campanha e a agenda do
+          apresentador Rodrigo Dom, quando aplicável.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Concordancia com as regras
+          Concordância com as regras
         </h3>
         <p className="mb-4">
-          Ao confirmar sua inscricao, o participante aceita todas as condicoes
-          estipuladas neste regulamento e reconhece que as decisoes da equipe
-          organizadora sao definitivas em relacao a selecao, validacao de
-          cadastro, dinamica da campanha e entrega do premio, respeitada a
-          legislacao vigente.
+          Ao confirmar sua inscrição, o participante aceita todas as condições
+          estipuladas neste regulamento e reconhece que as decisões da equipe
+          organizadora são definitivas em relação à seleção, validação de
+          cadastro, dinâmica da campanha e entrega do prêmio, respeitada a
+          legislação vigente.
+        </p>
+        <p className="mb-4">
+          Ao marcar a caixa de aceite no cadastro ou ao prosseguir com sua
+          participação, o usuário declara: &quot;Aceito os Termos de Uso e a
+          Política de Privacidade do Projeto Chave do Bem e concordo em ser
+          contatado em tempo real durante a transmissão.&quot; Esse contato
+          poderá ocorrer por telefone, WhatsApp, e-mail ou outro canal informado
+          pelo próprio participante, exclusivamente para fins relacionados à
+          validação, seleção, dinâmica ao vivo e comunicações da campanha.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Condicoes complementares
+          Condições complementares
         </h2>
         <p className="mb-4">
-          A Chave do Bem nao assume responsabilidade por inscricoes perdidas,
-          incompletas ou invalidas em razao de problemas tecnicos, falhas de
-          comunicacao, indisponibilidade de rede, erros de digitacao ou outros
-          eventos fora de seu controle razoavel.
+          A Chave do Bem não assume responsabilidade por inscrições perdidas,
+          incompletas ou inválidas em razão de problemas técnicos, falhas de
+          comunicação, indisponibilidade de rede, erros de digitação ou outros
+          eventos fora de seu controle razoável.
         </p>
         <p className="mb-4">
-          Todas as campanhas divulgadas no endereco eletronico{" "}
+          Todas as campanhas divulgadas no endereço eletrônico{" "}
           <a
             href="https://chavedobem.com/"
             className="font-semibold text-[#053B80] underline"
@@ -124,28 +133,28 @@ export default function UseTerms() {
           >
             https://chavedobem.com/
           </a>{" "}
-          observam as leis vigentes de protecao de dados e as diretrizes
-          aplicaveis sobre privacidade, incluindo regras relacionadas a
-          servicos de publicidade e ferramentas do Google.
+          observam as leis vigentes de proteção de dados e as diretrizes
+          aplicáveis sobre privacidade, incluindo regras relacionadas a
+          serviços de publicidade e ferramentas do Google.
         </p>
         <p className="mb-4">
-          Para esclarecimentos adicionais, utilize o canal de comunicacao
-          disponivel na pagina{" "}
+          Para esclarecimentos adicionais, utilize o canal de comunicação
+          disponível na página{" "}
           <a href="/fale-conosco" className="font-semibold text-[#053B80] underline">
             Fale Conosco
           </a>
           .
         </p>
         <p className="mb-4">
-          Ao confirmar sua participacao, o usuario atesta que leu, entendeu e
+          Ao confirmar sua participação, o usuário atesta que leu, entendeu e
           aceitou integralmente estas regras.
         </p>
 
         <h2 className="text-2xl font-semibold mt-10 mb-4">
-          Termos de uso de navegacao no site
+          Termos de uso de navegação no site
         </h2>
         <p className="mb-4">
-          Boas-vindas a Chave do Bem. Ao acessar e navegar pelo site{" "}
+          Boas-vindas à Chave do Bem. Ao acessar e navegar pelo site{" "}
           <a
             href="https://chavedobem.com/"
             className="font-semibold text-[#053B80] underline"
@@ -154,135 +163,135 @@ export default function UseTerms() {
           >
             https://chavedobem.com/
           </a>
-          , o usuario concorda com todas as disposicoes abaixo. Caso discorde
+          , o usuário concorda com todas as disposições abaixo. Caso discorde
           de algum ponto, recomendamos interromper imediatamente o uso do site.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">Uso de cookies</h3>
         <p className="mb-4">
           A Chave do Bem utiliza cookies e tecnologias semelhantes para
-          aprimorar a experiencia online, viabilizar recursos essenciais,
-          manter sessoes, lembrar preferencias, medir desempenho e melhorar a
-          seguranca da navegacao. Esses arquivos nao executam programas nem
-          transmitem virus.
+          aprimorar a experiência online, viabilizar recursos essenciais,
+          manter sessões, lembrar preferências, medir desempenho e melhorar a
+          segurança da navegação. Esses arquivos não executam programas nem
+          transmitem vírus.
         </p>
         <p className="mb-4">
-          O usuario pode aceitar ou recusar cookies opcionais. Cookies
-          obrigatorios ou estritamente necessarios podem ser essenciais para o
-          funcionamento adequado do site e, quando exigido, dependerao de
-          autorizacao conforme as regras aplicaveis.
+          O usuário pode aceitar ou recusar cookies opcionais. Cookies
+          obrigatórios ou estritamente necessários podem ser essenciais para o
+          funcionamento adequado do site e, quando exigido, dependerão de
+          autorização conforme as regras aplicáveis.
         </p>
         <p className="mb-4">
-          Ao aceitar cookies, o usuario tambem reconhece que conteudos
-          integrados ao site, como players de video, ferramentas de analise,
+          Ao aceitar cookies, o usuário também reconhece que conteúdos
+          integrados ao site, como players de vídeo, ferramentas de análise,
           publicidade e outros recursos externos, podem utilizar cookies de
-          terceiros conforme suas proprias politicas.
+          terceiros conforme suas próprias políticas.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
           Direitos autorais e propriedade intelectual
         </h3>
         <p className="mb-4">
-          Todo o conteudo publicado no site e propriedade da Chave do Bem ou de
-          parceiros licenciados, incluindo textos, imagens, marcas, videos,
+          Todo o conteúdo publicado no site é propriedade da Chave do Bem ou de
+          parceiros licenciados, incluindo textos, imagens, marcas, vídeos,
           materiais institucionais, layout e demais elementos protegidos por
           direitos autorais e propriedade intelectual.
         </p>
-        <p className="mb-4">Sem autorizacao previa, e proibido:</p>
+        <p className="mb-4">Sem autorização prévia, é proibido:</p>
         <ul className="list-disc pl-6 mb-4 space-y-2">
           <li>copiar, republicar, vender ou alugar qualquer material do site;</li>
-          <li>duplicar ou redistribuir conteudo disponibilizado;</li>
+          <li>duplicar ou redistribuir conteúdo disponibilizado;</li>
           <li>
-            explorar comercialmente conteudos, marcas ou materiais da Chave do
+            explorar comercialmente conteúdos, marcas ou materiais da Chave do
             Bem ou de seus parceiros.
           </li>
         </ul>
         <p className="mb-4">
-          Este acordo e valido imediatamente apos sua publicacao no site.
+          Este acordo é válido imediatamente após sua publicação no site.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Comentarios e conteudo gerado pelo usuario
+          Comentários e conteúdo gerado pelo usuário
         </h3>
         <p className="mb-4">
-          Usuarios podem publicar comentarios em areas especificas do site,
-          quando esse recurso estiver disponivel. A Chave do Bem nao se
-          responsabiliza pelos conteudos desses comentarios, que representam
-          exclusivamente as opinioes pessoais dos respectivos usuarios.
+          Usuários podem publicar comentários em áreas específicas do site,
+          quando esse recurso estiver disponível. A Chave do Bem não se
+          responsabiliza pelos conteúdos desses comentários, que representam
+          exclusivamente as opiniões pessoais dos respectivos usuários.
         </p>
         <p className="mb-4">
-          Reservamo-nos o direito de excluir comentarios considerados
-          improprios, ofensivos, ilegais, enganosos ou contrarios as politicas
+          Reservamo-nos o direito de excluir comentários considerados
+          impróprios, ofensivos, ilegais, enganosos ou contrários às políticas
           do site.
         </p>
-        <p className="mb-4">Ao comentar, o usuario confirma que:</p>
+        <p className="mb-4">Ao comentar, o usuário confirma que:</p>
         <ul className="list-disc pl-6 mb-4 space-y-2">
-          <li>possui autorizacao para publicar o conteudo;</li>
-          <li>seu comentario nao viola direitos de terceiros;</li>
-          <li>o conteudo nao e difamatorio, ofensivo ou ilegal;</li>
-          <li>o comentario nao sera utilizado para fins comerciais ilicitos.</li>
+          <li>possui autorização para publicar o conteúdo;</li>
+          <li>seu comentário não viola direitos de terceiros;</li>
+          <li>o conteúdo não é difamatório, ofensivo ou ilegal;</li>
+          <li>o comentário não será utilizado para fins comerciais ilícitos.</li>
         </ul>
         <p className="mb-4">
-          Ao publicar comentarios, o usuario concede a Chave do Bem o direito
-          de utilizar, reproduzir, adaptar, editar e divulgar esse conteudo em
-          qualquer midia ou formato, respeitada a finalidade da plataforma.
+          Ao publicar comentários, o usuário concede à Chave do Bem o direito
+          de utilizar, reproduzir, adaptar, editar e divulgar esse conteúdo em
+          qualquer mídia ou formato, respeitada a finalidade da plataforma.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Permissao para criacao de links
+          Permissão para criação de links
         </h3>
         <p className="mb-4">
-          Instituicoes como orgaos governamentais, buscadores, veiculos de
-          imprensa e diretorios reconhecidos podem criar links para o site sem
-          autorizacao previa, desde que os links sejam claros, nao enganosos e
-          nao sugiram falsamente patrocinio, apoio ou vinculo com a Chave do
+          Instituições como órgãos governamentais, buscadores, veículos de
+          imprensa e diretórios reconhecidos podem criar links para o site sem
+          autorização prévia, desde que os links sejam claros, não enganosos e
+          não sugiram falsamente patrocínio, apoio ou vínculo com a Chave do
           Bem.
         </p>
         <p className="mb-4">
-          Outras instituicoes, empresas ou pessoas interessadas em incluir
-          links para o site podem solicitar permissao, que sera avaliada
-          individualmente pela equipe responsavel.
+          Outras instituições, empresas ou pessoas interessadas em incluir
+          links para o site podem solicitar permissão, que será avaliada
+          individualmente pela equipe responsável.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Responsabilidade de conteudo
+          Responsabilidade de conteúdo
         </h3>
         <p className="mb-4">
-          A Chave do Bem nao se responsabiliza legalmente por conteudos
+          A Chave do Bem não se responsabiliza legalmente por conteúdos
           publicados em sites externos, ainda que esses sites contenham links
-          para nossa plataforma. O responsavel pelo site externo compromete-se
-          a proteger a Chave do Bem contra reivindicacoes decorrentes do
-          conteudo veiculado em sua propria pagina.
+          para nossa plataforma. O responsável pelo site externo compromete-se
+          a proteger a Chave do Bem contra reivindicações decorrentes do
+          conteúdo veiculado em sua própria página.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Alteracao de termos
+          Alteração de termos
         </h3>
         <p className="mb-4">
-          A Chave do Bem reserva-se o direito de solicitar a remocao de links
-          para seu site e de alterar estes termos sempre que necessario. A
-          continuidade do uso do site ou da publicacao de links apos alteracoes
-          representa concordancia com os termos atualizados.
+          A Chave do Bem reserva-se o direito de solicitar a remoção de links
+          para seu site e de alterar estes termos sempre que necessário. A
+          continuidade do uso do site ou da publicação de links após alterações
+          representa concordância com os termos atualizados.
         </p>
 
         <h3 className="text-xl font-semibold mt-8 mb-3">
-          Isencao de responsabilidade
+          Isenção de responsabilidade
         </h3>
         <p className="mb-4">
-          Dentro dos limites permitidos pela legislacao vigente, a Chave do Bem
-          exclui garantias sobre a precisao, completude e disponibilidade
-          constante do conteudo do site. Tambem nao se responsabiliza por danos
-          ou prejuizos decorrentes do uso das informacoes fornecidas
+          Dentro dos limites permitidos pela legislação vigente, a Chave do Bem
+          exclui garantias sobre a precisão, completude e disponibilidade
+          constante do conteúdo do site. Também não se responsabiliza por danos
+          ou prejuízos decorrentes do uso das informações fornecidas
           gratuitamente, salvo quando houver responsabilidade legal expressa.
         </p>
 
         <p className="mt-10 mb-4">
-          Esperamos que sua experiencia na Chave do Bem seja positiva, segura e
-          enriquecedora. Boa sorte e que sua participacao seja inspiradora!
+          Esperamos que sua experiência na Chave do Bem seja positiva, segura e
+          enriquecedora. Boa sorte e que sua participação seja inspiradora!
         </p>
 
         <p className="mt-10 text-sm text-gray-600">
-          Ultima atualizacao: maio de 2026.
+          Última atualização: maio de 2026.
         </p>
       </div>
     </section>
