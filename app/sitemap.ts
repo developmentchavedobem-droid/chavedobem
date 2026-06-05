@@ -1,12 +1,16 @@
 import type { MetadataRoute } from "next";
 import prisma from "@/src/lib/prisma";
 
+const SITE_URL = "https://chavedobem.com";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://chavedobem.com.br";
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || SITE_URL).replace(/\/$/, "");
+  const now = new Date();
 
   const staticRoutes = [
     "",
     "/cadastre-se",
+    "/participe",
     "/quem-somos",
     "/fale-conosco",
     "/politica-privacidade",
@@ -14,14 +18,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/sorteios",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    lastModified: now,
   }));
 
-  const campaigns = await prisma.campaign.findMany({
-    where: { status: "ACTIVE" },
-    select: { slug: true, updatedAt: true },
-    orderBy: { updatedAt: "desc" },
-  });
+  let campaigns: Array<{ slug: string; updatedAt: Date }> = [];
+
+  try {
+    campaigns = await prisma.campaign.findMany({
+      where: { status: "ACTIVE" },
+      select: { slug: true, updatedAt: true },
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (error) {
+    console.error("Erro ao gerar rotas dinamicas do sitemap:", error);
+  }
 
   const campaignRoutes = campaigns.flatMap((campaign) => [
     {

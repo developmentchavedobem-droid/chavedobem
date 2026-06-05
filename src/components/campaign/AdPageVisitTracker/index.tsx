@@ -1,41 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-
 type AdPageVisitTrackerProps = {
   slug: string;
   page: "campaign" | "description" | "instructions" | "tutorial";
   refCode?: string;
 };
 
-export default function AdPageVisitTracker({ slug, page, refCode }: AdPageVisitTrackerProps) {
-  const trackedRef = useRef(false);
+export default function AdPageVisitTracker(_props: AdPageVisitTrackerProps) {
+  void _props;
 
-  useEffect(() => {
-    if (trackedRef.current || !slug) return;
-
-    trackedRef.current = true;
-    const cookieRef = document.cookie
-      .split("; ")
-      .find((cookie) => cookie.startsWith("chave_ref="))
-      ?.split("=")[1];
-    const urlRef = new URLSearchParams(window.location.search).get("ref");
-    const resolvedRef = refCode || urlRef || cookieRef;
-
-    fetch("/api/campaigns/track-visit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "same-origin",
-      body: JSON.stringify({ slug, page, ref: resolvedRef }),
-    }).then(async (response) => {
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        console.warn("Visita monetizavel nao registrada:", data || response.status);
-      }
-    }).catch((error) => {
-      console.error("Erro ao registrar visita monetizavel:", error);
-    });
-  }, [slug, page, refCode]);
+  /*
+   * Captacao de visitas monetizadas pausada durante a revisao do Google AdSense.
+   *
+   * Logica anterior:
+   * - lia o codigo de divulgacao via query string ou cookie `chave_ref`;
+   * - enviava slug, pagina e referencia para `/api/campaigns/track-visit`;
+   * - registrava a visita como base para calculos internos de monetizacao.
+   *
+   * Mantido comentado para preservar o historico da implementacao sem executar
+   * nenhuma chamada de tracking no navegador.
+   */
 
   return null;
 }

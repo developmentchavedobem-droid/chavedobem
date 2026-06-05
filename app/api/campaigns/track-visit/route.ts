@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+
+/*
 import prisma from "@/src/lib/prisma";
 
 const AD_PAGES = new Set(["campaign", "description", "instructions", "tutorial"]);
@@ -24,8 +26,20 @@ function getClientIp(request: Request) {
 
   return forwardedFor || realIp || cloudflareIp || "unknown";
 }
+*/
 
 export async function POST(request: Request) {
+  /*
+   * Registro de visitas monetizadas pausado durante a revisao do Google AdSense.
+   *
+   * A implementacao abaixo permanece no historico do arquivo, mas este endpoint
+   * nao grava novas visitas enquanto a captacao estiver desativada.
+   */
+  void request;
+
+  return NextResponse.json({ tracked: false, disabled: true }, { status: 202 });
+
+  /*
   try {
     const { slug, ref, page } = await request.json();
     const refCode = ref || getCookie(request, "chave_ref");
@@ -82,4 +96,5 @@ export async function POST(request: Request) {
     console.error("Erro ao registrar visita:", error);
     return NextResponse.json({ tracked: false, error: "Erro interno" }, { status: 500 });
   }
+  */
 }

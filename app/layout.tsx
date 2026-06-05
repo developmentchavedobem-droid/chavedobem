@@ -7,7 +7,7 @@ import AuthBootstrap from "@/src/components/AuthBootstrap";
 const GA_MEASUREMENT_ID = "G-N4CX0EQM20";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chavedobem.com.br"),
+  metadataBase: new URL("https://chavedobem.com"),
   title: "Chave do Bem",
   description: "Campanhas gratuitas com informacao clara e participacao segura.",
   openGraph: {

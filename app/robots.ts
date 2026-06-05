@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
 
+const SITE_URL = "https://chavedobem.com";
+
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://chavedobem.com.br";
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || SITE_URL).replace(/\/$/, "");
 
   return {
     rules: {

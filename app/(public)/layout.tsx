@@ -34,7 +34,7 @@ export default function PublicLayout({
           <main className="min-h-screen">
             {children}
           </main>
-          {/* <PublicContentBoost pathname={pathname || "/"} /> */}
+          <PublicContentBoost pathname={pathname || "/"} />
           <Footer />
           <CookieConsentBanner />
         </>
