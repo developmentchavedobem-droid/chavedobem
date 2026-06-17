@@ -1,13 +1,11 @@
 "use server";
 
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import prisma from "@/src/lib/prisma";
-import { s3Client } from "@/src/lib/s3";
+import { createSignedCloudinaryUpload } from "@/src/lib/cloudinary";
 
 type AuthPayload = {
   sub: string;
@@ -107,41 +105,29 @@ export async function getFinanceUploadUrl(fileName: string, fileType: string, ki
   const session = await getSession();
 
   if (!session || !["ADMIN", "USER"].includes(session.role)) {
-    return { error: "Nao autorizado." };
+    return { success: false as const, error: "Nao autorizado." };
   }
 
   if (fileType !== "application/pdf") {
-    return { error: "Envie um arquivo PDF." };
+    return { success: false as const, error: "Envie um arquivo PDF." };
   }
 
-  const fileExtension = fileName.split(".").pop() || "pdf";
-  const key = `finance/${kind === "invoice" ? "notas-fiscais" : "comprovantes"}/${uuidv4()}.${fileExtension}`;
-
-  const command = new PutObjectCommand({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: key,
-    ContentType: fileType,
-  });
+  const fileExtension = fileName.split(".").pop()?.toLowerCase() || "pdf";
 
   try {
-    const uploadUrl = await getSignedUrl(s3Client, command, {
-      expiresIn: 60,
-      signableHeaders: new Set(["host"]),
+    const upload = createSignedCloudinaryUpload({
+      folder: `finance/${kind === "invoice" ? "notas-fiscais" : "comprovantes"}`,
+      publicId: `${uuidv4()}.${fileExtension}`,
+      fileType,
     });
 
-    const cleanUrl = uploadUrl
-      .split("&")
-      .filter((param) => !param.includes("x-amz-checksum") && !param.includes("x-amz-sdk-checksum"))
-      .join("&");
-
     return {
-      success: true,
-      uploadUrl: cleanUrl,
-      publicUrl: `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+      success: true as const,
+      ...upload,
     };
   } catch (error) {
     console.error("Erro ao preparar upload financeiro:", error);
-    return { error: "Falha ao preparar upload." };
+    return { success: false as const, error: "Falha ao preparar upload." };
   }
 }
 

@@ -12,7 +12,7 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { getUploadUrl } from "@/src/actions/campanhas";
-import { uploadToSignedS3Url } from "@/src/utils/s3-upload";
+import { uploadToSignedCloudinary } from "@/src/utils/cloudinary-upload";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -227,13 +227,13 @@ function ToolbarPlugin() {
 
     try {
       const res = await getUploadUrl(file.name, file.type);
-      if (!res.success || !res.uploadUrl || !res.publicUrl) throw new Error("Erro no upload");
+      if (!res.success || !res.uploadUrl || !res.fields) throw new Error("Erro no upload");
 
-      await uploadToSignedS3Url(res.uploadUrl, file);
+      const imageUrl = await uploadToSignedCloudinary(res, file);
 
       editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
         altText: file.name,
-        src: res.publicUrl,
+        src: imageUrl,
       });
     } finally {
       setUploading(false);

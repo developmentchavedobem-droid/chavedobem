@@ -9,7 +9,7 @@ import {
   markWithdrawalAsPaidAction,
   requestPreviousMonthPaymentAction,
 } from "@/src/actions/finance";
-import { uploadToSignedS3Url } from "@/src/utils/s3-upload";
+import { uploadToSignedCloudinary } from "@/src/utils/cloudinary-upload";
 import {
   FaArrowRotateRight,
   FaCalendarDays,
@@ -106,13 +106,11 @@ export default function FaturamentoPage() {
 
   async function uploadPdf(file: File, kind: "invoice" | "receipt") {
     const signed = await getFinanceUploadUrl(file.name, file.type, kind);
-    if (!signed.success || !signed.uploadUrl || !signed.publicUrl) {
+    if (!signed.success || !signed.uploadUrl || !signed.fields) {
       throw new Error(signed.error || "Erro ao preparar upload.");
     }
 
-    await uploadToSignedS3Url(signed.uploadUrl, file);
-
-    return signed.publicUrl;
+    return uploadToSignedCloudinary(signed, file);
   }
 
   async function handleRequestPayment() {

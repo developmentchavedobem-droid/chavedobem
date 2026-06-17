@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUploadUrl } from "@/src/actions/campanhas";
-import { uploadToSignedS3Url } from "@/src/utils/s3-upload";
+import { uploadToSignedCloudinary } from "@/src/utils/cloudinary-upload";
 import Link from "next/link";
 import RichTextEditor from "@/src/components/campaign/RichTextEditor";
 
@@ -38,9 +38,8 @@ export default function CampaignForm({ initialData, isEditing }: CampaignFormPro
 
       if (imageFile) {
         const res = await getUploadUrl(imageFile.name, imageFile.type);
-        if (!res.success || !res.uploadUrl) throw new Error("Erro no upload");
-        await uploadToSignedS3Url(res.uploadUrl, imageFile);
-        finalImageUrl = res.publicUrl || "";
+        if (!res.success || !res.uploadUrl || !res.fields) throw new Error("Erro no upload");
+        finalImageUrl = await uploadToSignedCloudinary(res, imageFile);
       }
 
       const url = isEditing ? `/api/campaigns/${initialData.id}` : "/api/campaigns";

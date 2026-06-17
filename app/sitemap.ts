@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
 import prisma from "@/src/lib/prisma";
 
-const SITE_URL = "https://chavedobem.com";
+const SITE_URL = "https://www.chavedobem.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || SITE_URL).replace(/\/$/, "");
   const now = new Date();
 
   const staticRoutes = [
@@ -17,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/termos-uso",
     "/sorteios",
   ].map((route) => ({
-    url: `${baseUrl}${route}`,
+    url: `${SITE_URL}${route}`,
     lastModified: now,
   }));
 
@@ -35,19 +34,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const campaignRoutes = campaigns.flatMap((campaign) => [
     {
-      url: `${baseUrl}/campanha/${campaign.slug}`,
+      url: `${SITE_URL}/campanha/${campaign.slug}`,
       lastModified: campaign.updatedAt,
     },
     {
-      url: `${baseUrl}/campanha/${campaign.slug}/descricao`,
+      url: `${SITE_URL}/campanha/${campaign.slug}/descricao`,
       lastModified: campaign.updatedAt,
     },
     {
-      url: `${baseUrl}/campanha/${campaign.slug}/instrucoes`,
+      url: `${SITE_URL}/campanha/${campaign.slug}/instrucoes`,
       lastModified: campaign.updatedAt,
     },
     {
-      url: `${baseUrl}/campanha/${campaign.slug}/tutorial`,
+      url: `${SITE_URL}/campanha/${campaign.slug}/tutorial`,
       lastModified: campaign.updatedAt,
     },
   ]);
